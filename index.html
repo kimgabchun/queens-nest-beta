@@ -41,6 +41,10 @@ if(text===s.message && /탐사대.*귀환하지 않았습니다/.test(text)){
 }
 if(text===s.message && s.exploreArt)return exploreResultArt();
 const kind=sceneKind(text);
+if(/채집|먹이를 모아|식량을 모아/.test(text)){
+  return '<img src="assets/gather.webp" alt="일개미 채집" style="display:block;width:100%;height:auto;border-radius:8px"><div class="scene-caption">▣ 일개미 채집 · 픽셀아트</div>';
+}
+/* QUEENS_NEST_GATHER_ART_V1 */
 if(kind==="hunger")return `<img src="assets/hunger.webp" alt="굶주린 군락" style="display:block;width:100%;height:auto;border-radius:8px"><div class="scene-caption">▣ 굶주린 군락 · 픽셀아트</div>`;
 if(kind==="relic")return `<img src="assets/relic.webp" alt="고대 유물 발견" style="display:block;width:100%;height:auto;border-radius:8px"><div class="scene-caption">▣ 고대 유물 발견 · 픽셀아트</div>`;
 if(kind==="egg")return `<img src="assets/egg.webp" alt="여왕개미 산란실" style="display:block;width:100%;height:auto;border-radius:8px"><div class="scene-caption">▣ 여왕개미의 산란실 · 픽셀아트</div>`;
