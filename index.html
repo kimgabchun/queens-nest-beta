@@ -41,6 +41,11 @@ if(text===s.message && /탐사대.*귀환하지 않았습니다/.test(text)){
 }
 if(text===s.message && s.exploreArt)return exploreResultArt();
 const kind=sceneKind(text);
+/* QUEENS_NEST_SOLDIER_TRAINING_V1 */
+if(/병정.*육성|병정.*훈련|병정개미.*육성|병정개미.*훈련/.test(text)){
+  return '<img src="assets/soldier_training.webp" alt="병정개미 육성" style="display:block;width:100%;height:auto;border-radius:8px"><div class="scene-caption">▣ 병정개미 육성 · 픽셀아트</div>';
+}
+
 /* QUEENS_NEST_ACTION_ART_FIX_V2 */
 if(/둥지를 보강|둥지 보강|방어 시설/.test(text)){
 return '<img src="assets/nest_reinforce.webp" alt="둥지 보강" style="display:block;width:100%;height:auto;border-radius:8px"><div class="scene-caption">▣ 둥지 보강 · 픽셀아트</div>';
