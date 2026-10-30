@@ -410,9 +410,9 @@ renderRelics=function(){
   const inventory=$('relics').innerHTML;
 
   const menu=`<div class="grid2">
-    ${btn('🎒 내 유물함','setRelicView("inventory")',false,
+    ${btn('🎒 내 유물함','setRelicView('inventory')',false,
       relicView==='inventory'?'primary':'')}
-    ${btn('📖 유물 도감','setRelicView("codex")',false,
+    ${btn('📖 유물 도감','setRelicView('codex')',false,
       relicView==='codex'?'primary':'')}
   </div>`;
 
