@@ -98,7 +98,12 @@ out+=ant(127,105,.9)+ant(218,111,.67)+box(181,68,4,26,'#987448')+box(175,65,16,5
 out+=box(0,0,320,4,'#293f40')+box(0,136,320,4,'#1a2426')+box(0,0,4,140,'#263c3b')+box(316,0,4,140,'#263c3b');
 return '<svg class="scene-thumb pixel-scene" viewBox="0 0 320 140" role="img" aria-label="'+labels[kind]+' 픽셀아트" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges">'+out+'</svg><div class="scene-caption">▣ '+labels[kind]+' · 픽셀아트</div>';
 }
-function render(){const ended=!s.alive;$('headline').innerHTML=`<h2>${ended?'☠️ 군락 멸망':'🌿 생존 '+s.day+'일차'}</h2>${sceneThumb(s.message)}<div class="notice">${esc(s.message)}</div><p class="small muted">${ended?'새로운 군락으로 다시 시작할 수 있습니다.':`남은 명령 ${s.actions}/2 · 다음 날에는 식량이 소비되고, 적 군락도 움직입니다.`}</p><div class="bar"><i style="width:${s.queen}%"></i></div><div class="small">여왕 체력 ${s.queen}/100 · 습격 위험 ${s.threat}/100</div>`;
+function render(){const ended=!s.alive;$('headline').innerHTML=`<h2>${ended?'☠️ 군락 멸망':'🌿 생존 '+s.day+'일차'}</h2>${ended
+? `<img src="assets/colony_end.webp"
+alt="멸망한 개미 왕국"
+style="display:block;width:100%;height:auto;border-radius:8px">
+<div class="scene-caption">▣ 군락의 최후 · 픽셀아트</div>`
+: sceneThumb(s.message)}<!-- QUEENS_NEST_COLONY_END_ART_V1 --><div class="notice">${esc(s.message)}</div><p class="small muted">${ended?'새로운 군락으로 다시 시작할 수 있습니다.':`남은 명령 ${s.actions}/2 · 다음 날에는 식량이 소비되고, 적 군락도 움직입니다.`}</p><div class="bar"><i style="width:${s.queen}%"></i></div><div class="small">여왕 체력 ${s.queen}/100 · 습격 위험 ${s.threat}/100</div>`;
 $('stats').innerHTML=stat('🌾 식량',s.food)+stat('🪵 자재',s.wood)+stat('🐜 일개미',s.workers)+stat('⚔️ 병정개미',s.soldiers)+stat('🥚 알',s.eggs)+stat('🏺 유물',s.owned.length);
 $('orders').innerHTML=`<div class="grid2">${btn('🌾 채집 · 명령 1회',"order('forage')",ended||!s.actions||s.workers<1)}${btn('🥚 산란 · 식량 '+(active('amber')?10:7),"order('lay')",ended||!s.actions||s.food<(active('amber')?10:7))}${btn('🪵 둥지 보강 · 자재 5',"order('fortify')",ended||!s.actions||s.wood<5)}${btn('⚔️ 병정 육성 · 식량 9',"order('train')",ended||!s.actions||s.workers<1||s.food<9)}</div><p class="small muted">산란한 알은 다음 날 부화합니다. 병정 육성은 일개미 1마리를 병정개미로 전환합니다.</p><div class="row"><span>🛡️ 둥지 방어 시설: ${s.guard}단계</span><span>탐사 중인 개미: ${s.away?s.away.w+s.away.b:0}마리</span></div>${btn('🌙 하루 마무리 · 다음 날', 'nextDay()',ended,'primary')}`;
 $('situation').innerHTML=`<p class="small">${s.away?'⏳ 탐사대 귀환까지 '+s.away.days+'일':'🧭 탐사 중인 개미 없음'} · ${s.missing.length?'❓ 실종된 탐사대 '+s.missing.length+'팀':'실종된 탐사대 없음'}</p><p class="small">🌾 예상 하루 식량 소비: ${dailyEat()}개</p><p class="small">⚠️ 습격 위험: ${s.threat}% · 방어 성공 ${s.raids}회</p><h3>주변 군락의 동향</h3>${s.rivals.map(r=>`<div class="row small"><span>${r.name}</span><span>병력 ${r.strength} · 적대 ${r.hostile}%</span></div>`).join('')}`;
