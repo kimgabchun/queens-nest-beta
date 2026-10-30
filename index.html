@@ -14,7 +14,7 @@ const RELICS=[
 {id:'root',name:'🌿 검은 뿌리',effect:'실종 개미 구조 성공률 증가',curse:'매일 식량 소비 +2'},
 {id:'stone',name:'🪨 둥지의 심장석',effect:'둥지 방어력 +35%',curse:'매일 자재 -1'},
 {id:'wing',name:'🦋 재의 날개',effect:'탐사 귀환 시 추가 자재 획득',curse:'탐사 식량 소모 +2'}
-];const relic=id=>RELICS.find(r=>r.id===id);const active=id=>s.equipped.includes(id);const fresh=()=>({day:1,food:26,wood:10,workers:5,soldiers:2,eggs:0,queen:100,threat:12,guard:1,expeditions:0,raids:0,lost:0,peak:7,alive:true,actions:2,owned:[],equipped:[],away:null,missing:[],rivals:[{name:'붉은턱 군락',strength:18,hostile:72},{name:'검은등 군락',strength:13,hostile:35},{name:'황금배 군락',strength:9,hostile:18}],pending:null,logs:['1일차 · 여왕이 젖은 흙 아래 작은 군락을 세웠습니다. 식량은 넉넉하지 않습니다.'],message:'탐사를 보내거나 군락을 돌보세요. 하루에 명령은 2번 내릴 수 있습니다.'});let s;try{s={...fresh(),...JSON.parse(localStorage.getItem(KEY))};if(!Number.isFinite(s.day))throw 0}catch{s=fresh()};let currentTab='home';function save(){localStorage.setItem(KEY,JSON.stringify(s))}function log(t){s.logs.unshift(s.day+'일차 · '+t);s.logs=s.logs.slice(0,130);s.message=t;s.exploreArt=null}function update(){s.workers=Math.max(0,s.workers);s.soldiers=Math.max(0,s.soldiers);s.food=Math.max(0,s.food);s.wood=Math.max(0,s.wood);s.eggs=Math.max(0,s.eggs);s.threat=clamp(s.threat,0,100);s.queen=clamp(s.queen,0,100);s.peak=Math.max(s.peak,s.workers+s.soldiers);if(s.queen<=0||(!s.workers&&!s.soldiers&&!s.eggs&&!s.away&&!s.missing.length)){s.alive=false;log('☠️ 군락이 멸망했습니다. '+s.day+'일 동안의 기록이 남았습니다.')}save();render()}
+];const relic=id=>RELICS.find(r=>r.id===id);const active=id=>s.equipped.includes(id);const fresh=()=>({day:1,food:26,wood:10,workers:5,soldiers:2,eggs:0,queen:100,threat:12,guard:1,expeditions:0,raids:0,lost:0,peak:7,alive:true,actions:2,owned:[],equipped:[],away:null,missing:[],rivals:[{name:'붉은턱 군락',strength:18,hostile:72},{name:'검은등 군락',strength:13,hostile:35},{name:'황금배 군락',strength:9,hostile:18}],pending:null,logs:['1일차 · 여왕이 젖은 흙 아래 작은 군락을 세웠습니다. 식량은 넉넉하지 않습니다.'],message:'탐사를 보내거나 군락을 돌보세요. 하루에 명령은 2번 내릴 수 있습니다.'});let s;try{s={...fresh(),...JSON.parse(localStorage.getItem(KEY))};if(!Number.isFinite(s.day))throw 0}catch{s=fresh()};let currentTab='home';function save(){localStorage.setItem(KEY,JSON.stringify(s))}function log(t){s.logs.unshift(s.day+'일차 · '+t);s.logs=s.logs.slice(0,130);s.message=t;s.exploreArt=null}function update(){s.workers=Math.max(0,s.workers);s.soldiers=Math.max(0,s.soldiers);s.food=Math.max(0,s.food);s.wood=Math.max(0,s.wood);s.eggs=Math.max(0,s.eggs);s.threat=clamp(s.threat,0,100);s.queen=clamp(s.queen,0,100);s.peak=Math.max(s.peak,s.workers+s.soldiers);if(s.queen<=0||(!s.workers&&!s.soldiers&&!s.eggs&&!s.away&&!s.healAway&&!s.missing.length)){s.alive=false;log('☠️ 군락이 멸망했습니다. '+s.day+'일 동안의 기록이 남았습니다.')}save();render()}
 function tab(id){currentTab=id;document.querySelectorAll('.tabs').forEach(x=>x.classList.toggle('active',x.id===id));render();window.scrollTo({top:0,behavior:'smooth'})}function stat(label,value){return `<div class="stat"><b>${value}</b><span>${label}</span></div>`}function btn(label,fn,disabled=false,cls=''){return `<button class="${cls}" ${disabled?'disabled':''} onclick="${fn}">${label}</button>`}
 function sceneKind(t){t=String(t||'');if(/유물|결정|발견!/.test(t))return 'relic';if(/침공|습격|전사|부상|전투/.test(t))return 'battle';if(/실종|돌아오지|구조|흔적을 찾지/.test(t))return 'missing';if(/탐사대|귀환|통로|심층|정찰/.test(t))return 'explore';if(/산란|알 |부화/.test(t))return 'egg';if(/굶주림|식량이 부족|멸망/.test(t))return 'hunger';if(/채집|식량|씨앗/.test(t))return 'food';if(/둥지|보강|병정/.test(t))return 'nest';return 'queen'}
 
@@ -121,17 +121,105 @@ alt="멸망한 개미 왕국"
 style="display:block;width:100%;height:auto;border-radius:8px">
 <div class="scene-caption">▣ 군락의 최후 · 픽셀아트</div>`
 : sceneThumb(s.message)}<!-- QUEENS_NEST_COLONY_END_ART_V1 --><div class="notice">${esc(s.message)}</div><p class="small muted">${ended?'새로운 군락으로 다시 시작할 수 있습니다.':`남은 명령 ${s.actions}/2 · 다음 날에는 식량이 소비되고, 적 군락도 움직입니다.`}</p><div class="bar"><i style="width:${s.queen}%"></i></div><div class="small">여왕 체력 ${s.queen}/100 · 습격 위험 ${s.threat}/100</div>`;
-$('stats').innerHTML=stat('🌾 식량',s.food)+stat('🪵 자재',s.wood)+stat('🐜 일개미',s.workers)+stat('⚔️ 병정개미',s.soldiers)+stat('🥚 알',s.eggs)+stat('🏺 유물',s.owned.length);
-$('orders').innerHTML=`<div class="grid2">${btn('🌾 채집 · 명령 1회',"order('forage')",ended||!s.actions||s.workers<1)}${btn('🥚 산란 · 식량 '+(active('amber')?10:7),"order('lay')",ended||!s.actions||s.food<(active('amber')?10:7))}${btn('🪵 둥지 보강 · 자재 5',"order('fortify')",ended||!s.actions||s.wood<5)}${btn('⚔️ 병정 육성 · 식량 9',"order('train')",ended||!s.actions||s.workers<1||s.food<9)}</div><p class="small muted">산란한 알은 다음 날 부화합니다. 병정 육성은 일개미 1마리를 병정개미로 전환합니다.</p><div class="row"><span>🛡️ 둥지 방어 시설: ${s.guard}단계</span><span>탐사 중인 개미: ${s.away?s.away.w+s.away.b:0}마리</span></div>${btn('🌙 하루 마무리 · 다음 날', 'nextDay()',ended,'primary')}`;
+$('stats').innerHTML=stat('🌾 식량',s.food)+stat('🪵 자재',s.wood)+stat('🐜 일개미',s.workers)+stat('⚔️ 병정개미',s.soldiers)+stat('🥚 알',s.eggs)+stat('🏺 유물',s.owned.length)+stat('🌿 약초',s.herbs||0);
+$('orders').innerHTML=`<div class="grid2">${btn('🌾 채집 · 명령 1회',"order('forage')",ended||!s.actions||s.workers<1)}${btn('🥚 산란 · 식량 '+(active('amber')?10:7),"order('lay')",ended||!s.actions||s.food<(active('amber')?10:7))}${btn('🪵 둥지 보강 · 자재 5',"order('fortify')",ended||!s.actions||s.wood<5)}${btn('⚔️ 병정 육성 · 식량 9',"order('train')",ended||!s.actions||s.workers<1||s.food<9)}</div><p class="small muted">산란한 알은 다음 날 부화합니다. 병정 육성은 일개미 1마리를 병정개미로 전환합니다.</p><div class="row"><span>🛡️ 둥지 방어 시설: ${s.guard}단계</span><span>탐사 중인 개미: ${s.away?s.away.w+s.away.b:0}마리</span></div><div class="notice" style="margin-top:12px">
+🌿 보유 약초: ${s.herbs||0}개 · 👑 여왕 체력: ${s.queen}/100
+${btn('💚 약초로 여왕 치료 · 체력 +30','healQueen()',ended||(s.herbs||0)<1||s.queen>=100)}
+</div>${btn('🌙 하루 마무리 · 다음 날', 'nextDay()',ended,'primary')}`;
 $('situation').innerHTML=`<p class="small">${s.away?'⏳ 탐사대 귀환까지 '+s.away.days+'일':'🧭 탐사 중인 개미 없음'} · ${s.missing.length?'❓ 실종된 탐사대 '+s.missing.length+'팀':'실종된 탐사대 없음'}</p><p class="small">🌾 예상 하루 식량 소비: ${dailyEat()}개</p><p class="small">⚠️ 습격 위험: ${s.threat}% · 방어 성공 ${s.raids}회</p><h3>주변 군락의 동향</h3>${s.rivals.map(r=>`<div class="row small"><span>${r.name}</span><span>병력 ${r.strength} · 적대 ${r.hostile}%</span></div>`).join('')}`;
 renderExplore();renderRelics();const recent=s.logs.slice(0,5).map(x=>{const cls=/실종|돌아오지|전사|침공|습격|굶주림|멸망|부상|부족/.test(x)?'critical':/유물|귀환|성공|부화|발견/.test(x)?'reward':'';return `<p class="${cls}">${esc(x)}</p>`}).join('');$('recentHome').innerHTML=recent;$('recentExplore').innerHTML=recent;$('historyList').innerHTML=s.logs.map(x=>`<p>${esc(x)}</p>`).join('')}
 function esc(x){return String(x).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}function dailyEat(){return Math.max(2,Math.ceil((s.workers+s.soldiers+(s.away?s.away.w+s.away.b:0)+1)/3))+(active('eggs')?3:0)+(active('root')?2:0)}function order(type){if(!s.alive||s.actions<1)return;if(type==='forage'){if(!s.workers)return;let gain=rnd(3,7)+Math.min(9,s.workers);if(active('amber'))gain=Math.ceil(gain*1.5);s.food+=gain;log('일개미들이 주변에서 식량 '+gain+'개를 채집했습니다.')}if(type==='lay'){let cost=7+(active('amber')?3:0);if(s.food<cost)return;s.food-=cost;let n=rnd(1,2)+(active('eggs')?rnd(1,2):0);s.eggs+=n;log('여왕이 알 '+n+'개를 낳았습니다. 내일 부화합니다.')}if(type==='fortify'){if(s.wood<5)return;s.wood-=5;s.guard++;log('일개미들이 둥지를 보강했습니다. 방어 시설 '+s.guard+'단계.')}if(type==='train'){if(s.food<9||!s.workers)return;s.food-=9;s.workers--;s.soldiers++;log('일개미 한 마리가 병정개미로 전환되었습니다.')}s.actions--;update()}
+
+/* QUEENS_NEST_QUEEN_HEAL_V1 */
+
+function sendHealingExpedition(){
+  if(!s.alive || s.actions<1 || s.away || s.healAway){
+    alert('지금은 치료 원정대를 보낼 수 없습니다.');
+    return;
+  }
+
+  if(s.soldiers<2){
+    alert('⚠️ 치료 원정에는 병정개미 2마리가 필요합니다.');
+    return;
+  }
+
+  if(!confirm('🌿 여왕 치료 원정대를 파견할까요?\n\n병정개미 2마리 / 명령 1회\n성공 확률 60%\n실패하면 원정대 전멸')){
+    return;
+  }
+
+  s.soldiers-=2;
+  s.actions--;
+  s.healAway={b:2,days:rnd(1,2)};
+
+  log('🌿 병정개미 2마리가 여왕을 위한 약초를 찾아 떠났습니다.');
+  update();
+}
+
+function healingExpeditionReturn(){
+  const a=s.healAway;
+  if(!a)return;
+
+  s.healAway=null;
+
+  if(chance(.60)){
+    s.soldiers+=a.b;
+    s.herbs=(s.herbs||0)+1;
+    log('🌿 치료 원정 성공! 병정개미들이 약초 1개를 찾아 무사히 돌아왔습니다.');
+    s.healArt='success';
+  }else{
+    s.lost+=a.b;
+    log('💀 치료 원정 실패! 약초를 찾던 병정개미 2마리가 전멸했습니다.');
+    s.healArt='fail';
+  }
+}
+
+function healQueen(){
+  if(!s.alive)return;
+
+  if((s.herbs||0)<1){
+    alert('🌿 치료에 필요한 약초가 없습니다.');
+    return;
+  }
+
+  if(s.queen>=100){
+    alert('👑 여왕의 체력이 이미 가득합니다.');
+    return;
+  }
+
+  s.herbs--;
+  const before=s.queen;
+  s.queen=Math.min(100,s.queen+30);
+
+  log('💚 여왕 치료 완료! 체력 +'+(s.queen-before)+'.');
+  s.healArt='healed';
+  update();
+}
+
 function renderExplore(){let html='';if(s.pending){html=`${sceneThumb(s.pending.text)}<div class="notice">${esc(s.pending.text)}</div><div class="options">${s.pending.options.map((o,i)=>`<button onclick="resolveEvent(${i})">${esc(o.label)}<small>${esc(o.hint)}</small></button>`).join('')}</div>`}else if(s.away){html=`${sceneThumb("탐사대가 미지의 통로로 향했습니다.")}<div class="notice">탐사대가 아직 돌아오지 않았습니다.\n일개미 ${s.away.w}마리 · 병정개미 ${s.away.b}마리\n남은 기간 ${s.away.days}일</div><p class="small muted">귀환할 때까지 파견 개미는 군락에서 사용할 수 없습니다. 다음 날로 진행하세요.</p>`}else if(!s.alive){html='<p>군락의 탐사는 끝났습니다.</p>'}else{html=`${s.exploreArt?sceneThumb(s.message):sceneThumb("탐사대가 통로를 탐색합니다.")}<p class="small muted">탐사대는 하루 이상 돌아오지 않을 수 있습니다. 일개미는 자원을 운반하고 병정개미는 위험을 막습니다. 탐사에는 명령 1회가 필요합니다.</p><div class="row"><label>일개미</label><input type="number" id="ew" min="0" max="${s.workers}" value="${Math.min(2,s.workers)}"></div><div class="row"><label>병정개미</label><input type="number" id="eb" min="0" max="${s.soldiers}" value="${Math.min(1,s.soldiers)}"></div><div class="row"><label>탐사 거리</label><select id="dist"><option value="1">가까운 곳 · 안전 / 작은 보상</option><option value="2">먼 곳 · 위험 / 큰 보상</option><option value="3">미지의 심층 · 매우 위험 / 유물 기회</option></select></div>${btn('🧭 탐사대 파견', 'sendExpedition()',!s.actions||s.workers+s.soldiers===0,'primary')}`}
-if(s.missing.length){html+='<h3>❓ 실종된 탐사대</h3>'+s.missing.map((m,i)=>`<div class="notice">${m.day}일차 실종 · 일개미 ${m.w}, 병정개미 ${m.b} · ${m.days}일 경과</div>${btn('구조대 파견 · 병정 2명 / 명령 1회',`rescue(${i})`,!s.alive||!s.actions||s.soldiers<2)}`).join('')} $('expedition').innerHTML=html}
+if(s.missing.length){html+='<h3>❓ 실종된 탐사대</h3>'+s.missing.map((m,i)=>`<div class="notice">${m.day}일차 실종 · 일개미 ${m.w}, 병정개미 ${m.b} · ${m.days}일 경과</div>${btn('구조대 파견 · 병정 2명 / 명령 1회',`rescue(${i})`,!s.alive||!s.actions||s.soldiers<2)}`).join('')} if(s.alive){
+html+=`<div class="notice" style="margin-top:18px">
+<h3>🌿 여왕 치료 원정대</h3>
+<p>병정개미 2마리 필수 · 명령 1회 · 1~2일 소요</p>
+<p>성공 확률 60% · 성공 시 약초 1개 · 실패 시 원정대 전멸</p>
+<p>보유 약초: ${s.herbs||0}개</p>
+${s.healAway
+? `<p>⏳ 치료 원정대 귀환까지 ${s.healAway.days}일</p>`
+: btn('🌿 여왕 치료 원정대 파견','sendHealingExpedition()',!s.actions||s.soldiers<2||!!s.away)}
+</div>`;
+}
+$('expedition').innerHTML=html}
 function sendExpedition(){if(!s.alive||s.actions<1||s.away||s.pending)return;const w=Number($('ew').value),b=Number($('eb').value),dist=Number($('dist').value);if(!Number.isInteger(w)||!Number.isInteger(b)||w<0||b<0||w>s.workers||b>s.soldiers||w+b<1||![1,2,3].includes(dist))return alert('파견 인원을 확인해 주세요.');s.workers-=w;s.soldiers-=b;s.away={w,b,dist,days:dist===1?1:rnd(1,dist),origin:s.day};s.actions--;log(`탐사대 ${w+b}마리가 ${['','가까운 통로','먼 숲','미지의 심층'][dist]}로 떠났습니다. 무사히 돌아오기를 바랍니다.`);update()}
 function expeditionReturn(){const a=s.away;if(!a)return;const artPrefix=['','near','far','unknown'][a.dist];s.away=null;const protection=clamp(a.b/(a.w+a.b+1)*.32,0,.23)+(active('eye')?.16:0);const risk=clamp(.09+a.dist*.13-protection+(active('bell')?.08:0),.02,.72);const roll=Math.random();if(roll<risk*.24){s.missing.push({w:a.w,b:a.b,day:s.day,days:0});s.lost+=a.w+a.b;log(`❓ 탐사대 ${a.w+a.b}마리가 귀환하지 않았습니다. 생사조차 알 수 없습니다.`);s.exploreArt=artPrefix+'_fail';return}if(roll<risk){const lw=Math.min(a.w,rnd(0,Math.max(1,Math.ceil(a.w*.6)))),lb=Math.min(a.b,rnd(0,Math.max(1,Math.ceil(a.b*.5))));a.w-=lw;a.b-=lb;s.lost+=lw+lb;s.workers+=a.w;s.soldiers+=a.b;log(`🩸 탐사대가 습격당했습니다. 일개미 ${lw}, 병정개미 ${lb}마리가 돌아오지 못했습니다.`);s.exploreArt=artPrefix+'_fail';return}const r=Math.random();const artSuccess=r>=.30;s.workers+=a.w;s.soldiers+=a.b;s.expeditions++;if(r<.18){log('탐사대가 빈손으로 귀환했습니다. 위험을 피한 것만으로도 다행입니다.')}else if(r<.30){const rival=pick(s.rivals);rival.hostile=clamp(rival.hostile+rnd(5,12),0,100);log(`탐사대가 ${rival.name}의 경계병을 발견했습니다. 상대 군락이 우리 존재를 알아챘습니다.`)}else{let food=rnd(2,7)*a.dist+Math.max(0,a.w-1);if(active('eye'))food=Math.floor(food*.7);let wood=rnd(0,3)*a.dist+(active('wing')?4:0);s.food+=food;s.wood+=wood;log(`탐사대가 무사히 돌아왔습니다. 식량 +${food}, 자재 +${wood}.`)}if(a.dist>=2&&chance(.05+a.dist*.045)){const candidates=RELICS.filter(x=>!s.owned.includes(x.id));if(candidates.length){const found=pick(candidates);s.owned.push(found.id);log('✨ 유물 발견! '+found.name+' — 유물실에서 장착할 수 있습니다.')}}s.exploreArt=artPrefix+(artSuccess?'_success':'_fail');}
 function rescue(i){if(!s.alive||s.actions<1||s.soldiers<2||!s.missing[i])return;const m=s.missing.splice(i,1)[0];s.actions--;let success=clamp(.30+s.guard*.035+(active('root')?.25:0)+(active('heart')?.15:0),0,.85);if(chance(success)){s.workers+=m.w;s.soldiers+=m.b;log(`🕯️ 구조 성공! 실종된 일개미 ${m.w}마리와 병정개미 ${m.b}마리가 돌아왔습니다.`)}else{let loss=chance(.4)?1:0;s.soldiers-=loss;log('구조대가 흔적을 찾지 못했습니다.'+(loss?' 구조 중 병정개미 한 마리를 잃었습니다.':''))}update()}
-function nextDay(){if(!s.alive)return;s.day++;s.actions=2;const eat=dailyEat();s.food-=eat;if(s.food<0){const deficit=-s.food;s.food=0;s.queen-=clamp(deficit*4,5,22);if(s.workers+s.soldiers>0&&chance(.35)){if(s.workers>0)s.workers--;else s.soldiers--;log('굶주림으로 개미 한 마리가 죽었습니다.')}log(`🥀 식량이 부족합니다! 여왕 체력 감소. 필요 식량 ${eat}개.`)}else log(`새벽이 밝았습니다. 식량 ${eat}개를 소비했습니다.`);if(s.eggs){const n=s.eggs;s.eggs=0;const w=rnd(0,n);s.workers+=w;s.soldiers+=n-w;log(`🥚 알 ${n}개가 부화했습니다. 일개미 +${w}, 병정개미 +${n-w}.`)}if(active('seed'))s.food+=4;if(active('heart'))s.queen-=2;if(active('moss'))s.queen+=3;if(active('stone'))s.wood=Math.max(0,s.wood-1);s.threat+=rnd(1,5)+(active('seed')?4:0)+(active('jaw')?6:0);for(const r of s.rivals){r.strength=clamp(r.strength+rnd(-2,3),3,90);r.hostile=clamp(r.hostile+rnd(-3,3),0,100)}for(const m of s.missing)m.days++;if(s.away){s.away.days--;if(s.away.days<=0)expeditionReturn()}if(s.missing.length&&chance(active('heart')?.19:.045)){const m=s.missing.shift();const w=Math.max(0,m.w-rnd(0,Math.min(2,m.w)));s.workers+=w;s.soldiers+=m.b;log(`🌘 기적적인 귀환! 실종됐던 일개미 ${w}마리, 병정개미 ${m.b}마리가 돌아왔습니다.`)}const attacker=s.rivals.filter(r=>r.hostile>40).sort((a,b)=>b.hostile-a.hostile)[0];if(attacker&&chance(clamp((s.threat/100)*.32+(attacker.hostile/100)*.12,.01,.52))){raid(attacker)}else if(active('bell')&&s.threat>60)log('🔔 묻힌 종이 울립니다. 적 군락의 움직임이 가까워졌습니다.');if(s.day%10===0)log(`🏁 ${s.day}일 생존! 최대 군락 규모 ${s.peak}마리, 방어 성공 ${s.raids}회.`);update()}
+function nextDay(){
+if(!s.alive)return;
+s.day++;
+s.actions=2;
+if(s.healAway){
+  s.healAway.days--;
+  if(s.healAway.days<=0)healingExpeditionReturn();
+}
+const eat=dailyEat();s.food-=eat;if(s.food<0){const deficit=-s.food;s.food=0;s.queen-=clamp(deficit*4,5,22);if(s.workers+s.soldiers>0&&chance(.35)){if(s.workers>0)s.workers--;else s.soldiers--;log('굶주림으로 개미 한 마리가 죽었습니다.')}log(`🥀 식량이 부족합니다! 여왕 체력 감소. 필요 식량 ${eat}개.`)}else log(`새벽이 밝았습니다. 식량 ${eat}개를 소비했습니다.`);if(s.eggs){const n=s.eggs;s.eggs=0;const w=rnd(0,n);s.workers+=w;s.soldiers+=n-w;log(`🥚 알 ${n}개가 부화했습니다. 일개미 +${w}, 병정개미 +${n-w}.`)}if(active('seed'))s.food+=4;if(active('heart'))s.queen-=2;if(active('moss'))s.queen+=3;if(active('stone'))s.wood=Math.max(0,s.wood-1);s.threat+=rnd(1,5)+(active('seed')?4:0)+(active('jaw')?6:0);for(const r of s.rivals){r.strength=clamp(r.strength+rnd(-2,3),3,90);r.hostile=clamp(r.hostile+rnd(-3,3),0,100)}for(const m of s.missing)m.days++;if(s.away){s.away.days--;if(s.away.days<=0)expeditionReturn()}if(s.missing.length&&chance(active('heart')?.19:.045)){const m=s.missing.shift();const w=Math.max(0,m.w-rnd(0,Math.min(2,m.w)));s.workers+=w;s.soldiers+=m.b;log(`🌘 기적적인 귀환! 실종됐던 일개미 ${w}마리, 병정개미 ${m.b}마리가 돌아왔습니다.`)}const attacker=s.rivals.filter(r=>r.hostile>40).sort((a,b)=>b.hostile-a.hostile)[0];if(attacker&&chance(clamp((s.threat/100)*.32+(attacker.hostile/100)*.12,.01,.52))){raid(attacker)}else if(active('bell')&&s.threat>60)log('🔔 묻힌 종이 울립니다. 적 군락의 움직임이 가까워졌습니다.');if(s.day%10===0)log(`🏁 ${s.day}일 생존! 최대 군락 규모 ${s.peak}마리, 방어 성공 ${s.raids}회.`);update()}
 function raid(enemy){const defense=s.soldiers*(active('jaw')?1.5:1)*(active('moss')?.8:1)+s.guard*(active('stone')?3.4:2.5);const force=rnd(Math.max(2,enemy.strength-5),enemy.strength+5);if(defense>=force||chance(clamp(defense/(force*2.2),0,.7))){let dead=Math.min(s.soldiers,rnd(0,Math.max(1,Math.ceil(force/7))));if(active('shell'))dead=Math.floor(dead*.5);s.soldiers-=dead;s.raids++;s.threat=Math.max(5,s.threat-28);if(active('jaw'))s.food+=rnd(3,8);log(`⚔️ ${enemy.name}의 침공을 막아냈습니다! 병정개미 ${dead}마리 전사.`)}else{let dead=Math.min(s.soldiers,rnd(1,Math.max(2,Math.ceil(force/3))));if(active('shell'))dead=Math.floor(dead*.65);s.soldiers-=dead;const stolen=Math.min(s.food,rnd(3,12));s.food-=stolen;s.queen-=rnd(5,16);s.threat=Math.max(10,s.threat-15);log(`🔥 ${enemy.name}이(가) 둥지를 습격했습니다! 병정 ${dead}마리 전사, 식량 ${stolen}개 약탈. 여왕이 부상당했습니다.`)}}
 function renderRelics(){$('relics').innerHTML=`<p class="small muted">발견한 유물은 최대 3개까지 장착할 수 있습니다. 유물은 강력하지만 반드시 대가가 따릅니다.</p><div class="notice">장착 중 ${s.equipped.length}/3 · ${s.equipped.map(id=>relic(id).name).join(' / ')||'없음'}</div>`+(s.owned.length?s.owned.map(id=>{const r=relic(id);return `<div class="card"><h3>${r.name} ${active(id)?'<span class="tag">장착</span>':''}</h3><div class="good small">효과: ${r.effect}</div><div class="warn small">대가: ${r.curse}</div><div style="margin-top:8px">${btn(active(id)?'장착 해제':'장착하기',`equip('${id}')`,!s.alive||(!active(id)&&s.equipped.length>=3))}</div></div>`}).join(''):'<p class="muted">아직 발견한 유물이 없습니다. 먼 곳과 미지의 심층을 탐사하면 발견할 수 있습니다.</p>')}
 function equip(id){if(!s.alive||!s.owned.includes(id))return;const was=active(id);if(was)s.equipped=s.equipped.filter(x=>x!==id);else if(s.equipped.length<3)s.equipped.push(id);log((was?'해제: ':'장착: ')+relic(id).name);update()}
