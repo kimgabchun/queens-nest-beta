@@ -41,6 +41,8 @@ if(text===s.message && /탐사대.*귀환하지 않았습니다/.test(text)){
 }
 if(text===s.message && s.exploreArt)return exploreResultArt();
 const kind=sceneKind(text);
+/* QUEENS_NEST_DAWN_ART_V1 */
+if(/새벽이 밝았습니다|식량.*소비했습니다/.test(text))return `<img src="assets/dawn.webp" alt="군락의 새벽" style="display:block;width:100%;height:auto;border-radius:8px"><div class="scene-caption">▣ 군락의 새벽 · 픽셀아트</div>`;
 /* QUEENS_NEST_HEAL_DEPARTURE_V1 */
 if(/여왕을 위한 약초를 찾아 떠났습니다/.test(text))return `<img src="assets/healing_departure.webp" alt="치료 원정대 출발" style="display:block;width:100%;height:auto;border-radius:8px"><div class="scene-caption">▣ 치료 원정대 출발 · 픽셀아트</div>`;
 /* QUEENS_NEST_HEALING_ART_V1 */
