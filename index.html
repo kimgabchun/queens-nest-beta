@@ -143,18 +143,48 @@ const fortReduction=()=>Math.min(0.9,(fortLevel()-1)*0.1);
 const fortCost=()=>fortLevel()>=10?0:FORT_COST[fortLevel()+1];
 const fortPower=()=>fortLevel()*2.5;
 const fortProtect=n=>Math.max(0,Math.ceil(n*(1-fortReduction())));
+
+/* QUEENS_NEST_FORT_COMPACT_V1 */
 function fortInfo(){
  const lv=fortLevel();
+ const reduction=Math.round(fortReduction()*100);
  const next=lv<10
- ? `다음 강화: ${lv+1}단계 ${FORT_NAMES[lv+1]} · 자재 ${fortCost()}개`
- : '최고 단계 달성 · 추가 강화 불가';
- return `<div class="notice" style="margin-top:12px">
- <b>🛡️ 방어 시설 ${lv}단계 · ${FORT_NAMES[lv]}</b>
- <p class="small">⚔️ 방어 전투력 +${fortPower()}</p>
- <p class="small">🪖 병정 손실 감소 ${Math.round(fortReduction()*100)}%</p>
- <p class="small">🌾 식량 약탈 감소 ${Math.round(fortReduction()*100)}%</p>
- <p class="small">👑 여왕 피해 감소 ${Math.round(fortReduction()*100)}%</p>
- <p class="small">${next}</p>
+  ? `⬆️ 다음 강화: ${lv+1}단계 ${FORT_NAMES[lv+1]} · 🪵 자재 ${fortCost()}개`
+  : '🏆 최고 단계 달성 · 추가 강화 불가';
+
+ return `<div class="notice" style="
+  margin-top:10px;
+  padding:12px;
+  border-radius:10px;
+ ">
+  <div style="
+   font-weight:800;
+   font-size:16px;
+   margin-bottom:10px;
+   color:#e8c985;
+  ">🛡️ ${lv}단계 · ${FORT_NAMES[lv]}</div>
+
+  <div style="
+   display:grid;
+   grid-template-columns:1fr auto;
+   gap:7px 12px;
+   font-size:13px;
+   line-height:1.5;
+  ">
+   <span>⚔️ 방어 전투력</span><b>+${fortPower()}</b>
+   <span>🛡️ 병정 손실 감소</span><b>${reduction}%</b>
+   <span>🌾 식량 약탈 감소</span><b>${reduction}%</b>
+   <span>👑 여왕 피해 감소</span><b>${reduction}%</b>
+  </div>
+
+  <div style="
+   margin-top:11px;
+   padding-top:9px;
+   border-top:1px solid #40503b;
+   font-size:12px;
+   line-height:1.5;
+   color:#e8c985;
+  ">${next}</div>
  </div>`;
 }
 
