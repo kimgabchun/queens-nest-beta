@@ -291,6 +291,7 @@ function rescue(i){if(!s.alive||s.actions<1||s.soldiers<2||!s.missing[i])return;
 /* QUEENS_NEST_EVENT_ORDER_BETA_011 */
 function nextDay(){
 if(!s.alive)return;
+window.scrollTo({top:0,behavior:"instant"});
 const dayEvents=[];
 s.day++;
 s.actions=2;
