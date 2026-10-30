@@ -19,6 +19,7 @@ function tab(id){currentTab=id;document.querySelectorAll('.tabs').forEach(x=>x.c
 function sceneKind(t){t=String(t||'');if(/유물|결정|발견!/.test(t))return 'relic';if(/침공|습격|전사|부상|전투/.test(t))return 'battle';if(/실종|돌아오지|구조|흔적을 찾지/.test(t))return 'missing';if(/탐사대|귀환|통로|심층|정찰/.test(t))return 'explore';if(/산란|알 |부화/.test(t))return 'egg';if(/굶주림|식량이 부족|멸망/.test(t))return 'hunger';if(/채집|식량|씨앗/.test(t))return 'food';if(/둥지|보강|병정/.test(t))return 'nest';return 'queen'}
 function sceneThumb(text){
 const kind=sceneKind(text);
+if(kind==="egg")return `<img src="assets/egg.webp" alt="여왕개미 산란실" style="display:block;width:100%;height:auto;border-radius:8px"><div class="scene-caption">▣ 여왕개미의 산란실 · 픽셀아트</div>`;
 if(kind==="battle")return `<img src="assets/battle.webp" alt="개미 군단 전투" style="display:block;width:100%;height:auto;border-radius:8px"><div class="scene-caption">▣ 붉은턱개미 군단과의 대치 · 픽셀아트</div>`;
 if(kind==="explore")return `<img src="assets/explore.webp" alt="미지의 탐사" style="display:block;width:100%;height:auto;border-radius:8px"><div class="scene-caption">▣ 미지의 탐사 · 픽셀아트</div>`;
 if(kind==="queen")return `<img src="assets/queen.webp" alt="여왕의 둥지" style="display:block;width:100%;height:auto;border-radius:8px"><div class="scene-caption">▣ 여왕의 둥지 · 픽셀아트</div>`;
