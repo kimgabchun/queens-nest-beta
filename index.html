@@ -230,8 +230,59 @@ if(s.healAway){
   s.healAway.days--;
   if(s.healAway.days<=0)healingExpeditionReturn();
 }
-const eat=dailyEat();s.food-=eat;if(s.food<0){const deficit=-s.food;s.food=0;s.queen-=clamp(deficit*4,5,22);if(s.workers+s.soldiers>0&&chance(.35)){if(s.workers>0)s.workers--;else s.soldiers--;log('굶주림으로 개미 한 마리가 죽었습니다.')}log(`🥀 식량이 부족합니다! 여왕 체력 감소. 필요 식량 ${eat}개.`)}else log(`새벽이 밝았습니다. 식량 ${eat}개를 소비했습니다.`);if(s.eggs){const n=s.eggs;s.eggs=0;const w=rnd(0,n);s.workers+=w;s.soldiers+=n-w;log(`🥚 알 ${n}개가 부화했습니다. 일개미 +${w}, 병정개미 +${n-w}.`)}if(active('seed'))s.food+=4;if(active('heart'))s.queen-=2;if(active('moss'))s.queen+=3;if(active('stone'))s.wood=Math.max(0,s.wood-1);s.threat+=rnd(1,5)+(active('seed')?4:0)+(active('jaw')?6:0);for(const r of s.rivals){r.strength=clamp(r.strength+rnd(-2,3),3,90);r.hostile=clamp(r.hostile+rnd(-3,3),0,100)}for(const m of s.missing)m.days++;if(s.away){s.away.days--;if(s.away.days<=0)expeditionReturn()}if(s.missing.length&&chance(active('heart')?.19:.045)){const m=s.missing.shift();const w=Math.max(0,m.w-rnd(0,Math.min(2,m.w)));s.workers+=w;s.soldiers+=m.b;log(`🌘 기적적인 귀환! 실종됐던 일개미 ${w}마리, 병정개미 ${m.b}마리가 돌아왔습니다.`)}const attacker=s.rivals.filter(r=>r.hostile>40).sort((a,b)=>b.hostile-a.hostile)[0];if(attacker&&chance(clamp((s.threat/100)*.32+(attacker.hostile/100)*.12,.01,.52))){raid(attacker)}else if(active('bell')&&s.threat>60)log('🔔 묻힌 종이 울립니다. 적 군락의 움직임이 가까워졌습니다.');if(s.day%10===0)log(`🏁 ${s.day}일 생존! 최대 군락 규모 ${s.peak}마리, 방어 성공 ${s.raids}회.`);update()}
+const eat=dailyEat();s.food-=eat;if(s.food<0){const deficit=-s.food;s.food=0;s.queen-=clamp(deficit*4,5,22);if(s.workers+s.soldiers>0&&chance(.35)){if(s.workers>0)s.workers--;else s.soldiers--;log('굶주림으로 개미 한 마리가 죽었습니다.')}log(`🥀 식량이 부족합니다! 여왕 체력 감소. 필요 식량 ${eat}개.`)}else log(`새벽이 밝았습니다. 식량 ${eat}개를 소비했습니다.`);if(s.eggs){const n=s.eggs;s.eggs=0;const w=rnd(0,n);s.workers+=w;s.soldiers+=n-w;log(`🥚 알 ${n}개가 부화했습니다. 일개미 +${w}, 병정개미 +${n-w}.`)}if(active('seed'))s.food+=4;if(active('heart'))s.queen-=2;if(active('moss'))s.queen+=3;if(active('stone'))s.wood=Math.max(0,s.wood-1);s.threat+=rnd(1,5)+(active('seed')?4:0)+(active('jaw')?6:0);for(const r of s.rivals){r.strength=clamp(r.strength+rnd(-2,3),3,90);r.hostile=clamp(r.hostile+rnd(-3,3),0,100)}for(const m of s.missing)m.days++;if(s.away){s.away.days--;if(s.away.days<=0)expeditionReturn()}if(s.missing.length&&chance(active('heart')?.19:.045)){const m=s.missing.shift();const w=Math.max(0,m.w-rnd(0,Math.min(2,m.w)));s.workers+=w;s.soldiers+=m.b;log(`🌘 기적적인 귀환! 실종됐던 일개미 ${w}마리, 병정개미 ${m.b}마리가 돌아왔습니다.`)}const attacker=s.rivals.filter(r=>r.hostile>40).sort((a,b)=>b.hostile-a.hostile)[0];if(attacker&&chance(clamp((s.threat/100)*.32+(attacker.hostile/100)*.12,.01,.52))){raid(attacker)}else if(active('bell')&&s.threat>60)log('🔔 묻힌 종이 울립니다. 적 군락의 움직임이 가까워졌습니다.');if(s.day%10===0)log(`🏁 ${s.day}일 생존! 최대 군락 규모 ${s.peak}마리, 방어 성공 ${s.raids}회.`);update();
+if(s.raidReport){
+  const report=s.raidReport;
+  delete s.raidReport;
+  save();
+  setTimeout(()=>alert(report),100);
+}}
 function raid(enemy){const defense=s.soldiers*(active('jaw')?1.5:1)*(active('moss')?.8:1)+s.guard*(active('stone')?3.4:2.5);const force=rnd(Math.max(2,enemy.strength-5),enemy.strength+5);if(defense>=force||chance(clamp(defense/(force*2.2),0,.7))){let dead=Math.min(s.soldiers,rnd(0,Math.max(1,Math.ceil(force/7))));if(active('shell'))dead=Math.floor(dead*.5);s.soldiers-=dead;s.raids++;s.threat=Math.max(5,s.threat-28);if(active('jaw'))s.food+=rnd(3,8);log(`⚔️ ${enemy.name}의 침공을 막아냈습니다! 병정개미 ${dead}마리 전사.`)}else{let dead=Math.min(s.soldiers,rnd(1,Math.max(2,Math.ceil(force/3))));if(active('shell'))dead=Math.floor(dead*.65);s.soldiers-=dead;const stolen=Math.min(s.food,rnd(3,12));s.food-=stolen;s.queen-=rnd(5,16);s.threat=Math.max(10,s.threat-15);log(`🔥 ${enemy.name}이(가) 둥지를 습격했습니다! 병정 ${dead}마리 전사, 식량 ${stolen}개 약탈. 여왕이 부상당했습니다.`)}}
+
+/* QUEENS_NEST_RED_JAW_RAID_POPUP_V1 */
+const originalRaid = raid;
+
+raid = function(enemy){
+  const before = {
+    soldiers:s.soldiers,
+    workers:s.workers,
+    food:s.food,
+    queen:s.queen,
+    wins:s.raids
+  };
+
+  originalRaid(enemy);
+
+  if(!enemy.name.includes('붉은턱'))return;
+
+  const victory=s.raids>before.wins;
+  const soldiersLost=Math.max(0,before.soldiers-s.soldiers);
+  const workersLost=Math.max(0,before.workers-s.workers);
+  const foodLost=Math.max(0,before.food-s.food);
+  const queenLost=Math.max(0,before.queen-s.queen);
+
+  let report='🚨 위험!\n\n붉은턱개미들이 습격했습니다!\n\n';
+
+  if(victory){
+    report+='🛡️ 방어 성공!\n\n';
+  }else{
+    report+='🔥 방어 실패!\n\n';
+  }
+
+  if(!soldiersLost&&!workersLost&&!foodLost&&!queenLost){
+    report+='군락이 손실 없이 습격을 막아냈습니다.';
+  }else{
+    report+='📋 피해 보고\n';
+    if(soldiersLost)report+='⚔️ 병정개미 -'+soldiersLost+'마리\n';
+    if(workersLost)report+='🐜 일개미 -'+workersLost+'마리\n';
+    if(foodLost)report+='🌾 식량 -'+foodLost+'개\n';
+    if(queenLost)report+='👑 여왕 체력 -'+queenLost+'\n';
+  }
+
+  report+='\n현재 병정개미: '+s.soldiers+'마리';
+  s.raidReport=report;
+};
+
 function renderRelics(){$('relics').innerHTML=`<p class="small muted">발견한 유물은 최대 3개까지 장착할 수 있습니다. 유물은 강력하지만 반드시 대가가 따릅니다.</p><div class="notice">장착 중 ${s.equipped.length}/3 · ${s.equipped.map(id=>relic(id).name).join(' / ')||'없음'}</div>`+(s.owned.length?s.owned.map(id=>{const r=relic(id);return `<div class="card"><h3>${r.name} ${active(id)?'<span class="tag">장착</span>':''}</h3><div class="good small">효과: ${r.effect}</div><div class="warn small">대가: ${r.curse}</div><div style="margin-top:8px">${btn(active(id)?'장착 해제':'장착하기',`equip('${id}')`,!s.alive||(!active(id)&&s.equipped.length>=3))}</div></div>`}).join(''):'<p class="muted">아직 발견한 유물이 없습니다. 먼 곳과 미지의 심층을 탐사하면 발견할 수 있습니다.</p>')}
 function equip(id){if(!s.alive||!s.owned.includes(id))return;const was=active(id);if(was)s.equipped=s.equipped.filter(x=>x!==id);else if(s.equipped.length<3)s.equipped.push(id);log((was?'해제: ':'장착: ')+relic(id).name);update()}
 function resetGame(){if(!confirm('현재 군락의 저장 기록을 지우고 처음부터 다시 시작할까요?'))return;s=fresh();update();tab('home')}
