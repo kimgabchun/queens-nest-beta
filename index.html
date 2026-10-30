@@ -41,6 +41,17 @@ if(text===s.message && /탐사대.*귀환하지 않았습니다/.test(text)){
 }
 if(text===s.message && s.exploreArt)return exploreResultArt();
 const kind=sceneKind(text);
+/* QUEENS_NEST_HEALING_ART_V1 */
+if(/치료 원정 성공|치료 원정대.*성공|약초 1개를 찾아/.test(text)){
+return '<img src="assets/healing_success.webp" alt="치료 원정 성공" style="display:block;width:100%;height:auto;border-radius:8px"><div class="scene-caption">▣ 치료 원정 성공 · 픽셀아트</div>';
+}
+if(/치료 원정 실패|치료 원정대.*전멸|약초를 찾던 병정개미/.test(text)){
+return '<img src="assets/healing_fail.webp" alt="치료 원정 실패" style="display:block;width:100%;height:auto;border-radius:8px"><div class="scene-caption">▣ 치료 원정 실패 · 픽셀아트</div>';
+}
+if(/여왕 치료 완료|여왕.*체력.*회복/.test(text)){
+return '<img src="assets/queen_healing.webp" alt="여왕 치료" style="display:block;width:100%;height:auto;border-radius:8px"><div class="scene-caption">▣ 여왕 치료 · 픽셀아트</div>';
+}
+
 /* QUEENS_NEST_SOLDIER_TRAINING_V1 */
 if(/병정.*육성|병정.*훈련|병정개미.*전환|병정개미로 전환/.test(text)){
   return '<img src="assets/soldier_training.webp" alt="병정개미 육성" style="display:block;width:100%;height:auto;border-radius:8px"><div class="scene-caption">▣ 병정개미 육성 · 픽셀아트</div>';
