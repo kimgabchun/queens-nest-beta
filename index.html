@@ -486,4 +486,207 @@ renderRelics=function(){
 function equip(id){if(!s.alive||!s.owned.includes(id))return;const was=active(id);if(was)s.equipped=s.equipped.filter(x=>x!==id);else if(s.equipped.length<3)s.equipped.push(id);log((was?'해제: ':'장착: ')+relic(id).name);update()}
 function resetGame(){if(!confirm('현재 군락의 저장 기록을 지우고 처음부터 다시 시작할까요?'))return;s=fresh();update();tab('home')}
 const SURVIVAL_GUIDE_KEY='queens_nest_survival_guide_v1';const SURVIVAL_GUIDE_STEPS=[["👑 🐜","군락의 시작","여왕개미가 되어 군락을 성장시키고 최대한 오래 생존하세요. 여왕 체력이 0이 되거나 군락의 개미와 알, 파견대가 모두 사라지면 멸망합니다.","하루에 명령을 2번 내릴 수 있습니다."],["🌾 🥚","식량과 병력","일개미로 식량을 채집하고, 식량 7개로 알을 낳을 수 있습니다. 병정 육성에는 식량 9개와 일개미 1마리가 필요합니다.","유물에 따라 식량 소비량과 산란 효과가 달라질 수 있습니다."],["🛡️ 🏰","둥지 방어 시설","방어 시설은 1~10단계까지 강화할 수 있습니다. 2단계부터 필요한 자재는 5·8·12·17·23·30·38·47·57개입니다. 단계가 높아질수록 방어 전투력이 증가합니다.","방어 시설 1단계는 피해 감소 0%, 10단계는 90%입니다. 병정 손실·식량 약탈·여왕 피해에 적용됩니다."],["⚔️ 🔥","적 군락의 침공","적 군락은 시간이 지나면서 성장하고 둥지를 공격할 수 있습니다. 병정개미와 방어 시설이 침공을 막습니다. 방어에 실패하면 병정개미·식량·여왕 체력을 잃을 수 있습니다.","붉은턱개미의 습격 결과는 별도 피해 보고로 확인할 수 있습니다."],["🧭 🌲","탐사대 파견","탐사 탭에서 일개미와 병정개미를 선택하고 가까운 통로, 먼 숲, 미지의 심층으로 파견하세요. 파견에는 명령 1회가 필요합니다.","먼 숲과 미지의 심층에서는 고대 유물을 발견할 수 있습니다."],["❓ 🐜","실종과 구조","탐사대가 실종되면 병정개미 2마리 이상과 명령 1회를 사용해 구조를 시도할 수 있습니다. 구조는 확률에 따라 성공하거나 실패합니다.","구조에 실패하면 병정개미를 잃을 수도 있습니다."],["🌿 👑","여왕 치료 원정","병정개미 2마리와 명령 1회를 사용해 약초 원정대를 보낼 수 있습니다. 원정은 1~2일 걸리며 성공 확률은 60%입니다.","성공하면 병정개미가 귀환하고 약초 1개를 얻습니다. 실패하면 원정대가 전멸합니다. 약초 1개로 여왕 체력을 최대 30 회복합니다."],["🏺 📖","유물 도감","고대 유물은 총 12종입니다. 유물실에서 내 유물함과 유물 도감을 확인하세요. 유물은 최대 3개까지 장착할 수 있으며 각각 효과와 부작용이 있습니다.","미발견 유물은 정보가 숨겨집니다. 유물 도감에서 발견 수와 수집률을 확인할 수 있습니다."],["🌙 ⏳","하루 마무리","하루 마무리를 누르면 식량 소비, 알 부화, 탐사대 귀환, 적 군락의 성장과 침공 등이 처리됩니다.","명령을 모두 사용하지 않아도 다음 날로 진행할 수 있습니다."],["🏆 🐜","베타 생존 전략","초반에는 식량과 일개미를 확보하고, 병정개미를 육성하세요. 자재를 모아 방어 시설을 강화하고, 여유가 생기면 먼 곳을 탐사해 유물을 수집하세요.","방어 시설이 높아도 강력한 적에게 패배할 수 있습니다. 식량·병력·여왕 체력을 함께 관리하세요."]];let survivalGuideStep=0;function openSurvivalGuide(){survivalGuideStep=0;renderSurvivalGuide();document.getElementById('survivalGuide').hidden=false}function closeSurvivalGuide(){document.getElementById('survivalGuide').hidden=true;try{localStorage.setItem(SURVIVAL_GUIDE_KEY,'yes')}catch(e){}}function moveSurvivalGuide(n){if(survivalGuideStep+n>=SURVIVAL_GUIDE_STEPS.length){closeSurvivalGuide();return}survivalGuideStep=Math.max(0,survivalGuideStep+n);renderSurvivalGuide()}function renderSurvivalGuide(){const g=SURVIVAL_GUIDE_STEPS[survivalGuideStep];document.getElementById('guideMeter').innerHTML=SURVIVAL_GUIDE_STEPS.map((_,i)=>'<i class="'+(i<=survivalGuideStep?'on':'')+'"></i>').join('');document.getElementById('guideArt').textContent=g[0];document.getElementById('guideTitle').textContent=(survivalGuideStep+1)+'/'+SURVIVAL_GUIDE_STEPS.length+' · '+g[1];document.getElementById('guideBody').textContent=g[2];document.getElementById('guideTip').textContent='💡 '+g[3];document.getElementById('guideBack').disabled=survivalGuideStep===0;document.getElementById('guideForward').textContent=survivalGuideStep===SURVIVAL_GUIDE_STEPS.length-1?'게임 시작 →':'다음 →'}
+
+/* QUEENS_NEST_ACTION_POPUP_BETA_012 */
+
+const QN_ACTION_FIELDS=[
+  ['food','🌾 식량'],
+  ['wood','🪵 자재'],
+  ['workers','🐜 일개미'],
+  ['soldiers','⚔️ 병정개미'],
+  ['eggs','🥚 알'],
+  ['herbs','🌿 약초'],
+  ['queen','👑 여왕 체력'],
+  ['guard','🛡️ 방어 단계'],
+  ['actions','📜 남은 명령']
+];
+
+function qnSnapshot(){
+  const data={};
+  for(const [key] of QN_ACTION_FIELDS){
+    data[key]=Number(s[key]||0);
+  }
+  data.equipped=[...(s.equipped||[])];
+  data.away=JSON.stringify(s.away||null);
+  data.healAway=JSON.stringify(s.healAway||null);
+  data.missing=JSON.stringify(s.missing||[]);
+  data.message=s.message;
+  return data;
+}
+
+function qnChanges(before,after){
+  const lines=[];
+
+  for(const [key,label] of QN_ACTION_FIELDS){
+    const diff=after[key]-before[key];
+    if(diff){
+      lines.push(label+' '+(diff>0?'+':'')+diff);
+    }
+  }
+
+  for(const id of after.equipped){
+    if(!before.equipped.includes(id)){
+      lines.push('✨ 유물 장착: '+relic(id).name);
+    }
+  }
+
+  for(const id of before.equipped){
+    if(!after.equipped.includes(id)){
+      lines.push('🎒 유물 해제: '+relic(id).name);
+    }
+  }
+
+  if(before.away!==after.away){
+    lines.push('🧭 탐사대 파견 상태 변경');
+  }
+
+  if(before.healAway!==after.healAway){
+    lines.push('🌿 치료 원정대 파견 상태 변경');
+  }
+
+  if(before.missing!==after.missing){
+    lines.push('🕯️ 실종·구조 상태 변경');
+  }
+
+  return lines;
+}
+
+function qnClosePopup(){
+  document.getElementById('qnActionPopup')?.remove();
+}
+
+function qnShowPopup(title,lines,description){
+  qnClosePopup();
+
+  const overlay=document.createElement('div');
+  overlay.id='qnActionPopup';
+
+  Object.assign(overlay.style,{
+    position:'fixed',
+    inset:'0',
+    zIndex:'99999',
+    background:'rgba(0,0,0,.85)',
+    display:'flex',
+    justifyContent:'center',
+    alignItems:'center',
+    padding:'18px',
+    boxSizing:'border-box'
+  });
+
+  const box=document.createElement('div');
+
+  Object.assign(box.style,{
+    width:'100%',
+    maxWidth:'430px',
+    maxHeight:'85vh',
+    overflowY:'auto',
+    background:'#1d291b',
+    color:'#f3ecd8',
+    border:'2px solid #c7a96b',
+    borderRadius:'16px',
+    padding:'22px',
+    boxSizing:'border-box',
+    boxShadow:'0 12px 40px #000'
+  });
+
+  const heading=document.createElement('h2');
+  heading.textContent=title;
+  heading.style.color='#ebca86';
+  box.appendChild(heading);
+
+  if(description){
+    const desc=document.createElement('p');
+    desc.textContent=description;
+    desc.style.whiteSpace='pre-wrap';
+    desc.style.lineHeight='1.6';
+    box.appendChild(desc);
+  }
+
+  const results=document.createElement('div');
+
+  Object.assign(results.style,{
+    background:'#10190f',
+    padding:'14px',
+    borderRadius:'8px',
+    margin:'15px 0',
+    lineHeight:'2'
+  });
+
+  for(const line of lines){
+    const row=document.createElement('div');
+    row.textContent=line;
+
+    if(/ -\d+/.test(line)){
+      row.style.color='#ffaaa0';
+    }else if(/\+\d+/.test(line)){
+      row.style.color='#b8e4aa';
+    }
+
+    results.appendChild(row);
+  }
+
+  box.appendChild(results);
+
+  const confirm=document.createElement('button');
+  confirm.textContent='✅ 확인';
+  confirm.style.width='100%';
+  confirm.onclick=qnClosePopup;
+  box.appendChild(confirm);
+
+  if(s.alive && s.actions===0){
+    const next=document.createElement('button');
+    next.textContent='🌙 하루 마무리 · 다음 날';
+    next.className='primary';
+
+    Object.assign(next.style,{
+      width:'100%',
+      marginTop:'10px'
+    });
+
+    next.onclick=()=>{
+      qnClosePopup();
+      nextDay();
+    };
+
+    box.appendChild(next);
+  }
+
+  overlay.appendChild(box);
+  document.body.appendChild(overlay);
+}
+
+function qnWrapAction(name,title){
+  const originalAction=window[name];
+
+  if(typeof originalAction!=='function'){
+    throw new Error('행동 함수 확인 실패: '+name);
+  }
+
+  window[name]=function(...args){
+    const before=qnSnapshot();
+
+    const result=originalAction.apply(this,args);
+
+    const after=qnSnapshot();
+    const changes=qnChanges(before,after);
+
+    if(changes.length){
+      const description=before.message!==after.message
+        ? String(s.message||'')
+        : '';
+
+      qnShowPopup(title,changes,description);
+    }
+
+    return result;
+  };
+}
+
+qnWrapAction('order','📜 여왕의 명령 결과');
+qnWrapAction('sendExpedition','🧭 탐사대 파견 결과');
+qnWrapAction('sendHealingExpedition','🌿 치료 원정 결과');
+qnWrapAction('healQueen','💚 여왕 치료 결과');
+qnWrapAction('rescue','🕯️ 구조 작전 결과');
+qnWrapAction('equip','🏺 유물 변경 결과');
+
 update();try{if(!localStorage.getItem(SURVIVAL_GUIDE_KEY))openSurvivalGuide()}catch(e){openSurvivalGuide()}</script></body></html>
