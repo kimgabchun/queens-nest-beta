@@ -35,6 +35,14 @@ function exploreResultArt(){
 }
 
 function sceneThumb(text){
+/* QUEENS_NEST_RESCUE_ART_BETA_014 */
+if(/구조 성공!/.test(String(text||''))){
+  return '<img src="assets/rescue_success.webp" alt="구조 성공" style="display:block;width:100%;height:auto;border-radius:8px"><div class="scene-caption">▣ 구조 성공 · 픽셀아트</div>';
+}
+if(/구조대가 흔적을 찾지 못했습니다/.test(String(text||''))){
+  return '<img src="assets/rescue_fail.webp" alt="구조 실패" style="display:block;width:100%;height:auto;border-radius:8px"><div class="scene-caption">▣ 구조 실패 · 픽셀아트</div>';
+}
+
 /* QUEENS_NEST_MISSING_ART_V1 */
 if(text===s.message && /탐사대.*귀환하지 않았습니다/.test(text)){
   return '<img src="assets/explore_missing.webp" alt="실종된 탐사대의 흔적" style="display:block;width:100%;height:auto;border-radius:8px"><div class="scene-caption">▣ 돌아오지 않은 탐사대 · 픽셀아트</div>';
