@@ -41,6 +41,7 @@ if(text===s.message && /탐사대.*귀환하지 않았습니다/.test(text)){
 }
 if(text===s.message && s.exploreArt)return exploreResultArt();
 const kind=sceneKind(text);
+if(kind==="hunger")return `<img src="assets/hunger.webp" alt="굶주린 군락" style="display:block;width:100%;height:auto;border-radius:8px"><div class="scene-caption">▣ 굶주린 군락 · 픽셀아트</div>`;
 if(kind==="relic")return `<img src="assets/relic.webp" alt="고대 유물 발견" style="display:block;width:100%;height:auto;border-radius:8px"><div class="scene-caption">▣ 고대 유물 발견 · 픽셀아트</div>`;
 if(kind==="egg")return `<img src="assets/egg.webp" alt="여왕개미 산란실" style="display:block;width:100%;height:auto;border-radius:8px"><div class="scene-caption">▣ 여왕개미의 산란실 · 픽셀아트</div>`;
 if(kind==="battle")return `<img src="assets/battle.webp" alt="개미 군단 전투" style="display:block;width:100%;height:auto;border-radius:8px"><div class="scene-caption">▣ 붉은턱개미 군단과의 대치 · 픽셀아트</div>`;
