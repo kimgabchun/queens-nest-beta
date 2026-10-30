@@ -686,7 +686,25 @@ qnWrapAction('order','📜 여왕의 명령 결과');
 qnWrapAction('sendExpedition','🧭 탐사대 파견 결과');
 qnWrapAction('sendHealingExpedition','🌿 치료 원정 결과');
 qnWrapAction('healQueen','💚 여왕 치료 결과');
-qnWrapAction('rescue','🕯️ 구조 작전 결과');
+/* QUEENS_NEST_RESCUE_POPUP_BETA_013 */
+const qnOriginalRescue=rescue;
+rescue=function(i){
+  const before=qnSnapshot();
+  const result=qnOriginalRescue(i);
+  const after=qnSnapshot();
+  const changes=qnChanges(before,after);
+  if(changes.length){
+    qnShowPopup(
+      /구조 성공/.test(s.message)
+        ? '🎉 구조 성공!'
+        : '🕯️ 구조 작전 결과',
+      changes,
+      s.message
+    );
+  }
+  return result;
+};
+
 qnWrapAction('equip','🏺 유물 변경 결과');
 
 update();try{if(!localStorage.getItem(SURVIVAL_GUIDE_KEY))openSurvivalGuide()}catch(e){openSurvivalGuide()}</script></body></html>
