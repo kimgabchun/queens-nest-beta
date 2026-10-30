@@ -1,4 +1,4 @@
-<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"><title>QUEEN'S NEST BETA 0.1.0</title><style>
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"><title>QUEEN'S NEST BETA 0.2.0</title><style>
 :root{color-scheme:dark;--bg:#10140f;--card:#1c241b;--line:#40503b;--gold:#e8c985;--text:#e9e7d8;--muted:#a9b6a3}*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 50% 0,#27301e,#10140f 60%);font-family:system-ui,'Noto Sans KR',sans-serif;color:var(--text)}main{max-width:670px;margin:auto;padding:16px 14px 100px}h1{font-size:26px;letter-spacing:2px;color:var(--gold);margin:12px 0 4px}h2{font-size:18px;color:var(--gold);margin:0 0 12px}h3{font-size:15px;margin:12px 0 6px}.sub{color:var(--muted);font-size:12px}.card{background:linear-gradient(145deg,#222b20,#171d16);border:1px solid var(--line);border-radius:15px;padding:15px;margin:12px 0;box-shadow:0 7px 22px #0004}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.stat{background:#121a13;border-radius:9px;padding:10px 6px;text-align:center}.stat b{display:block;color:var(--gold);font-size:20px}.stat span{font-size:11px;color:var(--muted)}button,select,input{font:inherit}button{border:1px solid #697b51;border-radius:10px;background:#35452d;color:#f3f1df;padding:11px 12px;cursor:pointer;min-height:43px}button:disabled{opacity:.36;cursor:not-allowed}button.primary{background:#6e552d;border-color:#cba66b;font-weight:700}button.danger{background:#562e2c;border-color:#a66357}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}.row{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:8px 0}.row input{width:80px;background:#111a11;color:white;border:1px solid var(--line);border-radius:8px;padding:8px}.tag{display:inline-block;border:1px solid #7e7952;color:#e7d79c;padding:3px 7px;border-radius:99px;font-size:11px;margin:2px}.notice{padding:10px;border-left:3px solid var(--gold);background:#171d13;line-height:1.7;white-space:pre-line}.muted{color:var(--muted)}.small{font-size:12px}.event{font-size:15px;line-height:1.85;white-space:pre-line}.options{display:grid;gap:8px;margin-top:12px}.options button{text-align:left}.options small{display:block;color:#bac5af;font-size:11px;margin-top:4px}.bar{height:9px;background:#11180e;border-radius:99px;overflow:hidden;margin:7px 0}.bar i{display:block;height:100%;background:#a6a268}.scene-thumb{width:100%;height:auto;aspect-ratio:16/7;display:block;border:2px solid #536047;border-radius:10px;margin:8px 0 12px;background:#11180f;image-rendering:pixelated}.pixel-scene{image-rendering:pixelated;box-shadow:inset 0 0 22px #0008,0 4px 18px #0006}.scene-caption{font-size:11px;color:#cbbd91;margin:-6px 0 9px}.recent-feed p{margin:7px 0;padding:9px 10px;border-radius:9px;background:#11190f;border-left:3px solid #71865e;font-size:13px;line-height:1.65}.recent-feed p.critical{border-left-color:#e58c73;background:#30201b}.recent-feed p.reward{border-left-color:#d9bc69}.log{max-height:300px;overflow:auto;font-size:13px;line-height:1.65}.log p{border-bottom:1px solid #364332;padding-bottom:8px;margin:8px 0}.hidden{display:none!important}footer{position:fixed;bottom:0;left:0;right:0;background:#11190ff2;border-top:1px solid #556044;padding:10px 12px;display:flex;justify-content:center;gap:8px;z-index:5}footer button{flex:1;max-width:170px;font-size:12px;padding:8px 4px}.tabs{display:none}.tabs.active{display:block}.warn{color:#ffae90}.good{color:#b7df91}select{background:#111a11;color:white;border:1px solid #506449;border-radius:8px;padding:8px;max-width:100%}.guide-trigger{display:block;margin:8px 0;padding:7px 12px;min-height:34px;font-size:12px;background:#383622;border-color:#cba66b}.guide-mask[hidden]{display:none!important}.guide-mask{position:fixed;inset:0;z-index:100;background:#030704eb;display:flex;align-items:center;justify-content:center;padding:14px}.guide-panel{width:min(100%,520px);max-height:92dvh;overflow:auto;background:linear-gradient(145deg,#283524,#141b15);border:1px solid #cba66b;border-radius:14px;padding:19px;box-shadow:0 15px 50px #000c}.guide-panel h2{font-size:21px}.guide-panel h3{font-size:19px;color:#e8c985}.guide-panel p{line-height:1.85;white-space:pre-line;font-size:14px}.guide-art{font-size:44px;text-align:center;padding:15px;background:#151e15;border-radius:9px}.guide-tip{padding:10px;background:#2a3026;border-left:3px solid #e8c985;font-size:13px;line-height:1.6}.guide-actions{display:flex;gap:9px;margin:15px 0 8px}.guide-actions button{flex:1}.guide-meter{display:flex;gap:5px;margin:14px 0}.guide-meter i{height:5px;background:#44513e;flex:1}.guide-meter i.on{background:#e8c985}.scene-illustration{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;image-rendering:auto;border-radius:9px}.scene-image-fallback{padding:32px 12px;text-align:center;color:#e8c985;background:#172117;border-radius:9px}</style></head><body><main><h1>🐜 QUEEN'S NEST</h1><button type="button" class="guide-trigger" onclick="openSurvivalGuide()">❔ 생존 가이드</button><div class="sub">작은 군락의 생존 기록 · 유물 중심 로그라이크 · 모바일 플레이</div><div class="card" id="headline"></div><div class="stats" id="stats"></div><section id="home" class="tabs active"><div class="card"><h2>👑 여왕의 명령</h2><div id="orders"></div></div><div class="card"><h2>📣 최근 소식 <span class="sub">기록 탭을 열지 않아도 확인 가능</span></h2><div id="recentHome" class="recent-feed"></div></div><div class="card"><h2>🌒 오늘의 상황</h2><div id="situation"></div></div></section><section id="explore" class="tabs"><div class="card"><h2>🧭 탐사</h2><div id="expedition"></div></div><div class="card"><h2>📣 탐사 및 군락 소식</h2><div id="recentExplore" class="recent-feed"></div></div></section><section id="relic" class="tabs"><div class="card"><h2>🏺 유물실</h2><div id="relics"></div></div></section><section id="history" class="tabs"><div class="card"><h2>📜 군락의 역사</h2><div id="historyList" class="log"></div></div><div class="card"><h2>⚙️ 저장</h2><p class="small muted">이 기기의 브라우저에 자동 저장됩니다.</p><button onclick="resetGame()" class="danger">새로운 군락으로 다시 시작</button></div></section></main><footer><button onclick="tab('home')">🏠 군락</button><button onclick="tab('explore')">🧭 탐사</button><button onclick="tab('relic')">🏺 유물</button><button onclick="tab('history')">📜 기록</button></footer><div id="survivalGuide" class="guide-mask" role="dialog" aria-modal="true" aria-labelledby="guideHeading" hidden><div class="guide-panel"><h2 id="guideHeading">🐜 여왕의 생존 지침</h2><div class="guide-meter" id="guideMeter"></div><div class="guide-art" id="guideArt"></div><h3 id="guideTitle"></h3><p id="guideBody"></p><div class="guide-tip" id="guideTip"></div><div class="guide-actions"><button type="button" id="guideBack" onclick="moveSurvivalGuide(-1)">← 이전</button><button type="button" id="guideForward" onclick="moveSurvivalGuide(1)">다음 →</button></div><button type="button" style="width:100%" onclick="closeSurvivalGuide()">안내 닫고 플레이하기</button></div></div><script>
 'use strict';const KEY='queens_nest_survival_v1';const $=id=>document.getElementById(id);const rnd=(a,b)=>Math.floor(Math.random()*(b-a+1))+a;const chance=p=>Math.random()<p;const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));const pick=a=>a[rnd(0,a.length-1)];
 const RELICS=[
@@ -196,12 +196,13 @@ function fortInfo(){
  </div>`;
 }
 
-function render(){const ended=!s.alive;$('headline').innerHTML=`<h2>${ended?'☠️ 군락 멸망':'🌿 생존 '+s.day+'일차'}</h2>${ended
+function render(){qnEvolutionCheck();const ended=!s.alive;$('headline').innerHTML=`<h2>${ended?'☠️ 군락 멸망':'🌿 생존 '+s.day+'일차'}</h2>${ended
 ? `<img src="assets/colony_end.webp"
 alt="멸망한 개미 왕국"
 style="display:block;width:100%;height:auto;border-radius:8px">
 <div class="scene-caption">▣ 군락의 최후 · 픽셀아트</div>`
 : sceneThumb(s.message)}<!-- QUEENS_NEST_COLONY_END_ART_V1 --><div class="notice">${esc(s.message)}</div><p class="small muted">${ended?'새로운 군락으로 다시 시작할 수 있습니다.':`남은 명령 ${s.actions}/2 · 다음 날에는 식량이 소비되고, 적 군락도 움직입니다.`}</p><div class="bar"><i style="width:${s.queen}%"></i></div><div class="small">여왕 체력 ${s.queen}/100 · 습격 위험 ${s.threat}/100</div>`;
+$('headline').insertAdjacentHTML('beforeend',qnEvolutionBanner());
 $('stats').innerHTML=stat('🌾 식량',s.food)+stat('🪵 자재',s.wood)+stat('🐜 일개미',s.workers)+stat('⚔️ 병정개미',s.soldiers)+stat('🥚 알',s.eggs)+stat('🏺 유물',s.owned.length)+stat('🌿 약초',s.herbs||0);
 $('orders').innerHTML=`<div class="grid2">${btn('🌾 채집 · 명령 1회',"order('forage')",ended||!s.actions||s.workers<1)}${btn('🥚 산란 · 식량 '+(active('amber')?10:7),"order('lay')",ended||!s.actions||s.food<(active('amber')?10:7))}${btn(fortLevel()>=10?'🛡️ 둥지 보강 · 최고 단계':'🪵 둥지 보강 · 자재 '+fortCost(),"order('fortify')",ended||!s.actions||fortLevel()>=10||s.wood<fortCost())}${btn('⚔️ 병정 육성 · 식량 9',"order('train')",ended||!s.actions||s.workers<1||s.food<9)}</div><p class="small muted">산란한 알은 다음 날 부화합니다. 병정 육성은 일개미 1마리를 병정개미로 전환합니다.</p><div class="row"><span>🛡️ 둥지 방어 시설: ${s.guard}단계</span><span>탐사 중인 개미: ${s.away?s.away.w+s.away.b:0}마리</span></div>${fortInfo()}<div class="notice" style="margin-top:12px">
 🌿 보유 약초: ${s.herbs||0}개 · 👑 여왕 체력: ${s.queen}/100
@@ -209,7 +210,7 @@ ${btn('💚 약초로 여왕 치료 · 체력 +30','healQueen()',ended||(s.herbs
 </div>${btn('🌙 하루 마무리 · 다음 날', 'nextDay()',ended,'primary')}`;
 $('situation').innerHTML=`<p class="small">${s.away?'⏳ 탐사대 귀환까지 '+s.away.days+'일':'🧭 탐사 중인 개미 없음'} · ${s.missing.length?'❓ 실종된 탐사대 '+s.missing.length+'팀':'실종된 탐사대 없음'}</p><p class="small">🌾 예상 하루 식량 소비: ${dailyEat()}개</p><p class="small">⚠️ 습격 위험: ${s.threat}% · 방어 성공 ${s.raids}회</p><h3>주변 군락의 동향</h3>${s.rivals.map(r=>`<div class="row small"><span>${r.name}</span><span>병력 ${r.strength} · 적대 ${r.hostile}%</span></div>`).join('')}`;
 renderExplore();renderRelics();const recent=s.logs.slice(0,5).map(x=>{const cls=/실종|돌아오지|전사|침공|습격|굶주림|멸망|부상|부족/.test(x)?'critical':/유물|귀환|성공|부화|발견/.test(x)?'reward':'';return `<p class="${cls}">${esc(x)}</p>`}).join('');$('recentHome').innerHTML=recent;$('recentExplore').innerHTML=recent;$('historyList').innerHTML=s.logs.map(x=>`<p>${esc(x)}</p>`).join('')}
-function esc(x){return String(x).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}function dailyEat(){return Math.max(2,Math.ceil((s.workers+s.soldiers+(s.away?s.away.w+s.away.b:0)+1)/3))+(active('eggs')?3:0)+(active('root')?2:0)}function order(type){if(!s.alive||s.actions<1)return;if(type==='forage'){if(!s.workers)return;let gain=rnd(3,7)+Math.min(9,s.workers);if(active('amber'))gain=Math.ceil(gain*1.5);s.food+=gain;log('일개미들이 주변에서 식량 '+gain+'개를 채집했습니다.')}if(type==='lay'){let cost=7+(active('amber')?3:0);if(s.food<cost)return;s.food-=cost;let n=rnd(1,2)+(active('eggs')?rnd(1,2):0);s.eggs+=n;log('여왕이 알 '+n+'개를 낳았습니다. 내일 부화합니다.')}if(type==='fortify'){if(fortLevel()>=10||s.wood<fortCost())return;const cost=fortCost();s.wood-=cost;s.guard++;log('🛡️ 둥지를 보강했습니다! '+s.guard+'단계 '+FORT_NAMES[fortLevel()]+' 완성. 자재 '+cost+'개 사용.')}if(type==='train'){if(s.food<9||!s.workers)return;s.food-=9;s.workers--;s.soldiers++;log('일개미 한 마리가 병정개미로 전환되었습니다.')}s.actions--;update()}
+function esc(x){return String(x).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}function dailyEat(){const base=Math.max(2,Math.ceil((s.workers+s.soldiers+(s.away?s.away.w+s.away.b:0)+1)/3))+(active('eggs')?3:0)+(active('root')?2:0);return s.evolution==='swarm'?Math.ceil(base*1.15):base}function order(type){if(!s.alive||s.actions<1)return;if(type==='forage'){if(!s.workers)return;let gain=rnd(3,7)+Math.min(9,s.workers);if(s.evolution==='survival')gain=Math.ceil(gain*1.3);if(active('amber'))gain=Math.ceil(gain*1.5);s.food+=gain;log('일개미들이 주변에서 식량 '+gain+'개를 채집했습니다.')}if(type==='lay'){let cost=7+(active('amber')?3:0);if(s.food<cost)return;s.food-=cost;let n=rnd(1,2)+(active('eggs')?rnd(1,2):0)+(s.evolution==='swarm'?1:0);s.eggs+=n;log('여왕이 알 '+n+'개를 낳았습니다. 내일 부화합니다.')}if(type==='fortify'){if(fortLevel()>=10||s.wood<fortCost())return;const cost=fortCost();s.wood-=cost;s.guard++;log('🛡️ 둥지를 보강했습니다! '+s.guard+'단계 '+FORT_NAMES[fortLevel()]+' 완성. 자재 '+cost+'개 사용.')}if(type==='train'){if(s.food<9||!s.workers)return;s.food-=9;s.workers--;s.soldiers+=(s.evolution==='combat'?2:1);log('일개미 한 마리가 병정개미로 전환되었습니다.'+(s.evolution==='combat'?' 혈갑개미 진화 보너스 +1 병정개미.':''));}s.actions--;update()}
 
 /* QUEENS_NEST_QUEEN_HEAL_V1 */
 
@@ -714,5 +715,54 @@ rescue=function(i){
 };
 
 qnWrapAction('equip','🏺 유물 변경 결과');
+
+
+/* QUEENS_NEST_EVOLUTION_BETA_020 */
+const QN_EVOLUTIONS={
+ combat:{name:'🔴 혈갑개미 · 전투 진화',detail:'전쟁에 적응한 강인한 혈통. 병정 육성 시 병정개미를 1마리 추가 획득합니다.\n장점: 전투 병력 확충.\n주의: 전투 능력치 전체 강화는 후속 업데이트에서 확장됩니다.'},
+ survival:{name:'🟢 녹생개미 · 생존 진화',detail:'기근을 견뎌낸 채집 특화 혈통. 채집 명령으로 얻는 식량이 30% 증가합니다(올림).\n장점: 식량 확보와 장기 생존.'},
+ swarm:{name:'🔵 천군개미 · 군체 진화',detail:'번식과 군체 확장에 적응한 혈통. 산란 명령 시 알 1개를 추가 획득합니다.\n주의: 매일 식량 소비가 15% 증가합니다(올림).'}
+};
+let qnEvolutionNoticeShown=false;
+function qnEvolutionCheck(){
+ if(s.chapter!==2)s.chapter=1;
+ if(s.day>=200 && s.alive && s.chapter===1 && !s.evolution && !s.evolutionUnlocked){s.evolutionUnlocked=true;save()}
+ if(s.evolution && s.chapter!==2){s.chapter=2;save()}
+ if(s.evolutionUnlocked && !s.evolution && s.alive && !qnEvolutionNoticeShown){
+  qnEvolutionNoticeShown=true;
+  setTimeout(()=>{if(s.alive && !s.evolution && !document.getElementById('qn-evolution-modal'))qnOpenEvolution()},350);
+ }
+}
+function qnEvolutionBanner(){
+ if(s.chapter===2)return '<div class="notice" style="margin-top:12px">🌑 CHAPTER 2 · 지하 왕국의 그림자<br>🧬 '+(QN_EVOLUTIONS[s.evolution]?.name||'진화 완료')+' · 챕터 1 복귀 불가</div>';
+ if(!s.alive)return '';
+ if(s.day<200)return '<div class="notice" style="margin-top:12px">🧬 진화 해금까지 '+(200-s.day)+'일 · 200일 생존 시 진화 선택 가능</div>';
+ return '<div class="notice" style="margin-top:12px">🧬 진화 가능! 챕터 1에 계속 머무를 수도 있습니다.<br><button class="primary" style="width:100%;margin-top:8px" onclick="qnOpenEvolution()">🧬 진화 선택 · 챕터 2 입장</button></div>';
+}
+function qnOpenEvolution(){
+ if(!s.alive || s.day<200 || s.chapter===2 || s.evolution)return;
+ if(document.getElementById('qn-evolution-modal'))return;
+ const mask=document.createElement('div');mask.id='qn-evolution-modal';
+ Object.assign(mask.style,{position:'fixed',inset:'0',zIndex:'300',background:'#050905ef',display:'flex',alignItems:'center',justifyContent:'center',padding:'12px'});
+ const box=document.createElement('div');Object.assign(box.style,{background:'#1c291b',border:'2px solid #cba66b',borderRadius:'15px',padding:'18px',maxWidth:'460px',width:'100%',maxHeight:'90dvh',overflowY:'auto',color:'#f3ecd8'});
+ const title=document.createElement('h2');title.textContent='🧬 200일의 생존 — 종족 진화';box.appendChild(title);
+ const intro=document.createElement('p');intro.textContent='고난과 역경을 견뎌낸 군락은 진화의 자격을 얻었습니다. 진화는 영구적이며 챕터 2로 이동하면 돌아올 수 없습니다.';intro.style.lineHeight='1.7';box.appendChild(intro);
+ for(const [id,ev] of Object.entries(QN_EVOLUTIONS)){
+  const card=document.createElement('div');Object.assign(card.style,{border:'1px solid #647452',borderRadius:'10px',padding:'12px',margin:'10px 0'});
+  const h=document.createElement('h3');h.textContent=ev.name;card.appendChild(h);
+  const p=document.createElement('p');p.textContent=ev.detail;p.style.whiteSpace='pre-line';p.style.fontSize='13px';p.style.lineHeight='1.6';card.appendChild(p);
+  const btn=document.createElement('button');btn.className='primary';btn.style.width='100%';btn.textContent='이 진화 선택하기';btn.onclick=()=>qnChooseEvolution(id);card.appendChild(btn);box.appendChild(card);
+ }
+ const stay=document.createElement('button');stay.textContent='🏕️ 머무르기 · 자원을 더 모으고 나중에 진화';stay.style.width='100%';stay.onclick=()=>{mask.remove();qnEvolutionNoticeShown=true};box.appendChild(stay);
+ mask.appendChild(box);document.body.appendChild(mask);
+}
+function qnChooseEvolution(id){
+ const ev=QN_EVOLUTIONS[id];if(!ev || !s.alive || s.day<200 || s.chapter===2 || s.evolution)return;
+ if(!confirm(ev.name+'\n\n'+ev.detail+'\n\n⚠️ 진화 확정 시 챕터 2에 영구 진입하며 챕터 1로 돌아갈 수 없습니다.\n정말 확정할까요?'))return;
+ s.evolution=id;s.evolutionUnlocked=true;s.chapter=2;
+ log('🧬 '+ev.name+'로 진화했습니다. 지하 왕국의 그림자에 진입했습니다.');
+ document.getElementById('qn-evolution-modal')?.remove();update();
+ alert('🌑 CHAPTER 2 진입!\n'+ev.name+'\n\n기존 군락과 자원은 유지됩니다.\n※ 챕터 2 전용 적·이벤트는 후속 업데이트 예정입니다.');
+}
 
 update();try{if(!localStorage.getItem(SURVIVAL_GUIDE_KEY))openSurvivalGuide()}catch(e){openSurvivalGuide()}</script></body></html>
