@@ -42,7 +42,7 @@ if(text===s.message && /탐사대.*귀환하지 않았습니다/.test(text)){
 if(text===s.message && s.exploreArt)return exploreResultArt();
 const kind=sceneKind(text);
 /* QUEENS_NEST_SOLDIER_TRAINING_V1 */
-if(/병정.*육성|병정.*훈련|병정개미.*육성|병정개미.*훈련/.test(text)){
+if(/병정.*육성|병정.*훈련|병정개미.*전환|병정개미로 전환/.test(text)){
   return '<img src="assets/soldier_training.webp" alt="병정개미 육성" style="display:block;width:100%;height:auto;border-radius:8px"><div class="scene-caption">▣ 병정개미 육성 · 픽셀아트</div>';
 }
 
