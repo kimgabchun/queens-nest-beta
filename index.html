@@ -2995,7 +2995,7 @@ qnBattleAttack=function(index){const h=s.hero,d=h?.surface,b=d?.battle;if(!b||![
   if(d.completed)lines.push("👑 100층 정복 · 챕터 3 준비 중");
   d.message=lines.join("\n");save();qnRenderChapter2();qnExploreResultPopup(d.message)};
  const frenzy=has("frenzy")?2:1;
- if(index===3){const cost=Math.ceil(h.hp*.1);h.hp=Math.max(0,h.hp-cost);delete d.battle;if(h.healCooldown>0)h.healCooldown--;d.message="🏃 도주 성공 · HP -"+cost;save();qnRenderChapter2();return}
+ if(index===3){const cost=Math.ceil(h.hp*.1);h.hp=Math.max(0,h.hp-cost);delete d.battle;qnEcoAdvance(d);if(h.healCooldown>0)h.healCooldown--;d.message="🏃 도주 성공 · HP -"+cost+" · 방 선택 "+d.step+"/30";save();qnRenderChapter2();return}
  if(index===2){const n=heal(h.maxHp*.3*(1-(b.weakenheal||0)/100));h.healCooldown=3;lines.push("💚 회복 +"+n)}
  else{
   const skill=index===1;if(skill)b.skillUsed=true;
