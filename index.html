@@ -1,5 +1,553 @@
 <!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"><title>QUEEN'S NEST BETA 0.2.0</title><style>
-:root{color-scheme:dark;--bg:#10140f;--card:#1c241b;--line:#40503b;--gold:#e8c985;--text:#e9e7d8;--muted:#a9b6a3}*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 50% 0,#27301e,#10140f 60%);font-family:system-ui,'Noto Sans KR',sans-serif;color:var(--text)}main{max-width:670px;margin:auto;padding:16px 14px 100px}h1{font-size:26px;letter-spacing:2px;color:var(--gold);margin:12px 0 4px}h2{font-size:18px;color:var(--gold);margin:0 0 12px}h3{font-size:15px;margin:12px 0 6px}.sub{color:var(--muted);font-size:12px}.card{background:linear-gradient(145deg,#222b20,#171d16);border:1px solid var(--line);border-radius:15px;padding:15px;margin:12px 0;box-shadow:0 7px 22px #0004}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.stat{background:#121a13;border-radius:9px;padding:10px 6px;text-align:center}.stat b{display:block;color:var(--gold);font-size:20px}.stat span{font-size:11px;color:var(--muted)}button,select,input{font:inherit}button{border:1px solid #697b51;border-radius:10px;background:#35452d;color:#f3f1df;padding:11px 12px;cursor:pointer;min-height:43px}button:disabled{opacity:.36;cursor:not-allowed}button.primary{background:#6e552d;border-color:#cba66b;font-weight:700}button.danger{background:#562e2c;border-color:#a66357}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}.row{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:8px 0}.row input{width:80px;background:#111a11;color:white;border:1px solid var(--line);border-radius:8px;padding:8px}.tag{display:inline-block;border:1px solid #7e7952;color:#e7d79c;padding:3px 7px;border-radius:99px;font-size:11px;margin:2px}.notice{padding:10px;border-left:3px solid var(--gold);background:#171d13;line-height:1.7;white-space:pre-line}.muted{color:var(--muted)}.small{font-size:12px}.event{font-size:15px;line-height:1.85;white-space:pre-line}.options{display:grid;gap:8px;margin-top:12px}.options button{text-align:left}.options small{display:block;color:#bac5af;font-size:11px;margin-top:4px}.bar{height:9px;background:#11180e;border-radius:99px;overflow:hidden;margin:7px 0}.bar i{display:block;height:100%;background:#a6a268}.scene-thumb{width:100%;height:auto;aspect-ratio:16/7;display:block;border:2px solid #536047;border-radius:10px;margin:8px 0 12px;background:#11180f;image-rendering:pixelated}.pixel-scene{image-rendering:pixelated;box-shadow:inset 0 0 22px #0008,0 4px 18px #0006}.scene-caption{font-size:11px;color:#cbbd91;margin:-6px 0 9px}.recent-feed p{margin:7px 0;padding:9px 10px;border-radius:9px;background:#11190f;border-left:3px solid #71865e;font-size:13px;line-height:1.65}.recent-feed p.critical{border-left-color:#e58c73;background:#30201b}.recent-feed p.reward{border-left-color:#d9bc69}.log{max-height:300px;overflow:auto;font-size:13px;line-height:1.65}.log p{border-bottom:1px solid #364332;padding-bottom:8px;margin:8px 0}.hidden{display:none!important}footer{position:fixed;bottom:0;left:0;right:0;background:#11190ff2;border-top:1px solid #556044;padding:10px 12px;display:flex;justify-content:center;gap:8px;z-index:5}footer button{flex:1;max-width:170px;font-size:12px;padding:8px 4px}.tabs{display:none}.tabs.active{display:block}.warn{color:#ffae90}.good{color:#b7df91}select{background:#111a11;color:white;border:1px solid #506449;border-radius:8px;padding:8px;max-width:100%}.guide-trigger{display:block;margin:8px 0;padding:7px 12px;min-height:34px;font-size:12px;background:#383622;border-color:#cba66b}.guide-mask[hidden]{display:none!important}.guide-mask{position:fixed;inset:0;z-index:100;background:#030704eb;display:flex;align-items:center;justify-content:center;padding:14px}.guide-panel{width:min(100%,520px);max-height:92dvh;overflow:auto;background:linear-gradient(145deg,#283524,#141b15);border:1px solid #cba66b;border-radius:14px;padding:19px;box-shadow:0 15px 50px #000c}.guide-panel h2{font-size:21px}.guide-panel h3{font-size:19px;color:#e8c985}.guide-panel p{line-height:1.85;white-space:pre-line;font-size:14px}.guide-art{font-size:44px;text-align:center;padding:15px;background:#151e15;border-radius:9px}.guide-tip{padding:10px;background:#2a3026;border-left:3px solid #e8c985;font-size:13px;line-height:1.6}.guide-actions{display:flex;gap:9px;margin:15px 0 8px}.guide-actions button{flex:1}.guide-meter{display:flex;gap:5px;margin:14px 0}.guide-meter i{height:5px;background:#44513e;flex:1}.guide-meter i.on{background:#e8c985}.scene-illustration{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;image-rendering:auto;border-radius:9px}.scene-image-fallback{padding:32px 12px;text-align:center;color:#e8c985;background:#172117;border-radius:9px}</style></head><body><main><h1>🐜 QUEEN'S NEST</h1><button type="button" class="guide-trigger" onclick="openSurvivalGuide()">❔ 생존 가이드</button><div class="sub">작은 군락의 생존 기록 · 유물 중심 로그라이크 · 모바일 플레이</div><div class="card" id="headline"></div><div class="stats" id="stats"></div><section id="home" class="tabs active"><div class="card"><h2>👑 여왕의 명령</h2><div id="orders"></div></div><div class="card"><h2>📣 최근 소식 <span class="sub">기록 탭을 열지 않아도 확인 가능</span></h2><div id="recentHome" class="recent-feed"></div></div><div class="card"><h2>🌒 오늘의 상황</h2><div id="situation"></div></div></section><section id="explore" class="tabs"><div class="card"><h2>🧭 탐사</h2><div id="expedition"></div></div><div class="card"><h2>📣 탐사 및 군락 소식</h2><div id="recentExplore" class="recent-feed"></div></div></section><section id="relic" class="tabs"><div class="card"><h2>🏺 유물실</h2><div id="relics"></div></div></section><section id="history" class="tabs"><div class="card"><h2>📜 군락의 역사</h2><div id="historyList" class="log"></div></div><div class="card"><h2>⚙️ 저장</h2><p class="small muted">이 기기의 브라우저에 자동 저장됩니다.</p><button onclick="resetGame()" class="danger">새로운 군락으로 다시 시작</button></div></section></main><footer><button onclick="tab('home')">🏠 군락</button><button onclick="tab('explore')">🧭 탐사</button><button onclick="tab('relic')">🏺 유물</button><button onclick="tab('history')">📜 기록</button></footer><div id="survivalGuide" class="guide-mask" role="dialog" aria-modal="true" aria-labelledby="guideHeading" hidden><div class="guide-panel"><h2 id="guideHeading">🐜 여왕의 생존 지침</h2><div class="guide-meter" id="guideMeter"></div><div class="guide-art" id="guideArt"></div><h3 id="guideTitle"></h3><p id="guideBody"></p><div class="guide-tip" id="guideTip"></div><div class="guide-actions"><button type="button" id="guideBack" onclick="moveSurvivalGuide(-1)">← 이전</button><button type="button" id="guideForward" onclick="moveSurvivalGuide(1)">다음 →</button></div><button type="button" style="width:100%" onclick="closeSurvivalGuide()">안내 닫고 플레이하기</button></div></div><script>
+:root{color-scheme:dark;--bg:#10140f;--card:#1c241b;--line:#40503b;--gold:#e8c985;--text:#e9e7d8;--muted:#a9b6a3}*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 50% 0,#27301e,#10140f 60%);font-family:system-ui,'Noto Sans KR',sans-serif;color:var(--text)}main{max-width:670px;margin:auto;padding:16px 14px 100px}h1{font-size:26px;letter-spacing:2px;color:var(--gold);margin:12px 0 4px}h2{font-size:18px;color:var(--gold);margin:0 0 12px}h3{font-size:15px;margin:12px 0 6px}.sub{color:var(--muted);font-size:12px}.card{background:linear-gradient(145deg,#222b20,#171d16);border:1px solid var(--line);border-radius:15px;padding:15px;margin:12px 0;box-shadow:0 7px 22px #0004}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.stat{background:#121a13;border-radius:9px;padding:10px 6px;text-align:center}.stat b{display:block;color:var(--gold);font-size:20px}.stat span{font-size:11px;color:var(--muted)}button,select,input{font:inherit}button{border:1px solid #697b51;border-radius:10px;background:#35452d;color:#f3f1df;padding:11px 12px;cursor:pointer;min-height:43px}button:disabled{opacity:.36;cursor:not-allowed}button.primary{background:#6e552d;border-color:#cba66b;font-weight:700}button.danger{background:#562e2c;border-color:#a66357}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}.row{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:8px 0}.row input{width:80px;background:#111a11;color:white;border:1px solid var(--line);border-radius:8px;padding:8px}.tag{display:inline-block;border:1px solid #7e7952;color:#e7d79c;padding:3px 7px;border-radius:99px;font-size:11px;margin:2px}.notice{padding:10px;border-left:3px solid var(--gold);background:#171d13;line-height:1.7;white-space:pre-line}.muted{color:var(--muted)}.small{font-size:12px}.event{font-size:15px;line-height:1.85;white-space:pre-line}.options{display:grid;gap:8px;margin-top:12px}.options button{text-align:left}.options small{display:block;color:#bac5af;font-size:11px;margin-top:4px}.bar{height:9px;background:#11180e;border-radius:99px;overflow:hidden;margin:7px 0}.bar i{display:block;height:100%;background:#a6a268}.scene-thumb{width:100%;height:auto;aspect-ratio:16/7;display:block;border:2px solid #536047;border-radius:10px;margin:8px 0 12px;background:#11180f;image-rendering:pixelated}.pixel-scene{image-rendering:pixelated;box-shadow:inset 0 0 22px #0008,0 4px 18px #0006}.scene-caption{font-size:11px;color:#cbbd91;margin:-6px 0 9px}.recent-feed p{margin:7px 0;padding:9px 10px;border-radius:9px;background:#11190f;border-left:3px solid #71865e;font-size:13px;line-height:1.65}.recent-feed p.critical{border-left-color:#e58c73;background:#30201b}.recent-feed p.reward{border-left-color:#d9bc69}.log{max-height:300px;overflow:auto;font-size:13px;line-height:1.65}.log p{border-bottom:1px solid #364332;padding-bottom:8px;margin:8px 0}.hidden{display:none!important}footer{position:fixed;bottom:0;left:0;right:0;background:#11190ff2;border-top:1px solid #556044;padding:10px 12px;display:flex;justify-content:center;gap:8px;z-index:5}footer button{flex:1;max-width:170px;font-size:12px;padding:8px 4px}.tabs{display:none}.tabs.active{display:block}.warn{color:#ffae90}.good{color:#b7df91}select{background:#111a11;color:white;border:1px solid #506449;border-radius:8px;padding:8px;max-width:100%}.guide-trigger{display:block;margin:8px 0;padding:7px 12px;min-height:34px;font-size:12px;background:#383622;border-color:#cba66b}.guide-mask[hidden]{display:none!important}.guide-mask{position:fixed;inset:0;z-index:100;background:#030704eb;display:flex;align-items:center;justify-content:center;padding:14px}.guide-panel{width:min(100%,520px);max-height:92dvh;overflow:auto;background:linear-gradient(145deg,#283524,#141b15);border:1px solid #cba66b;border-radius:14px;padding:19px;box-shadow:0 15px 50px #000c}.guide-panel h2{font-size:21px}.guide-panel h3{font-size:19px;color:#e8c985}.guide-panel p{line-height:1.85;white-space:pre-line;font-size:14px}.guide-art{font-size:44px;text-align:center;padding:15px;background:#151e15;border-radius:9px}.guide-tip{padding:10px;background:#2a3026;border-left:3px solid #e8c985;font-size:13px;line-height:1.6}.guide-actions{display:flex;gap:9px;margin:15px 0 8px}.guide-actions button{flex:1}.guide-meter{display:flex;gap:5px;margin:14px 0}.guide-meter i{height:5px;background:#44513e;flex:1}.guide-meter i.on{background:#e8c985}.scene-illustration{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;image-rendering:auto;border-radius:9px}.scene-image-fallback{padding:32px 12px;text-align:center;color:#e8c985;background:#172117;border-radius:9px}</style>
+<style>
+/* QN_RPG_TABS_V1 */
+#qn-rpg-screen{
+ color:#e4e5e7;
+ padding-bottom:76px;
+}
+body:has(#qn-rpg-screen[style*="block"]){
+ background:linear-gradient(180deg,#171d29,#0a0d13 65%);
+}
+#qn-rpg-screen .qn2-box{
+ background:linear-gradient(145deg,#222a35,#111720);
+ border:1px solid #536071;
+ border-radius:12px;
+ padding:15px;
+ margin:12px 0;
+}
+#qn-rpg-screen h2{
+ color:#e3e9f4;
+ margin:8px 0 12px;
+}
+#qn-rpg-screen h3{
+ color:#cbd7e6;
+ margin:0 0 14px;
+}
+.qn2-sub{font-size:12px;color:#aebdce;line-height:1.9}
+.qn2-portrait{
+ display:flex;
+ justify-content:center;
+ align-items:center;
+ height:170px;
+ margin:12px 0;
+ border:1px solid #43546a;
+ border-radius:12px;
+ background:radial-gradient(ellipse at center,#35475b,#101723 70%);
+ font-size:80px;
+}
+.qn2-level{font-size:25px;font-weight:800;margin:12px 0}
+.qn2-meter{
+ height:10px;
+ background:#0a1018;
+ border-radius:20px;
+ overflow:hidden;
+ margin:8px 0 14px;
+}
+.qn2-meter i{
+ display:block;
+ height:100%;
+ background:#93b3e5;
+}
+.qn2-meter.hp i{background:#b96c70}
+.qn2-statgrid{
+ display:grid;
+ grid-template-columns:repeat(2,minmax(0,1fr));
+ gap:9px;
+}
+.qn2-statgrid>div{
+ display:flex;
+ flex-direction:column;
+ gap:7px;
+ padding:13px 9px;
+ background:#111925;
+ border:1px solid #364557;
+ border-radius:9px;
+ font-size:12px;
+}
+.qn2-statgrid b{font-size:17px;color:#f2f5fb}
+.qn2-gems{
+ padding:12px;
+ margin-bottom:12px;
+ background:#111925;
+ border:1px solid #364557;
+ border-radius:9px;
+}
+.qn2-reset{
+ display:block;
+ width:100%;
+ margin-top:10px;
+ background:#283648;
+ border-color:#64758b;
+}
+.qn2-nav{
+ position:fixed;
+ bottom:0;
+ left:0;
+ right:0;
+ z-index:30;
+ display:grid;
+ grid-template-columns:repeat(4,1fr);
+ gap:5px;
+ padding:9px 10px max(9px,env(safe-area-inset-bottom));
+ background:#0b111beb;
+ border-top:1px solid #52647a;
+}
+.qn2-nav button{
+ display:flex;
+ flex-direction:column;
+ align-items:center;
+ gap:2px;
+ padding:7px 2px;
+ min-height:52px;
+ background:#172130;
+ border:1px solid #33465d;
+ color:#aebdce;
+ font-size:20px;
+}
+.qn2-nav button small{font-size:11px}
+.qn2-nav button.active{
+ background:#344861;
+ color:white;
+ border-color:#a6c1e4;
+}
+</style>
+
+<style>
+/* QN_STATUS_LAYOUT_V2 */
+.qn2-status-layout{
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ gap:8px;
+ align-items:stretch;
+ margin-top:12px;
+}
+.qn2-status-left,
+.qn2-status-portrait,
+.qn2-status-vitals{
+ background:linear-gradient(145deg,#222a35,#111720);
+ border:1px solid #536071;
+ border-radius:10px;
+}
+.qn2-status-left{
+ padding:11px 8px;
+ display:flex;
+ flex-direction:column;
+ justify-content:space-around;
+ min-height:240px;
+}
+.qn2-status-title{
+ font-size:14px;
+ font-weight:700;
+ color:#e3e9f4;
+ margin-bottom:8px;
+}
+.qn2-ability{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ gap:4px;
+ font-size:12px;
+ padding:9px 2px;
+ border-bottom:1px solid #364557;
+}
+.qn2-ability b{
+ color:#f2f5fb;
+ font-size:15px;
+ white-space:nowrap;
+}
+.qn2-status-right{
+ display:grid;
+ grid-template-rows:minmax(145px,2fr) minmax(95px,1fr);
+ gap:8px;
+}
+.qn2-status-portrait{
+ display:flex;
+ flex-direction:column;
+ align-items:center;
+ justify-content:center;
+ padding:8px;
+ min-width:0;
+}
+.qn2-status-ant{font-size:64px}
+.qn2-status-name{
+ font-size:11px;
+ text-align:center;
+ color:#c5d2e4;
+}
+.qn2-status-vitals{
+ padding:9px;
+}
+.qn2-status-level{
+ font-weight:800;
+ font-size:15px;
+ margin-bottom:5px;
+}
+.qn2-vital-label{
+ font-size:10px;
+ color:#cbd7e6;
+}
+.qn2-vital-bar{
+ height:6px;
+ background:#0a1018;
+ border-radius:10px;
+ overflow:hidden;
+ margin:4px 0 7px;
+}
+.qn2-vital-bar i{
+ display:block;
+ height:100%;
+}
+.qn2-skills{margin-top:10px}
+.qn2-skill{
+ background:#111925;
+ border:1px solid #43546a;
+ border-radius:9px;
+ padding:12px;
+ margin:9px 0;
+}
+.qn2-skill-name{
+ font-weight:700;
+ font-size:15px;
+ color:#f2f5fb;
+}
+.qn2-skill-desc{
+ color:#b7c5d6;
+ font-size:12px;
+ line-height:1.7;
+ margin:8px 0;
+}
+.qn2-skill-info{
+ display:flex;
+ justify-content:space-between;
+ gap:6px;
+ font-size:11px;
+ color:#d9b7b8;
+}
+</style>
+
+<style>
+/* QN_STATUS_COMPACT_V1 */
+
+/* 챕터 2 상태창 전체 */
+#qn-rpg-screen {
+ padding-bottom: 72px !important;
+}
+
+/* 상단 능력치와 초상화 */
+.qn2-status-layout {
+ margin-top: 4px !important;
+ gap: 7px !important;
+}
+
+.qn2-status-left {
+ min-height: 0 !important;
+ padding: 8px !important;
+ justify-content: flex-start !important;
+}
+
+.qn2-status-title {
+ margin-bottom: 3px !important;
+ font-size: 13px !important;
+}
+
+.qn2-ability {
+ padding: 7px 2px !important;
+ font-size: 11px !important;
+}
+
+.qn2-ability b {
+ font-size: 13px !important;
+}
+
+/* 초상화 */
+.qn2-status-right {
+ grid-template-rows: 145px 96px !important;
+ gap: 7px !important;
+}
+
+.qn2-status-portrait {
+ padding: 5px !important;
+}
+
+.qn2-status-ant {
+ font-size: 54px !important;
+}
+
+.qn2-status-name {
+ font-size: 10px !important;
+}
+
+/* LV, HP, EXP */
+.qn2-status-vitals {
+ padding: 7px !important;
+}
+
+.qn2-status-level {
+ font-size: 13px !important;
+ margin-bottom: 3px !important;
+}
+
+.qn2-vital-label {
+ font-size: 10px !important;
+}
+
+.qn2-vital-bar {
+ height: 5px !important;
+ margin: 3px 0 5px !important;
+}
+
+/* 스킬 영역 */
+#qn-rpg-screen .qn2-skills {
+ margin-top: 8px !important;
+ padding: 10px !important;
+}
+
+.qn2-skills h3 {
+ margin-bottom: 6px !important;
+ font-size: 16px !important;
+}
+
+.qn2-skill {
+ padding: 9px !important;
+ margin: 7px 0 !important;
+}
+
+.qn2-skill-name {
+ font-size: 13px !important;
+}
+
+.qn2-skill-desc {
+ font-size: 11px !important;
+ line-height: 1.4 !important;
+ margin: 5px 0 !important;
+}
+
+.qn2-skill-info {
+ font-size: 10px !important;
+}
+
+/* 하단 메뉴 */
+.qn2-nav {
+ padding-top: 6px !important;
+ padding-bottom: max(6px,env(safe-area-inset-bottom)) !important;
+}
+
+.qn2-nav button {
+ min-height: 45px !important;
+ padding: 5px 2px !important;
+ font-size: 18px !important;
+}
+
+.qn2-nav button small {
+ font-size: 10px !important;
+}
+
+/* 챕터 2에서만 상단 영역 압축 */
+body:has(#qn-rpg-screen[style*="block"]) header {
+ padding-top: 5px !important;
+ padding-bottom: 5px !important;
+}
+
+body:has(#qn-rpg-screen[style*="block"]) header h1 {
+ font-size: 20px !important;
+ margin: 2px 0 !important;
+}
+
+body:has(#qn-rpg-screen[style*="block"]) header p {
+ font-size: 10px !important;
+ margin: 2px 0 !important;
+}
+
+</style>
+
+<style>
+/* QN_STATUS_EFFECTS_V1 */
+.qn2-condition{
+ margin-top:auto;
+ padding-top:12px;
+}
+
+.qn2-condition-title{
+ border-top:1px solid #536071;
+ padding-top:12px;
+ font-size:13px;
+ font-weight:700;
+ color:#e3e9f4;
+}
+
+.qn2-condition-list{
+ margin-top:9px;
+ display:flex;
+ flex-direction:column;
+ gap:5px;
+}
+
+.qn2-condition-normal,
+.qn2-condition-bad{
+ background:#111925;
+ border:1px solid #364557;
+ border-radius:7px;
+ padding:8px;
+ font-size:12px;
+}
+
+.qn2-condition-normal{
+ color:#9cdaa9;
+}
+
+.qn2-condition-bad{
+ color:#f1b3a4;
+}
+</style>
+
+<style>
+/* QN_STATUS_COMPACT_V2 */
+
+/* 상단 능력치 */
+.qn2-status-layout{
+ gap:6px !important;
+ margin-top:2px !important;
+}
+
+.qn2-status-left{
+ padding:7px !important;
+}
+
+.qn2-status-title{
+ font-size:12px !important;
+ margin-bottom:2px !important;
+}
+
+.qn2-ability{
+ padding:5px 2px !important;
+ font-size:11px !important;
+}
+
+.qn2-ability b{
+ font-size:12px !important;
+}
+
+/* 초상화와 체력 */
+.qn2-status-right{
+ grid-template-rows:115px 91px !important;
+ gap:6px !important;
+}
+
+.qn2-status-ant{
+ font-size:46px !important;
+}
+
+.qn2-status-name{
+ font-size:10px !important;
+}
+
+.qn2-status-vitals{
+ padding:6px !important;
+}
+
+.qn2-status-level{
+ font-size:12px !important;
+ margin-bottom:2px !important;
+}
+
+/* 상태이상 */
+.qn2-condition{
+ padding-top:6px !important;
+}
+
+.qn2-condition-title{
+ padding-top:7px !important;
+ font-size:12px !important;
+}
+
+.qn2-condition-list{
+ margin-top:5px !important;
+}
+
+.qn2-condition-normal,
+.qn2-condition-bad{
+ padding:6px !important;
+ font-size:11px !important;
+}
+
+/* 스킬 영역 */
+#qn-rpg-screen .qn2-skills{
+ margin-top:6px !important;
+ padding:8px !important;
+}
+
+.qn2-skills h3{
+ font-size:14px !important;
+ margin-bottom:4px !important;
+}
+
+.qn2-skill{
+ padding:7px 9px !important;
+ margin:5px 0 !important;
+}
+
+.qn2-skill-name{
+ font-size:12px !important;
+}
+
+.qn2-skill-desc{
+ font-size:10px !important;
+ line-height:1.3 !important;
+ margin:3px 0 !important;
+}
+
+.qn2-skill-info{
+ font-size:10px !important;
+}
+
+/* 스킬 안내 문구 */
+.qn2-skills>.qn2-sub{
+ font-size:9px !important;
+ line-height:1.3 !important;
+ margin-top:5px !important;
+}
+
+/* 하단 메뉴 공간 */
+#qn-rpg-screen{
+ padding-bottom:67px !important;
+}
+
+/* 작은 화면 대응 */
+@media(max-height:750px){
+ .qn2-status-right{
+  grid-template-rows:100px 85px !important;
+ }
+ .qn2-status-ant{
+  font-size:40px !important;
+ }
+}
+</style>
+
+<style>
+/* QN_PORTRAIT_SIZE_V3 */
+
+/* 오른쪽 초상화 영역 확대 */
+.qn2-status-right {
+ grid-template-rows: 150px 91px !important;
+}
+
+/* 임시 개미 이미지 확대 */
+.qn2-status-ant {
+ font-size: 58px !important;
+}
+
+/* 작은 화면에서도 동일하게 적용 */
+@media(max-height:750px){
+ .qn2-status-right {
+  grid-template-rows: 135px 85px !important;
+ }
+ .qn2-status-ant {
+  font-size: 52px !important;
+ }
+}
+</style>
+</head><body><main><h1>🐜 QUEEN'S NEST</h1><button type="button" class="guide-trigger" onclick="openSurvivalGuide()">❔ 생존 가이드</button><div class="sub">작은 군락의 생존 기록 · 유물 중심 로그라이크 · 모바일 플레이</div><div id="qn-colony-screen"><div class="card" id="headline"></div><div class="stats" id="stats"></div><section id="home" class="tabs active"><div class="card"><h2>👑 여왕의 명령</h2><div id="orders"></div></div><div class="card"><h2>📣 최근 소식 <span class="sub">기록 탭을 열지 않아도 확인 가능</span></h2><div id="recentHome" class="recent-feed"></div></div><div class="card"><h2>🌒 오늘의 상황</h2><div id="situation"></div></div></section><section id="explore" class="tabs"><div class="card"><h2>🧭 탐사</h2><div id="expedition"></div></div><div class="card"><h2>📣 탐사 및 군락 소식</h2><div id="recentExplore" class="recent-feed"></div></div></section><section id="relic" class="tabs"><div class="card"><h2>🏺 유물실</h2><div id="relics"></div></div></section><section id="history" class="tabs"><div class="card"><h2>📜 군락의 역사</h2><div id="historyList" class="log"></div></div><div class="card"><h2>⚙️ 저장</h2><p class="small muted">이 기기의 브라우저에 자동 저장됩니다.</p><button onclick="resetGame()" class="danger">새로운 군락으로 다시 시작</button></div></section></div><section id="qn-rpg-screen" style="display:none"></section></main><footer><button onclick="tab('home')">🏠 군락</button><button onclick="tab('explore')">🧭 탐사</button><button onclick="tab('relic')">🏺 유물</button><button onclick="tab('history')">📜 기록</button></footer><div id="survivalGuide" class="guide-mask" role="dialog" aria-modal="true" aria-labelledby="guideHeading" hidden><div class="guide-panel"><h2 id="guideHeading">🐜 여왕의 생존 지침</h2><div class="guide-meter" id="guideMeter"></div><div class="guide-art" id="guideArt"></div><h3 id="guideTitle"></h3><p id="guideBody"></p><div class="guide-tip" id="guideTip"></div><div class="guide-actions"><button type="button" id="guideBack" onclick="moveSurvivalGuide(-1)">← 이전</button><button type="button" id="guideForward" onclick="moveSurvivalGuide(1)">다음 →</button></div><button type="button" style="width:100%" onclick="closeSurvivalGuide()">안내 닫고 플레이하기</button></div></div><script>
 'use strict';const KEY='queens_nest_survival_v1';const $=id=>document.getElementById(id);const rnd=(a,b)=>Math.floor(Math.random()*(b-a+1))+a;const chance=p=>Math.random()<p;const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));const pick=a=>a[rnd(0,a.length-1)];
 const RELICS=[
 {id:'seed',name:'🌱 영원의 씨앗',effect:'매일 식량 +4',curse:'매일 습격 위험 +4'},
@@ -203,13 +751,14 @@ style="display:block;width:100%;height:auto;border-radius:8px">
 <div class="scene-caption">▣ 군락의 최후 · 픽셀아트</div>`
 : sceneThumb(s.message)}<!-- QUEENS_NEST_COLONY_END_ART_V1 --><div class="notice">${esc(s.message)}</div><p class="small muted">${ended?'새로운 군락으로 다시 시작할 수 있습니다.':`남은 명령 ${s.actions}/2 · 다음 날에는 식량이 소비되고, 적 군락도 움직입니다.`}</p><div class="bar"><i style="width:${s.queen}%"></i></div><div class="small">여왕 체력 ${s.queen}/100 · 습격 위험 ${s.threat}/100</div>`;
 $('headline').insertAdjacentHTML('beforeend',qnEvolutionBanner());
+$('headline').insertAdjacentHTML('beforeend',qnRpgHeroPanel());
 $('stats').innerHTML=stat('🌾 식량',s.food)+stat('🪵 자재',s.wood)+stat('🐜 일개미',s.workers)+stat('⚔️ 병정개미',s.soldiers)+stat('🥚 알',s.eggs)+stat('🏺 유물',s.owned.length)+stat('🌿 약초',s.herbs||0);
 $('orders').innerHTML=`<div class="grid2">${btn('🌾 채집 · 명령 1회',"order('forage')",ended||!s.actions||s.workers<1)}${btn('🥚 산란 · 식량 '+(active('amber')?10:7),"order('lay')",ended||!s.actions||s.food<(active('amber')?10:7))}${btn(fortLevel()>=10?'🛡️ 둥지 보강 · 최고 단계':'🪵 둥지 보강 · 자재 '+fortCost(),"order('fortify')",ended||!s.actions||fortLevel()>=10||s.wood<fortCost())}${btn('⚔️ 병정 육성 · 식량 9',"order('train')",ended||!s.actions||s.workers<1||s.food<9)}</div><p class="small muted">산란한 알은 다음 날 부화합니다. 병정 육성은 일개미 1마리를 병정개미로 전환합니다.</p><div class="row"><span>🛡️ 둥지 방어 시설: ${s.guard}단계</span><span>탐사 중인 개미: ${s.away?s.away.w+s.away.b:0}마리</span></div>${fortInfo()}<div class="notice" style="margin-top:12px">
 🌿 보유 약초: ${s.herbs||0}개 · 👑 여왕 체력: ${s.queen}/100
 ${btn('💚 약초로 여왕 치료 · 체력 +30','healQueen()',ended||(s.herbs||0)<1||s.queen>=100)}
 </div>${btn('🌙 하루 마무리 · 다음 날', 'nextDay()',ended,'primary')}`;
 $('situation').innerHTML=`<p class="small">${s.away?'⏳ 탐사대 귀환까지 '+s.away.days+'일':'🧭 탐사 중인 개미 없음'} · ${s.missing.length?'❓ 실종된 탐사대 '+s.missing.length+'팀':'실종된 탐사대 없음'}</p><p class="small">🌾 예상 하루 식량 소비: ${dailyEat()}개</p><p class="small">⚠️ 습격 위험: ${s.threat}% · 방어 성공 ${s.raids}회</p><h3>주변 군락의 동향</h3>${s.rivals.map(r=>`<div class="row small"><span>${r.name}</span><span>병력 ${r.strength} · 적대 ${r.hostile}%</span></div>`).join('')}`;
-renderExplore();renderRelics();const recent=s.logs.slice(0,5).map(x=>{const cls=/실종|돌아오지|전사|침공|습격|굶주림|멸망|부상|부족/.test(x)?'critical':/유물|귀환|성공|부화|발견/.test(x)?'reward':'';return `<p class="${cls}">${esc(x)}</p>`}).join('');$('recentHome').innerHTML=recent;$('recentExplore').innerHTML=recent;$('historyList').innerHTML=s.logs.map(x=>`<p>${esc(x)}</p>`).join('')}
+renderExplore();renderRelics();const recent=s.logs.slice(0,5).map(x=>{const cls=/실종|돌아오지|전사|침공|습격|굶주림|멸망|부상|부족/.test(x)?'critical':/유물|귀환|성공|부화|발견/.test(x)?'reward':'';return `<p class="${cls}">${esc(x)}</p>`}).join('');$('recentHome').innerHTML=recent;$('recentExplore').innerHTML=recent;$('historyList').innerHTML=s.logs.map(x=>`<p>${esc(x)}</p>`).join('');qnRenderChapter2()}
 function esc(x){return String(x).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}function dailyEat(){const base=Math.max(2,Math.ceil((s.workers+s.soldiers+(s.away?s.away.w+s.away.b:0)+1)/3))+(active('eggs')?3:0)+(active('root')?2:0);return s.evolution==='swarm'?Math.ceil(base*1.15):base}function order(type){if(!s.alive||s.actions<1)return;if(type==='forage'){if(!s.workers)return;let gain=rnd(3,7)+Math.min(9,s.workers);if(s.evolution==='survival')gain=Math.ceil(gain*1.3);if(active('amber'))gain=Math.ceil(gain*1.5);s.food+=gain;log('일개미들이 주변에서 식량 '+gain+'개를 채집했습니다.')}if(type==='lay'){let cost=7+(active('amber')?3:0);if(s.food<cost)return;s.food-=cost;let n=rnd(1,2)+(active('eggs')?rnd(1,2):0)+(s.evolution==='swarm'?1:0);s.eggs+=n;log('여왕이 알 '+n+'개를 낳았습니다. 내일 부화합니다.')}if(type==='fortify'){if(fortLevel()>=10||s.wood<fortCost())return;const cost=fortCost();s.wood-=cost;s.guard++;log('🛡️ 둥지를 보강했습니다! '+s.guard+'단계 '+FORT_NAMES[fortLevel()]+' 완성. 자재 '+cost+'개 사용.')}if(type==='train'){if(s.food<9||!s.workers)return;s.food-=9;s.workers--;s.soldiers+=(s.evolution==='combat'?2:1);log('일개미 한 마리가 병정개미로 전환되었습니다.'+(s.evolution==='combat'?' 혈갑개미 진화 보너스 +1 병정개미.':''));}s.actions--;update()}
 
 /* QUEENS_NEST_QUEEN_HEAL_V1 */
@@ -717,12 +1266,1449 @@ rescue=function(i){
 qnWrapAction('equip','🏺 유물 변경 결과');
 
 
-/* QUEENS_NEST_EVOLUTION_BETA_020 */
-const QN_EVOLUTIONS={
- combat:{name:'🔴 혈갑개미 · 전투 진화',detail:'전쟁에 적응한 강인한 혈통. 병정 육성 시 병정개미를 1마리 추가 획득합니다.\n장점: 전투 병력 확충.\n주의: 전투 능력치 전체 강화는 후속 업데이트에서 확장됩니다.'},
- survival:{name:'🟢 녹생개미 · 생존 진화',detail:'기근을 견뎌낸 채집 특화 혈통. 채집 명령으로 얻는 식량이 30% 증가합니다(올림).\n장점: 식량 확보와 장기 생존.'},
- swarm:{name:'🔵 천군개미 · 군체 진화',detail:'번식과 군체 확장에 적응한 혈통. 산란 명령 시 알 1개를 추가 획득합니다.\n주의: 매일 식량 소비가 15% 증가합니다(올림).'}
+
+/* QN_RPG_HERO_PANEL_V1 */
+const QN_RPG_STATS={
+ warrior:{hp:150,atk:18,def:15,agi:6},
+ ranger:{hp:105,atk:16,def:7,agi:15},
+ assassin:{hp:90,atk:21,def:5,agi:20},
+ mage:{hp:85,atk:23,def:4,agi:9}
 };
+
+
+
+/* QN_LEVEL_SYSTEM_V2 */
+const QN_GROWTH_SPECIAL={
+ warrior:"def",
+ ranger:"agi",
+ assassin:"crit",
+ mage:"atk"
+};
+
+const QN_GROWTH_BASE={
+ atk:10,def:10,agi:10,crit:10
+};
+
+function qnHeroNormalize(h){
+ if(!h)return;
+
+ const lv=Math.max(1,Math.min(50,Math.floor(Number(h.level)||1)));
+ h.level=lv;
+
+ if(!h.stats)h.stats={};
+
+ const special=QN_GROWTH_SPECIAL[h.classId]||"atk";
+
+ // 최초 1회만 기존 데이터를 새로운 성장 규칙으로 변환
+ if(h.qnGrowthVersion!==2){
+  const oldMax=Math.max(1,Number(h.maxHp)||100);
+  const oldHp=Math.max(0,Number(h.hp) || 0);
+  const hpRatio=Math.min(1,oldHp/oldMax);
+
+  h.qnGrowthBase={
+   stats:{...QN_GROWTH_BASE},
+   maxHp:100
+  };
+
+  h.qnGrowthVersion=2;
+
+  // 방어력 10당이 아닌 방어력 1당 HP +10
+  const def=10+(lv-1)*(special==="def"?3:1);
+  h.maxHp=100+def*10;
+  h.hp=Math.round(h.maxHp*hpRatio);
+ }
+
+ for(const key of ["atk","def","agi","crit"]){
+  h.stats[key]=QN_GROWTH_BASE[key]+
+   (lv-1)*(key===special?3:1);
+ }
+
+ const previousMax=Math.max(1,Number(h.maxHp)||100);
+ const nextMax=100+qnHeroTotalStat(h,"def")*10;
+ h.hp=Math.max(0,(Number(h.hp)||0)+nextMax-previousMax);
+ h.maxHp=nextMax;
+ h.hp=Math.max(0,Math.min(h.maxHp,Number(h.hp)||0));
+
+ delete h.stats.dodge;
+}
+
+function qnHeroCritical(h){
+ qnHeroNormalize(h);
+ const stat=qnHeroTotalStat(h,"crit");
+ const nominal=Math.max(0,stat/10);
+ const limitBreak=qnHasLegendaryEffect(h,"limitBreak");
+ const chance=Math.min(limitBreak?100:80,nominal);
+ const extra=limitBreak?Math.max(0,nominal-100)*0.01:0;
+ const multiplier=(qnHasLegendaryEffect(h,"critDamage")?10:5)*(1+extra);
+ return {stat,chance,multiplier};
+}
+function qnHeroGainExp(amount){
+ const h=s.hero;
+ if(!h||s.chapter!==2)return 0;
+
+ qnHeroNormalize(h);
+
+ const gain=Math.max(0,Math.floor(Number(amount)||0));
+ h.exp=Math.max(0,(Number(h.exp)||0)+gain);
+
+ let leveled=0;
+
+ while(h.level<50 && h.exp>=h.level*100){
+  h.exp-=h.level*100;
+  h.level++;
+  leveled++;
+ }
+
+ if(leveled){
+  const oldMax=h.maxHp;
+  qnHeroNormalize(h);
+  
+  log("⭐ 레벨업! LV."+h.level+" 달성!");
+ }
+
+ if(h.level>=50)h.exp=0;
+
+ save();
+ return leveled;
+}
+
+
+
+/* QN_LEGENDARY_EFFECT_CHECK_V1 */
+function qnHasLegendaryEffect(h,effectId){
+ if(!h||!effectId)return false;
+
+ const equipment=h.equipment||{};
+
+ return ["weapon","armor","accessory"].some(slot=>{
+  const item=equipment[slot];
+  return item?.grade==="legendary"
+   && item?.effect?.id===effectId
+   ;
+ });
+}
+
+/* QN_EQUIPMENT_STATS_V1 */
+function qnHeroTotalStat(h,stat){
+ const base=Number(h?.stats?.[stat])||0;
+ const equipment=h?.equipment||{};
+ let bonus=0;
+
+ for(const slot of ["weapon","armor","accessory"]){
+  const item=equipment[slot];
+  if(item?.stat===stat){
+   bonus+=Number(item.value)||0;
+  }
+ }
+
+ return base+bonus;
+}
+
+function qnHeroSkillDamage(h,mult){
+ qnHeroNormalize(h);
+
+ const key=QN_GROWTH_SPECIAL[h.classId]||"atk";
+ return Math.round((h.stats.atk*10+h.stats[key]*10)*mult);
+}
+
+function qnHeroRollDamage(h,baseDamage){
+ const c=qnHeroCritical(h);
+ const critical=Math.random()*100<c.chance;
+
+ return {
+  critical,
+  damage:Math.round(
+   baseDamage*(critical?c.multiplier:1)
+  )
+ };
+}
+function qnRpgHeroPanel(){
+ if(s.chapter!==2)return '';
+
+ const h=s.hero;
+ if(!h)return '<div class="notice">⚠️ 영웅 데이터가 없습니다. TEST에서 직업을 다시 선택해 주세요.</div>';
+
+ qnHeroNormalize(h);
+ const cls=QN_RPG_STATS[h.classId];
+ if(!cls)return '<div class="notice">⚠️ 알 수 없는 영웅 직업입니다.</div>';
+
+ const name=QN_EVOLUTIONS[h.classId]?.name||'미확인 영웅';
+
+ if(!h.stats){
+  h.stats={...cls};
+  h.hp=cls.hp;
+  h.maxHp=cls.hp;
+ }
+
+ const need=h.level*100;
+ const percent=Math.min(100,Math.max(0,h.exp/need*100));
+
+ return `
+ <section style="margin:12px 0;padding:15px;border:2px solid #cba66b;border-radius:12px;background:#152219;color:#f3ecd8">
+  <div style="font-size:12px;color:#d7b97a">🌑 CHAPTER 2 · RPG HERO</div>
+  <h3 style="margin:8px 0">${name}</h3>
+  <div style="font-size:18px;font-weight:bold">⭐ LV ${h.level}</div>
+
+  <div style="margin-top:12px">❤️ HP ${h.hp} / ${h.maxHp}</div>
+  <div style="height:9px;background:#45352e;border-radius:8px;overflow:hidden">
+   <div style="width:${Math.max(0,Math.min(100,h.hp/h.maxHp*100))}%;height:100%;background:#c54c4c"></div>
+  </div>
+
+  <div style="margin-top:12px">✨ EXP ${h.exp} / ${need}</div>
+  <div style="height:9px;background:#303c32;border-radius:8px;overflow:hidden">
+   <div style="width:${percent}%;height:100%;background:#75b977"></div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px;font-size:13px">
+   <div>⚔️ 공격력 ${h.stats.atk}</div>
+   <div>🛡️ 방어력 ${h.stats.def}</div>
+   <div>💨 민첩성 ${h.stats.agi}</div>
+   <div>💎 젬 ${h.gems||0}</div>
+  </div>
+ </section>`;
+}
+
+
+/* QN_CHAPTER2_SCREEN_V1 */
+
+/* QN_SURFACE_DUNGEON_V1 */
+const QN_SURFACE_ROOMS = [
+ {id:"monster",icon:"⚔️",name:"몬스터",desc:"풀숲에서 움직임이 느껴진다."},
+ {id:"treasure",icon:"🎁",name:"보물",desc:"빛나는 물체가 숨어 있다."},
+ {id:"trap",icon:"🪤",name:"함정",desc:"위험한 흔적이 보인다."},
+ {id:"rest",icon:"🌿",name:"휴식",desc:"안전한 그늘이 있다."},
+ {id:"shop",icon:"🏪",name:"상점",desc:"떠돌이 상인의 흔적이다."},
+ {id:"mystery",icon:"❓",name:"미지",desc:"무엇이 기다릴지 알 수 없다."}
+];
+
+function qnSurfaceRooms(){
+ const pool=[...QN_SURFACE_ROOMS];
+ const count=2+Math.floor(Math.random()*3);
+ return Array.from({length:count},()=>{
+  const i=Math.floor(Math.random()*pool.length);
+  return pool.splice(i,1)[0].id;
+ });
+}
+
+function qnSurfaceInit(){
+ if(!s.hero)return;
+ if(!s.hero.surface){
+  s.hero.surface={
+   floor:1,
+   rooms:qnSurfaceRooms(),
+   message:"홍수에 휩쓸린 뒤, 낯선 지상에서 눈을 떴다."
+  };
+  save();
+ }
+}
+
+
+/* QN_MONSTER_BATTLE_V1 */
+
+const QN_MONSTERS=[
+ {name:"🐛 애벌레",hp:80,atk:8},
+ {name:"🕷️ 거미",hp:110,atk:12},
+ {name:"🪲 딱정벌레",hp:150,atk:16},
+ {name:"🦂 전갈",hp:200,atk:22}
+];
+
+function qnBattleStart(){
+ const h=s.hero;
+ const d=h.surface;
+
+ if(d.battle)return;
+
+ const floor=d.floor;
+ const base=QN_MONSTERS[
+  Math.floor(Math.random()*QN_MONSTERS.length)
+ ];
+
+ const maxHp=base.hp+Math.floor((floor-1)*12);
+
+ d.battle={
+  name:base.name,
+  hp:maxHp,
+  maxHp:maxHp,
+  atk:base.atk+Math.floor((floor-1)*2),
+  turn:1,
+  message:"⚔️ "+base.name+"이(가) 나타났다!"
+ };
+ d.battle.barrierCharges=qnCombatBarriers(h);
+
+
+ d.message=d.battle.message;
+ save();
+}
+
+
+/* QN_CHAPTER2_RETRY_V1 */
+function qnChapter2Retry(classId){
+ if(s.chapter!==2 || !s.hero?.qnDead)return;
+ if(!QN_EVOLUTIONS[classId])return;
+
+ if(!confirm(QN_EVOLUTIONS[classId].name+
+  "\\n\\n이 직업으로 LV.1부터 다시 시작할까요?"))return;
+
+ s.hero={
+  classId:classId,
+  level:1,
+  exp:0,
+  gems:0,
+  hp:200,
+  maxHp:200,
+  stats:{atk:10,def:10,agi:10,crit:10},
+  qnGrowthVersion:2,
+  equipment:{},
+  inventory:[]
+ };
+
+ qnRpgTab="status";
+ save();
+ qnRenderChapter2();
+}
+
+function qnChapter2RetryScreen(){
+ return `<div class="qn2-box">
+  <h2>☠️ 새로운 도전</h2>
+  <p>이전 영웅은 사망했습니다. 새로운 직업을 선택하세요.</p>
+  ${Object.entries(QN_EVOLUTIONS).map(([id,ev])=>
+   `<button onclick="qnChapter2Retry('${id}')">${ev.name}</button>`
+  ).join("")}
+ </div>`;
+}
+
+/* QN_CHAPTER2_DEATH_V1 */
+function qnChapter2Death(){
+ const h=s.hero;
+ if(!h || s.chapter!==2 || h.hp>0)return;
+
+ h.hp=0;
+ h.qnDead=true;
+ delete h.surface?.battle;
+
+ save();
+ qnRpgTab="history";
+ qnRenderChapter2();
+
+ const lastBattleLog=String(h.surface?.message||"").trim();
+ const deathNotice=lastBattleLog ? "☠️ 마지막 전투 기록:\n"+lastBattleLog+"\n\n" : "";
+ alert(deathNotice+"☠️ 영웅이 사망했습니다.\n\n챕터 1의 기록은 보존됩니다.\n새로운 직업으로 다시 도전할 수 있습니다.");
+}
+
+
+/* QN_LEGENDARY_COMBAT_HELPERS_V1 */
+function qnGearEffect(h,id){
+ for(const slot of ["armor","accessory"]){
+  const item=h?.equipment?.[slot];
+  if(item?.grade==="legendary"&&item.effect?.id===id)
+   return item.effect;
+ }
+ return null;
+}
+function qnCombatHits(h){
+ return 1+Math.max(0,Math.min(10,
+  Number(qnGearEffect(h,"combo")?.count)||0));
+}
+function qnCombatBarriers(h){
+ return Math.max(0,Math.min(5,
+  Number(qnGearEffect(h,"barrier")?.count)||0));
+}
+function qnCombatHas(h,id){
+ return !!qnGearEffect(h,id);
+}
+/* QN_BATTLE_V2 */
+const QN_BATTLE_SKILLS={
+ warrior:"최후의 저항",
+ ranger:"집중 사격",
+ assassin:"급소 찌르기",
+ mage:"생명 연소"
+};
+
+
+
+function qnBattleAttack(index){
+ const h=s.hero,d=h?.surface,b=d?.battle;
+ if(!b)return;
+ qnHeroNormalize(h);
+ if(!Number.isInteger(index)||index<0||index>3)return;
+ if(index===1&&b.skillUsed)return;
+ if(index===2&&(h.healCooldown||0)>0)return;
+
+ const has=id=>qnCombatHas(h,id);
+ const maxHp=()=>Math.max(1,h.maxHp);
+ const heal=(amount,source="none")=>{
+  const before=h.hp;
+  h.hp=Math.min(maxHp(),h.hp+Math.ceil(amount));
+  if(source!=="none" && amount>maxHp()-before && !h.overhealBarrier){
+   h.overhealBarrier=1;
+   h.overhealBarrierSource=source;
+  }
+  return h.hp-before;
+ };
+ const survive=()=>{
+  if(h.hp>0)return true;
+  if(has("undying")&&!b.undyingUsed){
+   b.undyingUsed=true;h.hp=1;
+   lines.push("✨ 불굴 발동! HP 1로 생존");
+   return true;
+  }
+  return false;
+ };
+ const lines=[];
+
+ const finishVictory=(reflected=false)=>{
+  const floor=d.floor;
+  const exp=30+floor*10;
+  const gems=5+Math.floor(Math.random()*11);
+  const drain=has("drain");
+  const mage=h.classId==="mage";
+  const mageSkillKill=mage&&!reflected&&index===1&&lastHitLanded;
+
+  const rate=(drain?0.3:0)+(mage&&!mageSkillKill?0.3:0);
+  if(rate>0){
+   const source=drain?"armor":"innate";
+   const gained=heal(b.maxHp*rate,source);
+   if(gained)lines.push("💚 처치 흡혈 +"+gained);
+  }
+
+  if(!survive()){
+   h.hp=0;
+   delete d.battle;
+   d.message=lines.join("\n")+"\n☠️ 사망";
+   qnChapter2Death();
+   return;
+  }
+
+  h.gems=(h.gems||0)+gems;
+  delete d.battle;
+  d.floor++;
+  d.rooms=qnSurfaceRooms();
+
+  if(index!==2&&(h.healCooldown||0)>0)h.healCooldown--;
+
+  const leveled=qnHeroGainExp(exp);
+  h.gearReward=[qnGenerateGear(floor),qnGenerateGear(floor)];
+
+  lines.push(reflected?"🏆 반사로 몬스터 처치!":"🏆 몬스터 처치!");
+  lines.push("⭐ 경험치 +"+exp);
+  lines.push("💎 젬 +"+gems);
+  if(leveled)lines.push("🎉 LV."+h.level+" 레벨 업!");
+
+  d.message=lines.join("\n");
+  save();
+  qnRenderChapter2();
+  qnExploreResultPopup(d.message);
+ };
+
+ const frenzy=has("frenzy")?2:1; let lastHitLanded=false;
+
+ if(index===3){
+  const cost=Math.ceil(Math.max(0,h.hp)*0.1);
+  h.hp=Math.max(0,h.hp-cost);
+  delete d.battle;
+  if((h.healCooldown||0)>0)h.healCooldown--;
+  d.message="🏃 도주 성공! HP -"+cost;
+  save();qnRenderChapter2();return;
+ }
+ if(index===2){
+  const gained=heal(maxHp()*0.3);
+  h.healCooldown=3;
+  lines.push("💚 체력 회복 +"+gained);
+ }else{
+  const skill=index===1;
+  if(skill)b.skillUsed=true;
+  let damage=0;
+  if(h.classId==="warrior")damage=maxHp();
+  else if(h.classId==="ranger")damage=qnHeroTotalStat(h,"agi")*10;
+  else if(h.classId==="assassin")damage=qnHeroTotalStat(h,"crit")*5;
+  else damage=qnHeroTotalStat(h,"atk")*10;
+
+  if(skill){
+   if(h.classId==="warrior")damage*=2;
+   else if(h.classId==="ranger")damage*=1.8;
+   else if(h.classId==="assassin")damage*=2.5;
+   else{
+    damage=qnHeroTotalStat(h,"atk")*100;
+    h.hp-=Math.ceil(maxHp()*0.2);
+   }
+   if(has("skillBoost"))damage*=2;
+  }
+
+  const hits=qnCombatHits(h);
+  for(let i=0;i<hits;i++){
+   if(b.hp<=0)break; lastHitLanded=false;
+   const dodge=Math.min(50,Math.max(0,Number(b.dodge)||0));
+   if(Math.random()*100<dodge){
+    lines.push("💨 "+(i+1)+"타 빗나감");
+   }else{
+    if((b.enemyBarrier||0)>0&&!has("pierce")){
+    b.enemyBarrier--;
+    lines.push("🛡️ 몬스터 베리어가 공격을 막았습니다!");
+    if(!survive())break;
+    continue;
+   }
+   lastHitLanded=true;
+   const roll=qnHeroRollDamage(h,damage*frenzy);
+    const dealt=Math.max(0,Math.round(roll.damage));
+    b.hp=Math.max(0,b.hp-dealt);
+    lines.push((roll.critical?"💥 치명타! ":"⚔️ ")+(i+1)+"타 "+dealt+" 피해");
+
+    if(h.classId==="mage"&&skill){
+     const gained=heal(b.maxHp*0.3,"innate");
+     if(gained)lines.push("💚 생명 흡수 +"+gained);
+    }
+   }
+   if(!survive())break;
+  }
+ }
+
+ if(b.hp<=0){
+  finishVictory(false);
+  return;
+ }
+
+ if(!survive()){
+  h.hp=0;delete d.battle;
+  d.message=lines.join("\n")+"\n☠️ 사망";
+  qnChapter2Death();return;
+ }
+
+ const enemyHits=Math.max(1,Number(b.hits)||1);
+ if(b.barrierCharges===undefined)b.barrierCharges=qnCombatBarriers(h);
+
+ for(let i=0;i<enemyHits;i++){
+  if(b.hp<=0)break;
+  const original=Math.max(1,Number(b.atk)||1);
+  let taken=Math.max(1,original-Math.floor(qnHeroTotalStat(h,"def")/2));
+  if(has("counter"))taken=Math.ceil(taken*0.1);
+  taken=Math.ceil(taken*frenzy);
+
+  if(h.overhealBarrier>0){
+   h.overhealBarrier--;
+   if(h.overhealBarrier<=0){
+    h.overhealBarrier=0;
+    h.overhealBarrierSource=null;
+   }
+   taken=0;
+   lines.push("🛡️ 흡혈 베리어 방어!");
+  }else if(b.barrierCharges>0){
+   b.barrierCharges--;
+   taken=0;
+   lines.push("🛡️ 베리어 방어!");
+  }
+
+  if(taken>0){
+   h.hp-=taken;
+   lines.push("🩸 몬스터 공격 HP -"+taken);
+  }
+  if(has("counter")){
+   const reflected=Math.ceil(original*0.7*frenzy);
+   b.hp=Math.max(0,b.hp-reflected);
+   lines.push("🛡️ 반사 "+reflected+" 피해!");
+  }
+  if(b.hp<=0)break;
+  if(!survive())break;
+ }
+
+ if(b.hp<=0){
+  finishVictory(true);
+  return;
+ }
+
+ if(!survive()){
+  h.hp=0;delete d.battle;
+  d.message=lines.join("\n")+"\n☠️ 사망";
+  qnChapter2Death();return;
+ }
+ if(index!==2&&(h.healCooldown||0)>0)h.healCooldown--;
+ b.turn++;b.message=lines.join("\n");
+ d.message=b.message;
+ save();qnRenderChapter2();
+}
+function qnBattleScreen(){
+ const h=s.hero;
+ const b=h.surface?.battle;
+ if(!b)return "";
+
+ const skill=QN_BATTLE_SKILLS[h.classId]||"고유 스킬";
+ const cooldown=h.healCooldown||0;
+
+ return `
+ <div class="qn2-box" style="text-align:center">
+  <h3 style="margin:4px 0">⚔️ 몬스터 전투 · ${b.turn}턴</h3>
+  <div style="font-size:32px;margin:2px">${b.name.split(" ")[0]}</div>
+  <div style="font-size:14px">${b.name}</div>
+  <div>❤️ 몬스터 HP ${b.hp}/${b.maxHp}</div>
+  <div class="bar">
+   <i style="width:${Math.max(0,b.hp/b.maxHp*100)}%;background:#c74e4e"></i>
+  </div>
+  ${qnHeroBottomHud()}
+  <div class="notice" style="margin:5px 0;padding:7px">
+   ${b.message.replace(/\n/g,"<br>")}
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px">
+   <button onclick="qnBattleAttack(0)">⚔️ 공격</button>
+   <button onclick="qnBattleAttack(1)" ${b.skillUsed?"disabled":""}>
+    ✨ ${skill}${b.skillUsed?" (사용 완료)":""}
+   </button>
+   <button onclick="qnBattleAttack(2)" ${cooldown>0?"disabled":""}>
+    💚 체력 회복${cooldown>0?" ("+cooldown+"턴)":""}
+   </button>
+   <button onclick="qnBattleAttack(3)">🏃 도주</button>
+  </div>
+ </div>`;
+}
+
+
+/* QN_EXPLORE_UI_V2 */
+
+function qnHeroBottomHud(){
+ const h=s.hero;
+ if(!h)return "";
+
+ qnHeroNormalize(h);
+
+ const hp=Math.max(0,Number(h.hp)||0);
+ const maxHp=Math.max(1,Number(h.maxHp)||1);
+ const level=Math.max(1,Number(h.level)||1);
+ const exp=Math.max(0,Number(h.exp)||0);
+ const need=level*100;
+
+ const hpPct=Math.min(100,hp/maxHp*100);
+ const expPct=Math.min(100,exp/need*100);
+
+ return `
+ <div class="qn2-bottom-hero">
+  <div class="qn2-back-hero-image"
+       id="qn2-hero-art-slot">
+   🐜
+  </div>
+  <div class="qn2-hero-hud">
+   <div class="qn2-hero-level">⭐ LV.${level}</div>
+   <div>❤️ HP ${hp}/${maxHp}</div>
+   <div class="qn2-hud-bar">
+    <i style="width:${hpPct}%;background:#cf565f"></i>
+   </div>
+   <div>⭐ EXP ${exp}/${need}</div>
+   <div class="qn2-hud-bar">
+    <i style="width:${expPct}%;background:#76aee7"></i>
+   </div>
+  </div>
+ </div>`;
+}
+
+const QN_EXPLORE_UI_STYLE=`
+<style id="qn-explore-ui-v2-style">
+.qn2-bottom-hero{
+ position:relative;
+ min-height:245px;
+ margin-top:14px;
+ padding:14px;
+ border:1px solid #45556a;
+ border-radius:16px;
+ background:linear-gradient(180deg,#101d22,#0a151b);
+ display:flex;
+ flex-direction:column;
+ justify-content:flex-end;
+ align-items:center;
+ gap:12px;
+}
+.qn2-back-hero-image{
+ font-size:76px;
+ line-height:1.2;
+ text-align:center;
+ min-height:95px;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+}
+.qn2-hero-hud{
+ width:100%;
+ box-sizing:border-box;
+ padding:12px;
+ border-radius:12px;
+ background:rgba(5,13,22,.88);
+ color:#f5f0e4;
+ font-size:14px;
+ line-height:1.7;
+}
+.qn2-hero-level{
+ font-size:16px;
+ font-weight:bold;
+ color:#efd08a;
+}
+.qn2-hud-bar{
+ height:9px;
+ margin:3px 0 9px;
+ border-radius:9px;
+ overflow:hidden;
+ background:#27313a;
+}
+.qn2-hud-bar i{
+ display:block;
+ height:100%;
+ border-radius:9px;
+}
+</style>`;
+
+function qnInstallExploreUiStyle(){
+ if(document.getElementById("qn-explore-ui-v2-style"))return;
+ document.head.insertAdjacentHTML(
+  "beforeend",QN_EXPLORE_UI_STYLE
+ );
+}
+
+const qnOriginalBattleScreen=qnBattleScreen;
+qnBattleScreen=function(){
+ qnInstallExploreUiStyle();
+ const html=qnOriginalBattleScreen();
+ if(!html)return html;
+ return html;
+};
+
+const qnOriginalExploreScreen=qnRpgExploreScreen;
+qnRpgExploreScreen=function(){
+ qnInstallExploreUiStyle();
+ const html=qnOriginalExploreScreen();
+ if(s.hero?.surface?.battle)return html;
+ return html;
+};
+
+/* QN_EXPLORE_POPUP_V1 */
+
+function qnExplorePopup(title,message){
+ let old=document.getElementById("qn-explore-popup");
+ if(old)old.remove();
+
+ const overlay=document.createElement("div");
+ overlay.id="qn-explore-popup";
+
+ overlay.style.cssText=`
+ position:fixed;
+ inset:0;
+ z-index:99999;
+ background:rgba(0,0,0,.78);
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ padding:20px;
+ `;
+
+ const box=document.createElement("div");
+ box.style.cssText=`
+ width:min(100%,360px);
+ max-height:80dvh;
+ overflow:auto;
+ background:linear-gradient(160deg,#253d35,#101e1b);
+ border:2px solid #b9a46a;
+ border-radius:18px;
+ padding:24px 18px;
+ color:#f5edd4;
+ text-align:center;
+ box-shadow:0 12px 40px #000a;
+ `;
+
+ const heading=document.createElement("h2");
+ heading.textContent=title;
+ heading.style.margin="0 0 18px";
+
+ const content=document.createElement("div");
+ content.textContent=message;
+ content.style.cssText=`
+ white-space:pre-line;
+ line-height:1.9;
+ font-size:16px;
+ margin-bottom:22px;
+ `;
+
+ const button=document.createElement("button");
+ button.textContent="확인";
+ button.style.cssText=`
+ width:100%;
+ padding:14px;
+ border-radius:12px;
+ background:#b9a46a;
+ color:#18251d;
+ font-size:17px;
+ font-weight:bold;
+ `;
+
+ button.onclick=()=>overlay.remove();
+
+ box.append(heading,content,button);
+ overlay.appendChild(box);
+ document.body.appendChild(overlay);
+}
+
+function qnExploreResultPopup(message){
+ const first=message.split("\\n")[0];
+
+ let title="🧭 탐험 결과";
+
+ if(first.includes("몬스터")||message.includes("처치"))
+  title="⚔️ 전투 승리!";
+ else if(first.includes("보물"))
+  title="🎁 보물 발견!";
+ else if(first.includes("함정"))
+  title="🪤 함정 발생!";
+ else if(first.includes("휴식"))
+  title="🌿 휴식 완료!";
+ else if(first.includes("상인"))
+  title="🏪 상인 발견!";
+
+ qnExplorePopup(title,message);
+}
+
+function qnSurfaceChoose(index){
+ const h=s.hero;
+ if(!h || h.hp<=0){
+  alert("☠️ 사망한 영웅은 탐험할 수 없습니다.\n새로운 직업을 선택해 다시 도전하세요.");
+  return;
+ }
+ const d=h?.surface;
+ if(!d||!d.rooms||index<0||index>=d.rooms.length)return;
+
+ let type=d.rooms[index];
+ if(type==="mystery"){
+  const pool=["monster","treasure","trap","rest"];
+  type=pool[Math.floor(Math.random()*pool.length)];
+ }
+
+ let message="";
+ if(type==="monster"){
+  qnBattleStart();
+  qnRpgTab="explore";
+  qnRenderChapter2();
+  return;
+ }else if(type==="treasure"){
+  const gems=10+Math.floor(Math.random()*21);
+  h.gems=(h.gems||0)+gems;
+  message="🎁 보물 발견!\n💎 젬 "+gems+"개 획득.";
+ }else if(type==="trap"){
+  const damage=5+Math.floor(Math.random()*11);
+  h.hp=Math.max(1,(h.hp||1)-damage);
+  message="🪤 함정 발동!\n❤️ 체력 "+damage+" 감소.";
+ }else if(type==="rest"){
+  const before=h.hp;
+  h.hp=Math.min(h.maxHp,h.hp+20);
+  message="🌿 나무 그늘에서 휴식했다.\n❤️ 체력 "+(h.hp-before)+" 회복.";
+ }else if(type==="shop"){
+  message="🏪 떠돌이 상인을 발견했다.\n상점 기능은 다음 업데이트에서 열린다.";
+ }
+
+ d.floor++;
+ d.rooms=qnSurfaceRooms();
+ d.message=message;
+ qnRpgTab='explore';
+ save();
+ qnRenderChapter2();
+ qnExploreResultPopup(message);
+}
+
+function qnSurfaceScreen(){
+ qnSurfaceInit();
+ const h=s.hero,d=h.surface;
+ const night=Math.floor((d.floor-1)/5)%2===1;
+ const theme=night
+  ? {name:"🌙 밤",sky:"#172947",ground:"#293e46",card:"#24384b",border:"#b6c8e2",text:"#eef4ff",sub:"#b9cce3"}
+  : {name:"☀️ 낮",sky:"#8dc9e8",ground:"#77a56a",card:"#e6efd7",border:"#55764b",text:"#19301e",sub:"#476047"};
+
+ return `
+ <div style="background:linear-gradient(180deg,${theme.sky},${theme.ground});color:${theme.text};border:2px solid ${theme.border};border-radius:14px;padding:14px;margin:6px 0">
+  <div style="display:flex;justify-content:space-between;gap:6px;font-weight:700">
+   <span>${theme.name}</span><span>🌱 이슬 초원</span><span>${d.floor}F</span>
+  </div>
+  
+ <div style="text-align:center;font-size:13px;margin:4px 0">
+  💎 보유 보석 ${h.gems||0}
+ </div>
+ ${qnHeroBottomHud()}
+
+  <h3 style="text-align:center;margin:12px 0">🚪 다음 방을 선택하세요</h3>
+  <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px">
+   ${d.rooms.map((id,i)=>{
+    const room=QN_SURFACE_ROOMS.find(x=>x.id===id);
+    return `<button onclick="qnSurfaceChoose(${i})" style="min-height:76px;background:${theme.card};color:${theme.text};border:2px solid ${theme.border};padding:10px 6px">
+     <div style="font-size:23px">${room.icon}</div>
+     <strong>${room.name}</strong>
+     <div style="font-size:11px;color:${theme.sub};margin-top:7px">${room.desc}</div>
+    </button>`;
+   }).join("")}
+  </div>
+  <div style="white-space:pre-line;line-height:1.6;border:1px solid ${theme.border};border-radius:10px;padding:12px;margin-top:7px;font-size:12px">${d.message}</div>
+  <div style="text-align:center;font-size:11px;margin-top:5px">선택한 방으로 이동하면 되돌아올 수 없습니다.</div>
+ 
+ </div>`;
+}
+
+
+/* QN_RPG_TABS_V1 */
+let qnRpgTab="status";
+
+function qnRpgSwitchTab(tab){
+ if(!["status","gear","explore","history"].includes(tab))return;
+ qnRpgTab=tab;
+ qnRenderChapter2();
+}
+
+
+/* QN_STATUS_LAYOUT_V2 */
+
+/* QN_STATUS_EFFECTS_V1 */
+function qnRpgConditionHtml(h){
+ const effects = Array.isArray(h.statusEffects)
+  ? h.statusEffects : [];
+
+ if(effects.length === 0){
+  return '<div class="qn2-condition-normal">🟢 정상</div>';
+ }
+
+ const names = {
+  poison:["☠️","중독"],
+  burn:["🔥","화상"],
+  bleed:["🩸","출혈"],
+  stun:["💫","기절"],
+  slow:["🕸️","둔화"],
+  paralysis:["⚡","마비"]
+ };
+
+ return effects.map(e=>{
+  const data=names[e.id]||["⚠️","이상 상태"];
+  const turns=Number.isFinite(e.turns)
+   ? ` (${Math.max(0,e.turns)}턴)` : "";
+  return `<div class="qn2-condition-bad">
+   ${data[0]} ${data[1]}${turns}
+  </div>`;
+ }).join("");
+}
+
+function qnRpgStatusScreen(){
+ const h=s.hero;
+ qnHeroNormalize(h);
+ const c=QN_RPG_STATS[h.classId]||QN_RPG_STATS.warrior;
+ const name=QN_EVOLUTIONS[h.classId]?.name||"이름 없는 개미";
+
+ if(!h.stats){
+  h.stats={...c};
+  h.maxHp=c.hp;
+  h.hp=c.hp;
+  save();
+ }
+
+ const atk=qnHeroTotalStat(h,'atk');
+ const def=qnHeroTotalStat(h,'def');
+ const agi=qnHeroTotalStat(h,'agi');
+ const crit=h.stats.crit||0;
+
+ const level=h.level||1;
+ const exp=h.exp||0;
+ const expNeed=level*100;
+ const hp=h.hp??h.maxHp;
+ const maxHp=h.maxHp||1;
+
+
+ /* QN_CLASS_SKILLS_V1 */
+ const skillData={
+  warrior:[
+   ["🦷","강철 턱","강력한 턱으로 적을 물어뜯습니다.",1,0],
+   ["💥","분쇄의 일격","체력을 소모해 적을 강하게 분쇄합니다.",1.8,0.08],
+   ["🔥","광전사의 포효","생명력을 불태워 파괴적인 공격을 가합니다.",2.6,0.18]
+  ],
+  ranger:[
+   ["💧","수압 사격","고압의 물줄기를 발사합니다.",1,0],
+   ["🏹","관통 물줄기","압축한 물줄기로 적을 꿰뚫습니다.",1.7,0.07],
+   ["🌊","폭우의 세례","체력을 소모해 강력한 수압 공격을 퍼붓습니다.",2.4,0.15]
+  ],
+  assassin:[
+   ["🗡️","기습 베기","빠르게 접근해 적을 베어냅니다.",1,0],
+   ["🩸","급소 절단","체력을 소모해 적의 급소를 공격합니다.",2,0.10],
+   ["☠️","사형 집행","목숨을 걸고 치명적인 일격을 가합니다.",3,0.22]
+  ],
+  mage:[
+   ["🔥","불씨","작은 불꽃을 일으켜 공격합니다.",1,0],
+   ["💥","화염 폭발","체력을 불꽃으로 바꿔 폭발시킵니다.",1.9,0.09],
+   ["🌋","지옥불","막대한 생명력을 소모해 지옥불을 일으킵니다.",2.8,0.20]
+  ]
+ };
+
+ const skills=(skillData[h.classId]||skillData.warrior)
+  .map(([icon,name,desc,mult,costRate])=>({
+   icon,name,desc,
+   damage:qnHeroSkillDamage(h,mult),
+   cost:Math.ceil(maxHp*costRate)
+  }));
+
+
+ return `
+ <div class="qn2-status-layout">
+
+  <div class="qn2-status-left">
+   <div class="qn2-status-title">⚔️ 능력치</div>
+   <div class="qn2-ability">공격력 <b>${atk} (피해 +${atk*10})</b></div>
+   <div class="qn2-ability">방어력 <b>${def} (체력 +${def*10})</b></div>
+   <div class="qn2-ability">민첩성 <b>${agi} (속도 +${agi*10})</b></div>
+   <div class="qn2-ability">치명타 <b>${crit} (${qnHeroCritical(h).chance}% · 피해 ${(qnHeroCritical(h).multiplier*100).toFixed(0)}%)</b></div>
+   <div class="qn2-ability">보유 젬 <b>💎 ${h.gems||0}</b></div>
+
+   <div class="qn2-condition">
+    <div class="qn2-condition-title">☠️ 현재 상태</div>
+    <div class="qn2-condition-list">
+     ${qnRpgConditionHtml(h)}
+    </div>
+   </div>
+  </div>
+
+  <div class="qn2-status-right">
+
+   <div class="qn2-status-portrait">
+    <div class="qn2-status-ant">🐜</div>
+    <div class="qn2-status-name">${name}</div>
+   </div>
+
+   <div class="qn2-status-vitals">
+    <div class="qn2-status-level">LV.${level}</div>
+    <div class="qn2-vital-label">❤️ HP ${hp}/${maxHp}</div>
+    <div class="qn2-vital-bar">
+     <i style="width:${Math.max(0,Math.min(100,hp/maxHp*100))}%;background:#b96c70"></i>
+    </div>
+    <div class="qn2-vital-label">⭐ EXP ${exp}/${expNeed}</div>
+    <div class="qn2-vital-bar">
+     <i style="width:${Math.max(0,Math.min(100,exp/expNeed*100))}%;background:#8caee0"></i>
+    </div>
+   </div>
+
+  </div>
+
+ </div>
+
+ <div class="qn2-box qn2-skills">
+  <h3>✨ 고유 스킬</h3>
+  <div class="qn2-skill">
+   <div class="qn2-skill-name">
+    ✨ ${QN_BATTLE_SKILLS[h.classId]||"고유 스킬"}
+   </div>
+   <div class="qn2-skill-desc">
+    전투당 1회 사용할 수 있는 직업 전용 기술입니다.
+   </div>
+  </div>
+  <div class="qn2-sub">
+   ⚔️ 공격 · ✨ 고유 스킬 · 💚 체력 회복 · 🏃 도주<br>
+   전투 중 네 가지 행동을 선택할 수 있습니다.
+  </div>
+ </div>`;
+}
+
+/* QN_GEAR_GENERATOR_V1 */
+const QN_GEAR_SLOTS=["weapon","armor","accessory"];
+
+const QN_GEAR_NAMES={
+ weapon:["날카로운 턱날","검은 가시","균열의 송곳"],
+ armor:["단단한 외골격","가시 갑각","침묵의 껍질"],
+ accessory:["이슬 결정","고대의 촉각","붉은 부적"]
+};
+
+const QN_GEAR_EFFECTS={
+ warrior:{
+  armor:["counter","반격"],
+  accessory:["undying","불굴"]
+ },
+ ranger:{
+  armor:["combo","연속 공격"],
+  accessory:["evasion","회피"]
+ },
+ assassin:{
+  weapon:["critDamage","치명타 피해 증가"],
+  armor:["critChance","치명타 확률 증가"]
+ },
+ mage:{
+  armor:["drain","처치 시 체력 회복"],
+  accessory:["barrier","베리어"]
+ }
+};
+
+
+function qnGearRollValue(level){
+ const lv=Math.max(1,Math.floor(Number(level)||1));
+ return Math.max(1,Math.floor(lv*10*(0.7+Math.random()*0.6)));
+}
+function qnWeightedRoll(entries){
+ const total=entries.reduce((n,x)=>n+x[1],0);
+ let r=Math.random()*total;
+ for(const [value,weight] of entries){
+  r-=weight;
+  if(r<0)return value;
+ }
+ return entries[entries.length-1][0];
+}
+function qnGenerateGear(floor){
+ const h=s.hero;
+ const slot=QN_GEAR_SLOTS[Math.floor(Math.random()*QN_GEAR_SLOTS.length)];
+ const grade=Math.random()<0.30?"legendary":"common";
+ const names=QN_GEAR_NAMES[slot];
+ const name=names[Math.floor(Math.random()*names.length)];
+ const stat=QN_GROWTH_SPECIAL[h?.classId]||"atk";
+ const base=qnGearRollValue(h?.level||1);
+ const value=grade==="legendary"&&slot==="weapon"
+  ?Math.floor(base*1.5):base;
+
+ const armorEffects=[
+  ["combo","연속 공격"],
+  ["critDamage","치명타 피해"],
+  ["counter","반사·반격"],
+  ["drain","흡혈"]
+ ];
+ const accessoryEffects=[
+  ["undying","불굴"],
+  ["pierce","관통"],
+  ["frenzy","광란"],
+  ["skillBoost","스킬 부스트"],
+  ["limitBreak","한계 돌파"],
+  ["barrier","베리어"]
+ ];
+
+ let effect=null;
+ if(grade==="legendary"&&slot!=="weapon"){
+  let chosen;
+  if(slot==="armor"){
+   const own={warrior:"counter",ranger:"combo",assassin:"critDamage",mage:"drain"}[h?.classId];
+   const weights=armorEffects.map(x=>[x,x[0]===own?20:80/3]);
+   chosen=qnWeightedRoll(weights);
+  }else{
+   chosen=accessoryEffects[Math.floor(Math.random()*accessoryEffects.length)];
+  }
+  effect={id:chosen[0],name:chosen[1]};
+  if(effect.id==="combo"){
+   effect.count=qnWeightedRoll([
+    [1,30],[2,22],[3,16],[4,11],[5,8],
+    [6,5],[7,3.5],[8,2],[9,1.5],[10,1]
+   ]);
+   effect.name+=" +"+effect.count;
+  }
+  if(effect.id==="barrier"){
+   effect.count=qnWeightedRoll([
+    [1,40],[2,30],[3,15],[4,10],[5,5]
+   ]);
+   effect.name+=" +"+effect.count;
+  }
+ }
+
+ const statNames={atk:"공격력",def:"방어력",agi:"민첩성",crit:"치명타"};
+ return {
+  slot,grade,
+  name:(grade==="legendary"?"전설의 ":"")+name,
+  stat,value,
+  statText:statNames[stat]+" +"+value,
+  effect,
+  effectText:effect?"✨ "+effect.name:"",
+  floor:Math.max(1,Math.floor(Number(floor)||1))
+ };
+}
+function qnChooseGearReward(index){
+ const h=s.hero;
+ if(!Array.isArray(h?.gearReward)||h.gearReward.length!==2)return;
+ if(![-1,0,1].includes(index))return;
+
+ if(index>=0){
+  const item=h.gearReward[index];
+  if(!["weapon","armor","accessory"].includes(item?.slot))return;
+  if(!h.equipment||typeof h.equipment!=="object"){
+   h.equipment={};
+  }
+  const previousArmor=h.equipment.armor;
+   const removingDrain=item.slot==="armor"
+    && previousArmor?.effect?.id==="drain"
+    && item.effect?.id!=="drain";
+   h.equipment[item.slot]=item;
+   qnHeroNormalize(h);
+   if(removingDrain && h.overhealBarrierSource==="armor"){
+   h.overhealBarrier=0;
+   h.overhealBarrierSource=null;
+  }
+
+ }
+
+ delete h.gearReward;
+ save();
+ qnRenderChapter2();
+}
+
+/* QN_GEAR_REWARD_V1 */
+/* QN_GEAR_COMPARE_V1 */
+function qnLegendDescription(g){
+ if(!g?.effect)return "특수 효과 없음";
+ const e=g.effect;
+ const n=Math.max(1,Number(e.count)||1);
+ const descriptions={
+  combo:`추가 타격 ${n}회 · 매 타격 명중·치명타 개별 판정`,
+  critDamage:"치명타 피해 배율 ×10",
+  counter:"받는 피해 90% 감소 · 원래 공격 피해 70% 반사",
+  drain:"적 처치 시 적 최대 HP의 30% 회복 · 초과 회복 베리어 최대 1회",
+  undying:"전투당 1회 HP 1로 생존",
+  pierce:"적의 베리어를 무시하고 피해",
+  frenzy:"주는 피해 ×2 · 받는 피해 ×2 · 반사 피해 ×2",
+  skillBoost:"직업 고유 스킬 피해 ×2",
+  limitBreak:"치명타 확률 상한 해제 · 100% 초과 1%p당 치명타 피해 1% 증가",
+  barrier:`전투 시작 시 적 공격 ${n}회 완전 방어`
+ };
+ return "✨ "+(e.name||e.id)+"<br>"+(descriptions[e.id]||"특수 효과");
+}
+function qnGearRewardScreen(){
+ const h=s.hero;
+ const items=h?.gearReward;
+ if(!Array.isArray(items)||items.length!==2)return "";
+
+ const slots={
+  weapon:"⚔️ 무기",
+  armor:"🛡️ 방어구",
+  accessory:"💍 장신구"
+ };
+
+ const effects={
+  counter:"받는 피해 90% 감소 · 적의 원래 공격 피해 70% 반사",
+  undying:"전투당 1회, 사망할 피해를 받아도 HP 1로 생존",
+  combo:"추가 공격 +{count}회 · 각 타격마다 명중·치명타 개별 판정",
+  evasion:"25% 확률로 몬스터 공격 회피",
+  critDamage:"치명타 피해 배율 ×10",
+  critChance:"치명타 확률 +20%p",
+  drain:"적 처치 시 적 최대 HP의 30% 회복 · 초과 회복 시 베리어 최대 1회",
+  barrier:"전투 시작 시 공격 {count}회 완전 방어"
+ };
+
+ const grade=g=>g?.grade==="legendary"?"🟡 전설":"⚪ 일반";
+ const effect=g=>qnLegendDescription(g);
+
+ return `<div class="qn2-box">
+ <h2>🎁 장비 보상 선택</h2>
+ <p>하나를 장착하거나 모두 포기하세요.</p>
+ ${items.map((g,i)=>{
+  const current=h.equipment?.[g.slot];
+  const oldValue=Number(current?.value)||0;
+  const newValue=Number(g.value)||0;
+  const diff=newValue-oldValue;
+  const change=diff>0
+   ? "🟢 +"+diff+" 증가"
+   : diff<0
+    ? "🔴 "+diff+" 감소"
+    : "⚪ 변화 없음";
+
+  return `<div class="qn2-box">
+   <h3>${slots[g.slot]||"장비"}</h3>
+   <b>${grade(g)} · ${g.name}</b>
+   <p>${g.statText}</p>
+   <p>${effect(g)}</p>
+   <hr>
+   <b>📦 현재 장착 장비</b>
+   <p>${current
+    ? grade(current)+" · "+current.name+
+      "<br>"+current.statText+
+      "<br>"+effect(current)
+    : "미장착"}</p>
+   <b>📊 교체 시 능력치 변화</b>
+   <p>${g.statText?.split(" +")[0]||"능력치"}: ${change}</p>
+   <button onclick="qnChooseGearReward(${i})">장착하기</button>
+  </div>`;
+ }).join("")}
+ <button onclick="qnChooseGearReward(-1)">둘 다 포기</button>
+ </div>`;
+}
+/* QN_GEAR_SCREEN_V2 */
+function qnRpgGearScreen(){
+ const h=s.hero;
+ const eq=h.equipment||{};
+
+ const show=(item)=>{
+  if(!item)return "미장착";
+  if(typeof item==="string")return item;
+  const name=item.name||"이름 없는 장비";
+  const grade=item.grade==="legendary"?"🟡 전설":"⚪ 일반";
+  const stat=item.statText||"";
+  const effect=item.effect?qnLegendDescription(item):(item.effectText||"");
+  return `${grade} · ${name}${stat?"<br>"+stat:""}${effect?"<br>"+effect:""}`;
+ };
+
+ return `
+ <div class="qn2-box">
+  <h2>⚔️ 장비</h2>
+  <div class="qn2-sub">장비는 부위별 1개만 보유할 수 있습니다.<br>새 장비를 장착하면 기존 장비는 사라집니다.</div>
+  <div class="qn2-gems">💎 보유 젬 <b>${h.gems||0}</b></div>
+  <div class="qn2-statgrid">
+   <div>⚔️ 무기<br><b>${show(eq.weapon)}</b></div>
+   <div>🛡️ 방어구<br><b>${show(eq.armor)}</b></div>
+   <div>💍 장신구<br><b>${show(eq.accessory)}</b></div>
+  </div>
+ </div>`;
+}
+function qnRpgExploreScreen(){
+ if(s.hero?.gearReward?.length===2){
+  return qnGearRewardScreen();
+ }
+
+ return s.hero?.surface?.battle
+  ? qnBattleScreen()
+  : qnSurfaceScreen();
+}
+
+function qnRpgHistoryScreen(){
+ const h=s.hero;
+ const d=h.surface;
+ const m=s.qnColonyMemory;
+
+ return `
+ <div class="qn2-box">
+  <h2>📜 챕터 1 · 군락의 기억</h2>
+  <div class="qn2-sub">
+   ${m
+    ? `생존 일수: ${m.day||0}일<br>일개미: ${m.workers||0}<br>병정개미: ${m.soldiers||0}<br>식량: ${m.food||0}`
+    : "보존된 군락 기록이 없습니다."}
+  </div>
+ </div>
+ <div class="qn2-box">
+  <h2>📜 챕터 2 · 방랑의 기록</h2>
+  <div class="qn2-sub">
+   직업: ${QN_EVOLUTIONS[h.classId]?.name||"개미"}<br>
+   레벨: ${h.level||1}<br>
+   현재 층: ${d?.floor||1}F<br>
+   보유 젬: ${h.gems||0}
+  </div>
+ </div>
+ <div class="qn2-box">
+  <h3>⚙️ 재시작 및 초기화</h3>
+  <button class="qn2-reset" onclick="qnRpgRestartChapter2()">🔄 챕터 2 재시작</button>
+  <button class="qn2-reset danger" onclick="qnRpgRestartAll()">⚠️ 챕터 1부터 재시작</button>
+  <div class="qn2-sub" style="margin-top:10px">재시작 전에 확인창이 표시됩니다.</div>
+ </div>`;
+}
+
+function qnRpgRestartChapter2(){
+ if(!confirm("챕터 2를 LV.1부터 다시 시작할까요?\n\n챕터 1 기록과 선택한 직업은 유지됩니다.\n챕터 2의 장비·젬·레벨·탐험 기록은 초기화됩니다."))return;
+
+ const id=s.hero.classId;
+ const c=QN_RPG_STATS[id]||QN_RPG_STATS.warrior;
+ s.hero={
+  classId:id,level:1,exp:0,gems:0,
+  hp:c.hp,maxHp:c.hp,stats:{...c},
+  equipment:{},inventory:[]
+ };
+ qnRpgTab="status";
+ save();
+ qnRenderChapter2();
+}
+
+function qnRpgRestartAll(){
+ if(!confirm("정말 챕터 1부터 다시 시작할까요?\n\n챕터 1과 챕터 2의 진행 데이터가 모두 초기화됩니다."))return;
+ if(!confirm("마지막 확인입니다.\n현재 저장 데이터를 삭제하고 새로운 군락을 시작합니다."))return;
+ resetGame();
+}
+
+function qnRpgTabs(){
+ const tabs=[
+  ["status","🐜","상태창"],
+  ["gear","🎒","장비"],
+  ["explore","🧭","탐험"],
+  ["history","📜","기록"]
+ ];
+ return `<nav class="qn2-nav">${tabs.map(([id,icon,name])=>
+  `<button class="${qnRpgTab===id?"active":""}" onclick="qnRpgSwitchTab('${id}')">${icon}<small>${name}</small></button>`
+ ).join("")}</nav>`;
+}
+
+function qnRenderChapter2(){
+ if(s.chapter===2 && s.hero){
+  const colony=document.getElementById('qn-colony-screen');
+  const rpg=document.getElementById('qn-rpg-screen');
+  if(colony)colony.style.display='none';
+  if(rpg){
+   rpg.style.display='block';
+   rpg.innerHTML=
+    (s.hero.qnDead
+     ? qnChapter2RetryScreen()
+     : qnRpgTab==="status"?qnRpgStatusScreen():
+     qnRpgTab==="gear"?qnRpgGearScreen():
+     qnRpgTab==="history"?qnRpgHistoryScreen():
+     qnRpgExploreScreen())+qnRpgTabs();
+  }
+  const footer=document.querySelector('footer');
+  if(footer)footer.style.display='none';
+  return;
+ }
+
+ const colony=document.getElementById('qn-colony-screen');
+ const rpg=document.getElementById('qn-rpg-screen');
+ const footer=document.querySelector('footer');
+
+ if(s.chapter!==2){
+  colony.style.display='';
+  rpg.style.display='none';
+  footer.style.display='';
+  return;
+ }
+
+ colony.style.display='none';
+ rpg.style.display='block';
+ footer.style.display='none';
+
+ const h=s.hero;
+ const name=QN_EVOLUTIONS[h?.classId]?.name||'이름 없는 개미';
+
+ rpg.innerHTML=`
+ <div class="card" style="text-align:center">
+  <div style="font-size:12px;color:#d7b97a">CHAPTER 2</div>
+  <h2 style="font-size:23px;margin-top:10px">☀️ 지상에 버려진 자</h2>
+  <p style="font-size:13px;line-height:1.8;color:#b8c9b4">
+   거센 물살에서 살아남은 작은 개미.<br>
+   이제 낯선 지상에서 새로운 운명을 개척해야 합니다.
+  </p>
+ </div>
+
+ ${qnRpgHeroPanel()}
+
+ <div class="card">
+  <h2>🌱 이슬 맺힌 초원</h2>
+  <div style="padding:45px 12px;text-align:center;background:linear-gradient(#243a27,#101b14);border-radius:12px">
+   <div style="font-size:52px">🌿 🐜 🍄</div>
+   <p style="font-size:13px;color:#c8d4bd">
+    거대한 풀잎 사이로 햇살이 스며듭니다.
+   </p>
+  </div>
+  <p class="small muted" style="margin-top:12px">
+   권장 레벨: LV 1~10<br>
+   발견 가능한 적: 진딧물, 작은 거미, 딱정벌레
+  </p>
+ </div>
+
+ <div class="card">
+  <h2>⚔️ 모험</h2>
+  <div class="grid2">
+   <button onclick="alert('⚔️ 사냥 시스템은 다음 업데이트에서 추가됩니다.')">⚔️ 사냥</button>
+   <button onclick="alert('🎒 가방 시스템은 다음 업데이트에서 추가됩니다.')">🎒 가방</button>
+   <button onclick="alert('🏪 상점 시스템은 다음 업데이트에서 추가됩니다.')">🏪 상점</button>
+   <button onclick="alert('📜 퀘스트 시스템은 다음 업데이트에서 추가됩니다.')">📜 퀘스트</button>
+  </div>
+ </div>
+ `;
+}
+
+/* QUEENS_NEST_EVOLUTION_BETA_020 */
+/* QUEENS_NEST_RPG_CLASSES_V1 */
+const QN_EVOLUTIONS={
+ warrior:{
+  name:'⚔️ 붉은턱개미 · 워리어',
+  detail:'강력한 턱과 단단한 외골격을 가진 근접 전투 전문가.\n특성: 높은 체력과 방어력.\n전용 기술: 붉은 강타.'
+ },
+ ranger:{
+  name:'🏹 물총개미 · 레인저',
+  detail:'산성 액체를 발사해 멀리서 적을 제압하는 사냥꾼.\n특성: 높은 명중률과 원거리 공격.\n전용 기술: 산성 사격.'
+ },
+ assassin:{
+  name:'🗡️ 덫턱개미 · 어쌔신',
+  detail:'순식간에 턱을 닫아 치명적인 일격을 가하는 암살자.\n특성: 높은 치명타와 회피.\n전용 기술: 그림자 습격.'
+ },
+ mage:{
+  name:'🔮 불개미 · 소서러',
+  detail:'불과 독의 마력을 다루는 신비로운 개미.\n특성: 속성 공격과 상태이상.\n전용 기술: 화염 구체.'
+ }
+};
+
 let qnEvolutionNoticeShown=false;
 function qnEvolutionCheck(){
  if(s.chapter!==2)s.chapter=1;
@@ -730,17 +2716,110 @@ function qnEvolutionCheck(){
  if(s.evolution && s.chapter!==2){s.chapter=2;save()}
  if(s.evolutionUnlocked && !s.evolution && s.alive && !qnEvolutionNoticeShown){
   qnEvolutionNoticeShown=true;
-  setTimeout(()=>{if(s.alive && !s.evolution && !document.getElementById('qn-evolution-modal'))qnOpenEvolution()},350);
+  // 진화 선택은 대홍수 이야기 이후에만 가능
  }
 }
+
+/* QN_FLOOD_STORY_TEST_V1 */
+const QN_FLOOD_SCENES=[
+ ['평온한 하루','군체는 오늘도 살아 숨 쉬고 있었다.\n일개미들은 먹이를 나르고, 병정개미들은 여왕의 방을 지켰다.'],
+ ['이상한 진동','그때였다.\n\n땅속 깊은 곳에서 둔탁한 울림이 들려왔다.\n통로의 흙먼지가 천천히 떨어지기 시작했다.'],
+ ['균열','쩌저적—!\n\n둥지의 벽이 갈라졌다.\n갈라진 틈 사이로 차가운 물이 스며들었다.'],
+ ['대홍수','콰아아아아—!!\n\n거대한 물줄기가 지하 통로를 집어삼켰다.\n병정개미들의 방어선이 무너지고, 비명이 어둠 속으로 사라졌다.'],
+ ['마지막 기억','거센 물살 속에서 여왕의 모습이 희미해졌다.\n\n주인공은 필사적으로 더듬이를 뻗었다.\n\n하지만 닿지 않았다.'],
+ ['암전','아무것도 보이지 않는다.\n\n소리도, 냄새도, 동료들의 기척도 사라졌다.\n\n……얼마나 시간이 흘렀을까.'],
+ ['낯선 하늘','눈을 뜨자 따뜻한 빛이 쏟아졌다.\n\n머리 위에는 끝없이 펼쳐진 하늘.\n발아래에는 거대한 풀잎과 낯선 흙냄새.\n\n이곳은…… 지상이다.'],
+ ['홀로 남겨진 자','여왕은 어디에 있을까.\n동료들은 살아 있을까.\n\n주인공은 아무 대답도 들을 수 없었다.\n\n자신만 살아남았다고 생각했다.'],
+ ['각성','그 순간, 하늘에서 내려온 빛이 작은 몸을 감쌌다.\n\n외골격 깊은 곳에서 잠들어 있던 힘이 깨어났다.\n\n[새로운 진화가 가능합니다.]']
+];
+
+function qnStartFloodStory(){
+ if(!s.alive || s.day<200 || s.chapter===2 || s.evolution)return;
+ if(!confirm('✨ 새로운 운명을 맞이하시겠습니까?\n\n진행하면 이전의 삶으로 돌아올 수 없습니다.'))return;
+
+ // 군체 원본을 별도로 보존한다.
+ if(!s.qnColonyMemory){
+  s.qnColonyMemory={
+   day:s.day,queen:s.queen,workers:s.workers,
+   soldiers:s.soldiers,food:s.food,wood:s.wood,
+   eggs:s.eggs,guard:s.guard,
+   owned:JSON.parse(JSON.stringify(s.owned||[]))
+  };
+ }
+ save();
+ qnShowFloodScene(0);
+}
+
+function qnShowFloodScene(index){
+ document.getElementById('qn-flood-story')?.remove();
+
+ if(index>=QN_FLOOD_SCENES.length){
+  s.qnFloodSeen=true;
+  save();
+  qnOpenEvolution();
+  return;
+ }
+
+ const [title,body]=QN_FLOOD_SCENES[index];
+ const mask=document.createElement('div');
+ mask.id='qn-flood-story';
+ Object.assign(mask.style,{
+  position:'fixed',inset:'0',zIndex:'500',
+  background:'#050807',color:'#f2ead6',
+  display:'flex',alignItems:'center',justifyContent:'center',
+  padding:'20px'
+ });
+
+ const box=document.createElement('div');
+ Object.assign(box.style,{
+  width:'100%',maxWidth:'420px',textAlign:'center',
+  padding:'25px 16px',border:'1px solid #8b7655',
+  borderRadius:'14px',background:'#111b17'
+ });
+
+ const chapter=document.createElement('div');
+ chapter.textContent='QUEEN’S NEST';
+ chapter.style.cssText='font-size:12px;letter-spacing:4px;color:#cba66b;margin-bottom:24px';
+ box.appendChild(chapter);
+
+ const heading=document.createElement('h2');
+ heading.textContent=title;
+ heading.style.cssText='font-size:24px;margin-bottom:22px;color:#f3dba5';
+ box.appendChild(heading);
+
+ const desc=document.createElement('p');
+ desc.textContent=body;
+ desc.style.cssText='white-space:pre-line;line-height:2;font-size:15px;min-height:170px';
+ box.appendChild(desc);
+
+ const progress=document.createElement('div');
+ progress.textContent=(index+1)+' / '+QN_FLOOD_SCENES.length;
+ progress.style.cssText='font-size:12px;color:#9b9b8b;margin-bottom:15px';
+ box.appendChild(progress);
+
+ const next=document.createElement('button');
+ next.className='primary';
+ next.textContent=index===QN_FLOOD_SCENES.length-1
+  ? '🧬 운명의 진화 선택'
+  : '계속하기 ▶';
+ next.style.cssText='width:100%;padding:14px';
+ next.onclick=()=>qnShowFloodScene(index+1);
+ box.appendChild(next);
+
+ mask.appendChild(box);
+ document.body.appendChild(mask);
+}
+
 function qnEvolutionBanner(){
- if(s.chapter===2)return '<div class="notice" style="margin-top:12px">🌑 CHAPTER 2 · 지하 왕국의 그림자<br>🧬 '+(QN_EVOLUTIONS[s.evolution]?.name||'진화 완료')+' · 챕터 1 복귀 불가</div>';
+ if(s.chapter===2)
+  return '<div class="notice" style="margin-top:12px">🌑 CHAPTER 2 · 지상에 버려진 자<br>⚔️ '+(QN_EVOLUTIONS[s.evolution]?.name||'각성한 영웅')+'</div>';
  if(!s.alive)return '';
- if(s.day<200)return '<div class="notice" style="margin-top:12px">🧬 진화 해금까지 '+(200-s.day)+'일 · 200일 생존 시 진화 선택 가능</div>';
- return '<div class="notice" style="margin-top:12px">🧬 진화 가능! 챕터 1에 계속 머무를 수도 있습니다.<br><button class="primary" style="width:100%;margin-top:8px" onclick="qnOpenEvolution()">🧬 진화 선택 · 챕터 2 입장</button></div>';
+ if(s.day<200)
+  return '<div class="notice" style="margin-top:12px">✨ 새로운 가능성까지 '+(200-s.day)+'일</div>';
+ return '<div class="notice" style="margin-top:12px">✨ 새로운 운명이 기다리고 있습니다.<br><button class="primary" style="width:100%;margin-top:8px" onclick="qnStartFloodStory()">✨ 새로운 운명을 맞이한다</button></div>';
 }
 function qnOpenEvolution(){
- if(!s.alive || s.day<200 || s.chapter===2 || s.evolution)return;
+ if(!s.qnFloodSeen || !s.alive || s.day<200 || s.chapter===2 || s.evolution)return;
  if(document.getElementById('qn-evolution-modal'))return;
  const mask=document.createElement('div');mask.id='qn-evolution-modal';
  Object.assign(mask.style,{position:'fixed',inset:'0',zIndex:'300',background:'#050905ef',display:'flex',alignItems:'center',justifyContent:'center',padding:'12px'});
@@ -753,16 +2832,98 @@ function qnOpenEvolution(){
   const p=document.createElement('p');p.textContent=ev.detail;p.style.whiteSpace='pre-line';p.style.fontSize='13px';p.style.lineHeight='1.6';card.appendChild(p);
   const btn=document.createElement('button');btn.className='primary';btn.style.width='100%';btn.textContent='이 진화 선택하기';btn.onclick=()=>qnChooseEvolution(id);card.appendChild(btn);box.appendChild(card);
  }
- const stay=document.createElement('button');stay.textContent='🏕️ 머무르기 · 자원을 더 모으고 나중에 진화';stay.style.width='100%';stay.onclick=()=>{mask.remove();qnEvolutionNoticeShown=true};box.appendChild(stay);
+
  mask.appendChild(box);document.body.appendChild(mask);
 }
 function qnChooseEvolution(id){
- const ev=QN_EVOLUTIONS[id];if(!ev || !s.alive || s.day<200 || s.chapter===2 || s.evolution)return;
+ const ev=QN_EVOLUTIONS[id];if(!s.qnFloodSeen || !ev || !s.alive || s.day<200 || s.chapter===2 || s.evolution)return;
  if(!confirm(ev.name+'\n\n'+ev.detail+'\n\n⚠️ 진화 확정 시 챕터 2에 영구 진입하며 챕터 1로 돌아갈 수 없습니다.\n정말 확정할까요?'))return;
  s.evolution=id;s.evolutionUnlocked=true;s.chapter=2;
+ s.hero={
+  classId:id,
+  level:1,
+  exp:0,
+  gems:0,
+  hp:100,
+  maxHp:100,
+  equipment:{},
+  inventory:[]
+ };
  log('🧬 '+ev.name+'로 진화했습니다. 지하 왕국의 그림자에 진입했습니다.');
  document.getElementById('qn-evolution-modal')?.remove();update();
  alert('🌑 CHAPTER 2 진입!\n'+ev.name+'\n\n기존 군락과 자원은 유지됩니다.\n※ 챕터 2 전용 적·이벤트는 후속 업데이트 예정입니다.');
 }
 
-update();try{if(!localStorage.getItem(SURVIVAL_GUIDE_KEY))openSurvivalGuide()}catch(e){openSurvivalGuide()}</script></body></html>
+
+/* QUEENS_NEST_TEST_DAY200_V1 */
+function qnTestDay200(){
+  if(!s.alive){
+    alert('군락이 멸망한 상태에서는 테스트할 수 없습니다.');
+    return;
+  }
+  if(s.chapter===2){
+    alert('이미 챕터 2에 진입한 테스트 데이터입니다.');
+    return;
+  }
+  if(!confirm('🧪 TEST 전용 기능\\n\\n200일차로 이동할까요?\\n실제 BETA 저장 데이터에는 영향을 주지 않습니다.'))return;
+  s.day=200;
+  s.actions=2;
+  log('🧬 200일의 생존을 달성했습니다. 진화의 길이 열렸습니다.');
+  update();
+  window.scrollTo(0,0);
+}
+const qnTestButton=document.createElement('button');
+qnTestButton.textContent='🧪 TEST · 200일차로 이동';
+qnTestButton.className='primary';
+qnTestButton.style.cssText='position:fixed;top:8px;right:8px;z-index:90;font-size:11px;padding:7px;min-height:32px';
+qnTestButton.onclick=qnTestDay200;
+document.body.appendChild(qnTestButton);
+
+/* QN_TEST_RESELECT_CLASS_V1 */
+const qnReselectButton=document.createElement('button');
+qnReselectButton.textContent='🔄 TEST · 직업 재선택';
+qnReselectButton.style.cssText=
+ 'position:fixed;top:52px;right:8px;z-index:90;font-size:11px;padding:7px;min-height:32px;background:#654b2a;color:white;border:1px solid #cba66b;border-radius:8px';
+
+qnReselectButton.onclick=()=>{
+ if(!confirm('TEST 전용 직업 재선택 기능입니다.\n기존 TEST 영웅 데이터가 초기화됩니다.\n계속할까요?'))return;
+
+ s.day=Math.max(200,s.day);
+ s.chapter=1;
+ s.evolution=null;
+ s.evolutionUnlocked=true;
+ delete s.hero;
+ qnEvolutionNoticeShown=true;
+
+ update();
+ qnOpenEvolution();
+};
+
+document.body.appendChild(qnReselectButton);
+
+
+update();try{if(!localStorage.getItem(SURVIVAL_GUIDE_KEY))openSurvivalGuide()}catch(e){openSurvivalGuide()}</script></body></html><style id="qn-compact-hud-v1">
+.qn2-bottom-hero{
+ min-height:0!important;
+ margin-top:8px!important;
+ padding:8px!important;
+ gap:4px!important;
+}
+.qn2-back-hero-image{
+ font-size:48px!important;
+ min-height:52px!important;
+ line-height:1!important;
+}
+.qn2-hero-hud{
+ padding:8px 10px!important;
+ font-size:12px!important;
+ line-height:1.35!important;
+}
+.qn2-hero-level{
+ font-size:13px!important;
+}
+.qn2-hud-bar{
+ height:6px!important;
+ margin:2px 0 5px!important;
+}
+</style>
