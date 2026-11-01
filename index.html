@@ -2902,7 +2902,140 @@ qnReselectButton.onclick=()=>{
 document.body.appendChild(qnReselectButton);
 
 
-update();try{if(!localStorage.getItem(SURVIVAL_GUIDE_KEY))openSurvivalGuide()}catch(e){openSurvivalGuide()}</script></body></html><style id="qn-compact-hud-v1">
+update();try{if(!localStorage.getItem(SURVIVAL_GUIDE_KEY))openSurvivalGuide()}catch(e){openSurvivalGuide()}
+/* QN_CHAPTER2_100F_20261101 */
+const QN_ECO_ZONES=["부식토층","포식자의 굴","균사 오염지대","심층 포식지대","태고의 군락"];
+const QN_ECO_SPECIES=[{"name":"흰개미 병정","hp":300,"atk":40,"effect":"reduce:20"},{"name":"약탈 개미","hp":360,"atk":52,"effect":"atk:30"},{"name":"톡토기 떼","hp":420,"atk":64,"effect":"dodge:20"},{"name":"집게벌레","hp":480,"atk":76,"effect":"hits:2"},{"name":"땅강아지","hp":540,"atk":88,"effect":"barrier:2"},{"name":"포식성 응애","hp":600,"atk":100,"effect":"drain:10"},{"name":"늑대거미","hp":300,"atk":40,"effect":"dodge:30"},{"name":"지네","hp":360,"atk":52,"effect":"hits:3"},{"name":"반날개","hp":420,"atk":64,"effect":"poison:1"},{"name":"굴전갈","hp":480,"atk":76,"effect":"reduce:25"},{"name":"개미귀신 유충","hp":540,"atk":88,"effect":"atk:40"},{"name":"장님거미","hp":600,"atk":100,"effect":"dodge:35"},{"name":"동충하초 감염 개미","hp":300,"atk":40,"effect":"poison:1"},{"name":"균사 딱정벌레","hp":360,"atk":52,"effect":"regen:5"},{"name":"기생벌 유충","hp":420,"atk":64,"effect":"drain:20"},{"name":"포자 운반충","hp":480,"atk":76,"effect":"weakenheal:30"},{"name":"부패성 파리 유충","hp":540,"atk":88,"effect":"regen:10"},{"name":"균핵 장수풍뎅이","hp":600,"atk":100,"effect":"barrier:3"},{"name":"거대 채찍전갈","hp":300,"atk":40,"effect":"hits:4"},{"name":"흑갑 장수풍뎅이","hp":360,"atk":52,"effect":"barrier:4"},{"name":"대왕지네","hp":420,"atk":64,"effect":"poison:1"},{"name":"굴착성 왕개미","hp":480,"atk":76,"effect":"atk:50"},{"name":"갑옷 노래기","hp":540,"atk":88,"effect":"reduce:40"},{"name":"지하 사냥거미","hp":600,"atk":100,"effect":"dodge:40"},{"name":"고대 병정개미","hp":300,"atk":40,"effect":"reduce:50"},{"name":"심연의 기생충","hp":360,"atk":52,"effect":"drain:30"},{"name":"여왕 수호개미","hp":420,"atk":64,"effect":"barrier:5"},{"name":"변이 포식지네","hp":480,"atk":76,"effect":"hits:5"},{"name":"군락 파괴자","hp":540,"atk":88,"effect":"atk:70"},{"name":"태고의 포식충","hp":600,"atk":100,"effect":"drain:50"}];
+const QN_ECO_BOSS_TITLES=["굴의 군주","부식의 포식자","검은 턱","땅속의 지배자","혈흔의 수호자","굶주린 모체","껍질의 폭군","침묵의 사냥꾼","어둠의 군주","심연의 파수꾼","무덤의 포식자","끝없는 허물","뿌리의 주인","붉은 독니","군락의 학살자","기생의 왕","살점의 포식자","심층의 군주","흉갑의 폭군","마지막 수호자"];
+const QN_ECO_BOSSES=Array.from({length:100},(_,i)=>i===99?"태고의 여왕개미":QN_ECO_ZONES[Math.floor(i/20)]+" · "+QN_ECO_BOSS_TITLES[i%20]+" "+(i+1));
+function qnEcoZone(f){return Math.min(4,Math.floor((Math.max(1,f)-1)/20))}
+function qnEcoRollRooms(){const pool=[["monster",60],["trap",15],["shop",5],["rest",5],["mystery",10],["treasure",5]];return Array.from({length:3},()=>{let r=Math.random()*100;for(const [id,w] of pool){r-=w;if(r<0)return id}return "monster"})}
+function qnEcoAdvance(d){d.step=(d.step||0)+1;d.rooms=d.step>=30?["boss"]:qnEcoRollRooms()}
+function qnEcoApply(b,code){const [id,x]=code.split(":"),n=Number(x);
+ if(id==="atk")b.atk=Math.ceil(b.atk*(1+n/100));
+ if(id==="reduce")b.reduce=Math.min(80,(b.reduce||0)+n);
+ if(id==="dodge")b.dodge=Math.min(50,(b.dodge||0)+n);
+ if(id==="hits")b.hits=Math.max(b.hits||1,n);
+ if(id==="barrier")b.enemyBarrier=(b.enemyBarrier||0)+n;
+ if(id==="drain")b.drain=(b.drain||0)+n;
+ if(id==="regen")b.regen=(b.regen||0)+n;
+ if(id==="poison")b.poison=true;
+ if(id==="weakenheal")b.weakenheal=Math.max(b.weakenheal||0,n);
+ if(id==="reflect")b.reflect=(b.reflect||0)+n;
+}
+function qnEcoTraits(b,base,f){qnEcoApply(b,base.effect);
+ if(b.elite){const p=["reflect:20","dodge:20","hits:2","poison:1","regen:5","barrier:2","drain:10","reduce:20"];qnEcoApply(b,p[Math.floor(Math.random()*p.length)])}
+ if(b.boss){const count=f<=20?1:f<=60?2:3,p=["reflect:20","dodge:25","hits:2","poison:1","regen:5","drain:15","reduce:25","weakenheal:30","atk:30"];
+  for(let i=0;i<count;i++)qnEcoApply(b,p[(f*7+i*4)%p.length])}
+}
+function qnEcoPoison(h,lines){const arr=Array.isArray(h.statusEffects)?h.statusEffects:[],p=arr.find(x=>x.id==="poison");if(!p)return;
+ const n=Math.max(1,Math.ceil(h.maxHp*.05));h.hp-=n;p.turns--;lines.push("☠️ 독 피해 -"+n);
+ if(p.turns<=0)h.statusEffects=arr.filter(x=>x!==p);
+}
+function qnEcoInflict(h){h.statusEffects=Array.isArray(h.statusEffects)?h.statusEffects:[];const p=h.statusEffects.find(x=>x.id==="poison");if(p)p.turns=3;else h.statusEffects.push({id:"poison",turns:3})}
+function qnEcoLegend(f){for(let i=0;i<80;i++){const g=qnGenerateGear(f);if(g.grade==="legendary")return g}const g=qnGenerateGear(f);g.grade="legendary";g.name="전설의 "+g.name;return g}
+function qnEcoGear(f,b){if(b.boss)return [qnEcoLegend(f),qnEcoLegend(f)];if(b.elite)return Array.from({length:2},()=>Math.random()<.6?qnEcoLegend(f):qnGenerateGear(f));return [qnGenerateGear(f),qnGenerateGear(f)]}
+qnSurfaceRooms=function(){return qnEcoRollRooms()};
+qnSurfaceInit=function(){if(!s.hero)return;if(!s.hero.surface)s.hero.surface={floor:1,step:0,rooms:qnEcoRollRooms(),message:"🕳️ 지하 생태계로 진입했다."};
+ const d=s.hero.surface;if(d.step===undefined){d.step=0;d.rooms=qnEcoRollRooms()}if(!d.rooms)d.rooms=qnEcoRollRooms()};
+qnBattleStart=function(isBoss=false){const h=s.hero,d=h.surface;if(d.battle)return;
+ const f=Math.max(1,Math.min(100,d.floor)),base=QN_ECO_SPECIES[qnEcoZone(f)*6+Math.floor(Math.random()*6)],elite=!isBoss&&Math.random()<.2;
+ const scale=Math.pow(1.1,f-1)*Math.pow(2,Math.floor((f-1)/10)),hp=Math.ceil(base.hp*scale*(isBoss?10:elite?3:1)),atk=Math.ceil(base.atk*scale*(isBoss?3:elite?2:1));
+ const b={name:isBoss?"👑 "+QN_ECO_BOSSES[f-1]:(elite?"⚠️ 정예 ":"")+base.name,hp,maxHp:hp,atk,turn:1,boss:isBoss,elite,barrierCharges:qnCombatBarriers(h),enemyBarrier:isBoss?3:0,message:isBoss?"👑 "+f+"층 보스 등장!":"⚔️ "+base.name+" 출현!"};
+ qnEcoTraits(b,base,f);d.battle=b;d.message=b.message;save()};
+qnSurfaceChoose=function(index){const h=s.hero,d=h?.surface;if(!h||h.hp<=0||!d||d.completed||d.battle||h.gearReward?.length||index<0||index>=d.rooms.length)return;
+ let type=d.rooms[index];if(type==="mystery")type=["monster","treasure","trap","rest"][Math.floor(Math.random()*4)];
+ let msg="";
+ if(type==="monster"||type==="boss"){qnBattleStart(type==="boss");qnRpgTab="explore";qnRenderChapter2();return}
+ if(type==="treasure"){const n=10+Math.floor(Math.random()*21);h.gems=(h.gems||0)+n;msg="🎁 보물 발견 · 젬 +"+n}
+ if(type==="trap"){const n=5+Math.floor(Math.random()*11);h.hp=Math.max(1,h.hp-n);msg="🪤 함정 · HP -"+n}
+ if(type==="rest"){const n=Math.max(0,Math.min(h.maxHp-h.hp,Math.ceil(h.maxHp*.2)));h.hp+=n;msg="🌿 휴식 · HP +"+n}
+ if(type==="shop")msg="🏪 지하 상인 발견 · 상점은 추후 개방";
+ qnEcoAdvance(d);d.message=msg;qnRpgTab="explore";save();qnRenderChapter2();qnExploreResultPopup(msg)};
+qnSurfaceScreen=function(){qnSurfaceInit();const h=s.hero,d=h.surface;
+ const meta={monster:["⚔️","몬스터"],trap:["🪤","함정"],shop:["🏪","상점"],rest:["🌿","휴식"],mystery:["❓","미지"],treasure:["🎁","보물"],boss:["👑","층 보스"]};
+ return '<div class="qn2-box" style="background:linear-gradient(#1e2922,#0d1411);text-align:center">'+
+ '<div style="display:flex;justify-content:space-between;gap:6px"><b>🕳️ '+QN_ECO_ZONES[qnEcoZone(d.floor)]+'</b><b>'+d.floor+'/100F</b></div>'+
+ '<div style="font-size:12px;color:#d4c08b;margin:5px">방 선택 '+(d.step||0)+'/30 · 💎 '+(h.gems||0)+'</div>'+
+ qnHeroBottomHud()+'<h3 style="margin:8px 0">'+(d.step>=30?'👑 층 보스에 도전':'🚪 다음 방을 선택하세요')+'</h3>'+
+ '<div style="display:grid;grid-template-columns:repeat('+(d.rooms.length===1?'1':'3')+',minmax(0,1fr));gap:5px">'+
+ d.rooms.map((id,i)=>'<button style="min-height:65px;padding:6px 2px;font-size:12px" onclick="qnSurfaceChoose('+i+')">'+meta[id][0]+'<div>'+meta[id][1]+'</div></button>').join('')+
+ '</div><div style="white-space:pre-line;font-size:12px;margin-top:9px">'+(d.message||'')+'</div></div>'};
+const qnEcoOldExplore=qnRpgExploreScreen;
+qnRpgExploreScreen=function(){if(s.hero?.surface?.completed&&!s.hero?.gearReward)return '<div class="qn2-box"><h2>👑 챕터 2 완료</h2><p>태고의 여왕개미를 처치했습니다.</p><p>챕터 3는 준비 중입니다.</p></div>';return qnEcoOldExplore()};
+qnBattleScreen=function(){const h=s.hero,b=h.surface?.battle;if(!b)return "";
+ const skill=QN_BATTLE_SKILLS[h.classId]||"고유 스킬",cd=h.healCooldown||0;
+ const traits=[b.boss?"👑 보스":b.elite?"⚠️ 정예":"일반",b.enemyBarrier?"🛡️ "+b.enemyBarrier:"",b.poison?"☠️ 독":"",b.regen?"🌿 재생":"",b.reflect?"🪞 반사":"",b.hits>1?"⚔️ "+b.hits+"연타":""].filter(Boolean).join(" · ");
+ return '<div class="qn2-box" style="text-align:center"><h3>⚔️ '+b.name+' · '+b.turn+'턴</h3><div style="font-size:11px;color:#d9bd80">'+traits+'</div>'+
+ '<div>❤️ '+Math.ceil(b.hp).toLocaleString()+' / '+Math.ceil(b.maxHp).toLocaleString()+'</div>'+
+ '<div class="bar"><i style="width:'+Math.max(0,b.hp/b.maxHp*100)+'%;background:#c74e4e"></i></div>'+qnHeroBottomHud()+
+ '<div class="notice" style="white-space:pre-line;font-size:12px;padding:6px">'+(b.message||'')+'</div>'+
+ '<div style="display:grid;grid-template-columns:1fr 1fr;gap:5px"><button onclick="qnBattleAttack(0)">⚔️ 공격</button>'+
+ '<button onclick="qnBattleAttack(1)" '+(b.skillUsed?'disabled':'')+'>✨ '+skill+'</button>'+
+ '<button onclick="qnBattleAttack(2)" '+(cd?'disabled':'')+'>💚 회복'+(cd?' ('+cd+')':'')+'</button>'+
+ '<button onclick="qnBattleAttack(3)">🏃 도주</button></div></div>'};
+qnBattleAttack=function(index){const h=s.hero,d=h?.surface,b=d?.battle;if(!b||![0,1,2,3].includes(index))return;qnHeroNormalize(h);
+ if(index===1&&b.skillUsed)return;if(index===2&&(h.healCooldown||0)>0)return;
+ const has=id=>qnCombatHas(h,id),lines=[];
+ const survive=()=>{if(h.hp>0)return true;if(has("undying")&&!b.undyingUsed){b.undyingUsed=true;h.hp=1;lines.push("✨ 불굴 · HP 1 생존");return true}return false};
+ const heal=(amount,source)=>{const before=h.hp,raw=Math.ceil(Math.max(0,amount));h.hp=Math.min(h.maxHp,h.hp+raw);if(source&&raw>h.maxHp-before&&!h.overhealBarrier){h.overhealBarrier=1;h.overhealBarrierSource=source}return h.hp-before};
+ const shield=()=>{if(h.overhealBarrier>0){h.overhealBarrier--;if(!h.overhealBarrier)h.overhealBarrierSource=null;return true}if(b.barrierCharges>0){b.barrierCharges--;return true}return false};
+ const die=()=>{h.hp=0;d.message=lines.join("\n");qnChapter2Death()};
+ const win=(counterKill=false,mageSkillKill=false)=>{
+  if(!survive()){die();return}
+  const f=d.floor,m=b.boss?5:b.elite?2:1,exp=(30+f*10)*m,gems=(5+Math.floor(Math.random()*11))*m;
+  const rate=(has("drain")?.3:0)+(h.classId==="mage"&&!mageSkillKill?.3:0);
+  if(rate){const n=heal(b.maxHp*rate,has("drain")?"armor":"innate");if(n)lines.push("💚 처치 흡혈 +"+n)}
+  h.gems=(h.gems||0)+gems;
+  if(b.boss){if(d.floor>=100){d.completed=true;d.rooms=[]}else{d.floor++;d.step=0;d.rooms=qnEcoRollRooms()}}else qnEcoAdvance(d);
+  delete d.battle;if(index!==2&&h.healCooldown>0)h.healCooldown--;
+  const level=qnHeroGainExp(exp);h.gearReward=qnEcoGear(f,b);
+  lines.push("🏆 "+(b.boss?"보스":b.elite?"정예":"몬스터")+" 처치 · EXP +"+exp+" · 💎 +"+gems);
+  if(level)lines.push("🎉 레벨 업! LV."+h.level);
+  if(d.completed)lines.push("👑 100층 정복 · 챕터 3 준비 중");
+  d.message=lines.join("\n");save();qnRenderChapter2();qnExploreResultPopup(d.message)};
+ const frenzy=has("frenzy")?2:1;
+ if(index===3){const cost=Math.ceil(h.hp*.1);h.hp=Math.max(0,h.hp-cost);delete d.battle;if(h.healCooldown>0)h.healCooldown--;d.message="🏃 도주 성공 · HP -"+cost;save();qnRenderChapter2();return}
+ if(index===2){const n=heal(h.maxHp*.3*(1-(b.weakenheal||0)/100));h.healCooldown=3;lines.push("💚 회복 +"+n)}
+ else{
+  const skill=index===1;if(skill)b.skillUsed=true;
+  let damage=h.classId==="warrior"?h.maxHp:h.classId==="ranger"?qnHeroTotalStat(h,"agi")*10:h.classId==="assassin"?qnHeroTotalStat(h,"crit")*5:qnHeroTotalStat(h,"atk")*10;
+  if(skill){if(h.classId==="warrior")damage*=2;else if(h.classId==="ranger")damage*=1.8;else if(h.classId==="assassin")damage*=2.5;else{damage=qnHeroTotalStat(h,"atk")*100;h.hp-=Math.ceil(h.maxHp*.2)}if(has("skillBoost"))damage*=2}
+  for(let i=0,hits=qnCombatHits(h);i<hits&&b.hp>0;i++){
+   if(Math.random()*100<(b.dodge||0)){lines.push("💨 "+(i+1)+"타 회피");continue}
+   if(b.enemyBarrier>0&&!has("pierce")){b.enemyBarrier--;lines.push("🛡️ 적 베리어 -1");continue}
+   const roll=qnHeroRollDamage(h,damage*frenzy),dealt=Math.max(0,Math.min(b.hp,Math.round(roll.damage*(1-(b.reduce||0)/100))));
+   b.hp-=dealt;lines.push((roll.critical?"💥 치명타 ":"⚔️ ")+(i+1)+"타 "+dealt+" 피해");
+   if(h.classId==="mage"&&skill){const n=heal(b.maxHp*.3,"innate");if(n)lines.push("💚 생명 흡수 +"+n)}
+   if(b.reflect&&dealt){const n=Math.ceil(dealt*b.reflect/100);if(shield())lines.push("🛡️ 반사 피해 방어");else{h.hp-=n;lines.push("🪞 반사 피해 -"+n)}}
+   if(!survive()){die();return}
+  }
+ }
+ if(b.hp<=0){win(false,index===1&&h.classId==="mage");return}
+ if(!survive()){die();return}
+ const bossHeal=b.boss&&b.turn%3===0,hits=bossHeal?0:Math.max(1,b.hits||1);
+ for(let i=0;i<hits;i++){
+  const original=Math.max(1,b.atk),evade=Math.min(50,Math.max(0,qnHeroTotalStat(h,"agi")/10));
+  if(Math.random()*100<evade){lines.push("💨 영웅 회피");continue}
+  let taken=b.boss?original:Math.max(1,original-Math.floor(qnHeroTotalStat(h,"def")/2));
+  if(!b.boss&&has("counter"))taken=Math.ceil(taken*.1);
+  taken=Math.ceil(taken*frenzy);
+  if(!b.boss&&shield()){taken=0;lines.push("🛡️ 베리어 방어")}
+  if(taken){h.hp-=taken;lines.push("🩸 공격 피해 -"+taken);
+   if(b.drain){b.hp=Math.min(b.maxHp,b.hp+Math.ceil(taken*b.drain/100));lines.push("🩸 몬스터 흡혈")}
+   if(b.poison)qnEcoInflict(h)}
+  if(has("counter")){const n=Math.ceil(original*.7*frenzy);b.hp=Math.max(0,b.hp-n);lines.push("🛡️ 반격 "+n)}
+  if(!survive()){die();return}if(b.hp<=0)break;
+ }
+ if(b.hp<=0){win(true,false);return}
+ if(bossHeal){const n=Math.min(b.maxHp-b.hp,Math.ceil(b.maxHp*.1));b.hp+=n;lines.push("👑 보스 치유 +"+n)}
+ if(b.regen){const n=Math.min(b.maxHp-b.hp,Math.ceil(b.maxHp*b.regen/100));b.hp+=n;lines.push("🌿 몬스터 재생 +"+n)}
+ qnEcoPoison(h,lines);if(!survive()){die();return}
+ if(index!==2&&h.healCooldown>0)h.healCooldown--;
+ b.turn++;b.message=lines.join("\n");d.message=b.message;save();qnRenderChapter2()
+};
+
+</script></body></html><style id="qn-compact-hud-v1">
 .qn2-bottom-hero{
  min-height:0!important;
  margin-top:8px!important;
