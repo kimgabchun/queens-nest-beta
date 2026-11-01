@@ -3035,6 +3035,9 @@ qnBattleAttack=function(index){const h=s.hero,d=h?.surface,b=d?.battle;if(!b||![
  b.turn++;b.message=lines.join("\n");d.message=b.message;save();qnRenderChapter2()
 };
 
+
+/* Refresh chapter 2 view after feature installation */
+if(s.chapter===2&&s.hero){qnSurfaceInit();qnRenderChapter2();}
 </script></body></html><style id="qn-compact-hud-v1">
 .qn2-bottom-hero{
  min-height:0!important;
