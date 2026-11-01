@@ -3038,6 +3038,19 @@ qnBattleAttack=function(index){const h=s.hero,d=h?.surface,b=d?.battle;if(!b||![
 
 /* Refresh chapter 2 view after feature installation */
 if(s.chapter===2&&s.hero){qnSurfaceInit();qnRenderChapter2();}
+/* QN_FLEE_PROGRESS_HOTFIX */
+const qnEcoBattleAttackCore=qnBattleAttack;
+qnBattleAttack=function(index){
+ const d=s.hero?.surface;
+ const wasBattle=!!d?.battle;
+ const before=d?.step||0;
+ qnEcoBattleAttackCore(index);
+ if(index===3&&wasBattle&&d&&!d.battle&&d.step===before){
+  qnEcoAdvance(d);
+  d.message=(d.message||"🏃 도주 성공")+" · 방 선택 "+d.step+"/30";
+  save();qnRenderChapter2();
+ }
+};
 </script></body></html><style id="qn-compact-hud-v1">
 .qn2-bottom-hero{
  min-height:0!important;
