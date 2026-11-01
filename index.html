@@ -3120,6 +3120,55 @@ qnRpgExploreScreen=function(){
  return qnShopPreviousExplore();
 };
 if(s.chapter===2&&s.hero)qnRenderChapter2();
+
+/* QN_TRAPS_V1 */
+const qnTrapPreviousChoose=qnSurfaceChoose;
+qnSurfaceChoose=function(i){
+ const h=s.hero,d=h?.surface;
+ if(!h||h.hp<=0||h.qnDead||!d||d.battle||d.shop||d.completed||h.gearReward?.length||!Number.isInteger(i)||i<0||i>=d.rooms.length)return;
+ if(d.rooms[i]!=="trap")return qnTrapPreviousChoose(i);
+ const roll=Math.random(),old=h.hp;
+ if(roll<.4){
+  const damage=Math.ceil(h.maxHp*.10);
+  h.hp=Math.max(1,h.hp-damage);
+  qnEcoAdvance(d);
+  d.message="🩸 가시 함정 · HP -"+(old-h.hp)+" · 방 선택 "+d.step+"/30";
+  save();qnRenderChapter2();qnExploreResultPopup(d.message);return;
+ }
+ if(roll<.7){
+  qnEcoInflict(h);
+  qnEcoAdvance(d);
+  d.message="☠️ 독성 포자 · 독 3턴 · 방 선택 "+d.step+"/30";
+  save();qnRenderChapter2();qnExploreResultPopup(d.message);return;
+ }
+ qnBattleStart(false);
+ if(!d.battle)return;
+ const b=d.battle;
+ b.ambush=true;
+ b.message="🕷️ 매복 함정! 몬스터가 먼저 공격했다.";
+ const original=Math.max(1,Math.ceil(b.atk)),hits=Math.max(1,b.hits||1);
+ let log=[b.message];
+ for(let n=0;n<hits;n++){
+  const dodge=Math.min(50,Math.max(0,qnHeroTotalStat(h,"agi")/10));
+  if(Math.random()*100<dodge){log.push("💨 "+(n+1)+"타 회피");continue}
+  if(h.overhealBarrier>0){h.overhealBarrier--;if(!h.overhealBarrier)h.overhealBarrierSource=null;log.push("🛡️ 초과 회복 베리어 방어");continue}
+  if(b.barrierCharges>0){b.barrierCharges--;log.push("🛡️ 베리어 방어");continue}
+  let dmg=Math.max(1,original-Math.floor(qnHeroTotalStat(h,"def")/2));
+  if(qnCombatHas(h,"counter"))dmg=Math.ceil(dmg*.1);
+  if(qnCombatHas(h,"frenzy"))dmg*=2;
+  h.hp=Math.max(0,h.hp-dmg);log.push("🩸 기습 피해 -"+dmg);
+  if(b.drain){const actual=Math.min(old,dmg);b.hp=Math.min(b.maxHp,b.hp+Math.ceil(actual*b.drain/100))}
+  if(b.poison)qnEcoInflict(h);
+  if(qnCombatHas(h,"counter")){const reflected=Math.ceil(original*.7);b.hp=Math.max(0,b.hp-reflected);log.push("🛡️ 반격 "+reflected)}
+  if(h.hp<=0){if(qnCombatHas(h,"undying")){h.hp=1;b.undyingUsed=true;log.push("✨ 불굴 · HP 1 생존")}else break}
+  if(b.hp<=0)break;
+ }
+ b.turn=2;
+ b.message=log.join("\n");d.message=b.message;
+ if(h.hp<=0){qnChapter2Death();return}
+ if(b.hp<=0){b.hp=1;b.message+="\n⚠️ 기습 반격으로 쓰러지기 직전이다."}
+ save();qnRpgTab="explore";qnRenderChapter2();
+};
 </script></body></html><style id="qn-compact-hud-v1">
 .qn2-bottom-hero{
  min-height:0!important;
