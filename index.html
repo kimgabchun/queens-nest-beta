@@ -3051,6 +3051,75 @@ qnBattleAttack=function(index){
   save();qnRenderChapter2();
  }
 };
+
+/* QN_SHOP_V1 · one-room weapon replacement merchant */
+function qnShopWeapon(f,legendary){
+ let item=null;
+ for(let n=0;n<120;n++){const g=qnGenerateGear(f);if(g.slot==="weapon"&&(!legendary||g.grade==="legendary")){item=g;break}}
+ if(!item){item=qnGenerateGear(f);item.slot="weapon";item.name=(legendary?"전설의 ":"")+"지하 상인의 검";item.grade=legendary?"legendary":"common";item.effect=null;item.effectText=""}
+ return item;
+}
+function qnShopOpen(){
+ const d=s.hero?.surface;if(!d||d.shop||d.battle)return;
+ const f=d.floor,base=10+f*5;
+ d.shop={offers:[
+  {item:qnShopWeapon(f,false),price:base},
+  {item:qnShopWeapon(f,false),price:base*2},
+  {item:qnShopWeapon(f,true),price:base*5}
+ ],purchased:false};
+ d.message="🏪 지하 상인이 무기를 펼쳐 보였다.";
+ save();qnRenderChapter2();
+}
+function qnShopScreen(){
+ const h=s.hero,d=h.surface,shop=d.shop;
+ const current=h.equipment?.weapon;
+ const stat=(g)=>g?.statText||"추가 능력치 없음";
+ return '<div class="qn2-box" style="background:linear-gradient(#29241b,#101511);padding:12px">'+
+ '<h2 style="text-align:center">🏪 지하 무기 상점</h2>'+
+ '<div style="text-align:center;font-size:13px">💎 보유 젬 <b>'+(h.gems||0)+'</b> · '+d.floor+'/100F · '+(d.step||0)+'/30</div>'+
+ '<div class="qn2-box" style="padding:8px;font-size:12px">현재 무기: <b>'+(current?.name||"없음")+'</b><div>'+(current?stat(current):"무기를 장착하지 않았습니다")+'</div></div>'+
+ '<div style="display:grid;gap:7px">'+shop.offers.map((offer,i)=>{
+  const g=offer.item,old=current?.stat===g.stat?(current?.value||0):0,diff=g.value-old;
+  const canBuy=!shop.purchased&&(h.gems||0)>=offer.price;
+  return '<div class="qn2-box" style="padding:9px;margin:0"><b>'+(g.grade==="legendary"?"🟡 전설":"⚪ 일반")+' · '+g.name+'</b>'+
+  '<div style="font-size:12px;margin:5px 0">'+stat(g)+' · '+(current?.stat===g.stat?"현재 무기 대비 "+(diff>=0?"+":"")+diff:"다른 능력치")+'</div>'+
+  '<button style="width:100%;min-height:40px" onclick="qnShopBuy('+i+')" '+(canBuy?"":"disabled")+'>'+
+  (shop.purchased?"구매 완료":(h.gems||0)<offer.price?"💎 "+offer.price+" · 젬 부족":"💎 "+offer.price+" · 구매하고 교체")+'</button></div>';
+ }).join('')+'</div>'+
+ '<button style="width:100%;margin-top:10px;min-height:44px" onclick="qnShopLeave()">🚪 상점 나가기 · 다음 방으로</button>'+
+ '<div style="font-size:11px;opacity:.8;text-align:center;margin-top:8px">무기는 한 개만 장착합니다. 구매하면 기존 무기는 사라집니다. 상점당 구매 1회.</div></div>';
+}
+function qnShopBuy(i){
+ const h=s.hero,d=h?.surface,shop=d?.shop;
+ if(!shop||shop.purchased||!Number.isInteger(i)||i<0||i>=shop.offers.length)return;
+ const offer=shop.offers[i];if((h.gems||0)<offer.price)return;
+ h.gems-=offer.price;h.equipment=h.equipment||{};
+ h.equipment.weapon=offer.item;
+ qnHeroNormalize(h);shop.purchased=true;
+ d.message="🏪 "+offer.item.name+" 구매 · 💎 -"+offer.price;
+ save();qnRenderChapter2();
+}
+function qnShopLeave(){
+ const d=s.hero?.surface;if(!d?.shop)return;
+ const purchased=d.shop.purchased;
+ delete d.shop;qnEcoAdvance(d);
+ d.message=purchased?"🏪 무기를 교체하고 상점을 떠났다.":"🏪 상점을 둘러보고 떠났다.";
+ save();qnRenderChapter2();
+}
+const qnShopPreviousChoose=qnSurfaceChoose;
+qnSurfaceChoose=function(i){
+ const d=s.hero?.surface;
+ if(d&&!d.shop&&!d.battle&&!s.hero.gearReward?.length&&d.rooms?.[i]==="shop"){
+  qnShopOpen();return;
+ }
+ return qnShopPreviousChoose(i);
+};
+const qnShopPreviousExplore=qnRpgExploreScreen;
+qnRpgExploreScreen=function(){
+ if(s.hero?.surface?.shop)return qnShopScreen();
+ return qnShopPreviousExplore();
+};
+if(s.chapter===2&&s.hero)qnRenderChapter2();
 </script></body></html><style id="qn-compact-hud-v1">
 .qn2-bottom-hero{
  min-height:0!important;
